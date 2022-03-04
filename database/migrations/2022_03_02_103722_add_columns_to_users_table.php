@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_details', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('name');
+        Schema::table('users', function (Blueprint $table) {
             $table->string('sex')->nullable();
-            $table->string('dob')->nullable();
+            $table->date('dob')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('alrernate_phone')->nullable();
+            $table->string('alternate_phone')->nullable();
+            $table->boolean('is_active')->default(true);
         });
     }
 
@@ -32,6 +30,15 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_details');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'sex',
+                'dob',
+                'address',
+                'phone',
+                'alternate_phone',
+                'is_active'
+            ]);
+        });
     }
 };
