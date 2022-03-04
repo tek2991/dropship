@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
             'driver_crud',
             'transporter_crud',
             'vehicle_crud',
-            'client_read',
+            'client_crud',
         ]);
     }
 }
