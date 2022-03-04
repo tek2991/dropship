@@ -22,6 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        'dob',
+        'address',
+        'phone',
+        'alternate_phone',
+        'is_active',
     ];
 
     /**
@@ -41,5 +47,44 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'dob' => 'date',
     ];
+
+    public function isActive(): bool
+    {
+        return $this->is_active;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isTransporter(): bool
+    {
+        return $this->hasRole('transporter') && $this->transporter()->exists();
+    }
+
+    public function transporter()
+    {
+        return $this->hasOne(Transporter::class);
+    }
+
+    public function isDriver(): bool
+    {
+        return $this->hasRole('driver') && $this->driver()->exists();
+    }
+
+    public function driver(){
+        return $this->hasOne(Driver::class);
+    }
+
+    public function isClient(): bool
+    {
+        return $this->hasRole('client') && $this->client()->exists();
+    }
+
+    public function client(){
+        return $this->hasOne(Client::class);
+    }
 }
