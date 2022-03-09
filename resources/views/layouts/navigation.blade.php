@@ -15,18 +15,21 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.index')">
-                        {{ __('Drivers') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('vehicles.index')" :active="request()->routeIs('vehicles.index')">
-                        {{ __('Vehicles') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('transporters.index')" :active="request()->routeIs('transporters.index')">
-                        {{ __('Transporters') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')">
-                        {{ __('Clients') }}
-                    </x-nav-link>
+                    @if (Auth::user()->isAdmin())
+                        <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.index')">
+                            {{ __('Drivers') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('vehicles.index')" :active="request()->routeIs('vehicles.index')">
+                            {{ __('Vehicles') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('transporters.index')"
+                            :active="request()->routeIs('transporters.index')">
+                            {{ __('Transporters') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')">
+                            {{ __('Clients') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -95,18 +98,20 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('drivers.index')">
-                    {{ __('Drivers') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('vehicles.index')">
-                    {{ __('Vehicles') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('transporters.index')">
-                    {{ __('Transporters') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('clients.index')">
-                    {{ __('Clients') }}
-                </x-responsive-nav-link>
+                @if (Auth::user()->isAdmin())
+                    <x-responsive-nav-link :href="route('drivers.index')">
+                        {{ __('Drivers') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('vehicles.index')">
+                        {{ __('Vehicles') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('transporters.index')">
+                        {{ __('Transporters') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('clients.index')">
+                        {{ __('Clients') }}
+                    </x-responsive-nav-link>
+                @endif
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
