@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
     {
         $admin = User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@dropship.test',
+            'email' => 'tek2991@gmail.com',
             'is_active' => true,
             'password' => Hash::make('password'),
         ]);
