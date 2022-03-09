@@ -95,6 +95,6 @@ class DriverController extends Controller
      */
     public function destroy(Driver $driver)
     {
-        //
+        return back();
     }
 }
