@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DriverSeeder extends Seeder
 {
@@ -14,6 +15,10 @@ class DriverSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $users = User::factory(100)->create();
+        $users->each(function ($user) {
+            $user->assignRole('driver');
+            $user->driver()->create();
+        });
     }
 }

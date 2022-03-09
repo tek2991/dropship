@@ -17,7 +17,7 @@ class DriverController extends Controller
     public function index()
     {
         return view('cruds.drivers.index', [
-            'drivers' => Driver::paginate(),
+            'drivers' => Driver::with('user')->paginate(),
         ]);
     }
 
@@ -54,7 +54,9 @@ class DriverController extends Controller
      */
     public function show(Driver $driver)
     {
-        //
+        return view('cruds.drivers.show', [
+            'driver' => $driver->load('user'),
+        ]);
     }
 
     /**
