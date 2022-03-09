@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Transporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreTransporterRequest;
 use App\Http\Requests\cruds\UpdateTransporterRequest;
 
@@ -115,5 +116,13 @@ class TransporterController extends Controller
     public function destroy(Transporter $transporter)
     {
         //
+    }
+
+    public function updatePassword(Request $request, User $user){
+        $request->validate([
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+        $user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $user->name . ' updated successfully.');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreClientRequest;
 use App\Http\Requests\cruds\UpdateClientRequest;
 
@@ -105,5 +106,13 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         //
+    }
+
+    public function updatePassword(Request $request, User $user){
+        $request->validate([
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+        $user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
     }
 }

@@ -25,7 +25,7 @@
                             <div>
                                 <x-label for="email" :value="__('Email')" />
                                 <x-input id="email" class="block mt-1 w-full" type="email" required
-                                    value="{{ $driver->user->email }}" name="email"/>
+                                    value="{{ $driver->user->email }}" name="email" />
                             </div>
                             <div>
                                 <x-label for="gender" :value="__('Gender')" />
@@ -63,7 +63,7 @@
                                     <option value="1" {{ $driver->user->is_active == true ? 'selected' : '' }}>Active
                                     </option>
                                     <option value="0" {{ $driver->user->is_active != true ? 'selected' : '' }}>
-                                       Inactive
+                                        Inactive
                                     </option>
                                 </x-input-select>
                             </div>
@@ -76,6 +76,34 @@
                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                                 {{ __('Update') }}
+                            </x-button>
+                        </div>
+                    </form>
+
+                    <form method="POST" action="{{ route('drivers.update-password', ['driver' => $driver->id]) }}">
+                        @method('PUT')
+                        @csrf
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Update Password</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <x-label for="password" :value="__('Password')" required />
+                                <x-input id="password" class="block mt-1 w-full" type="password" name="password"
+                                    autocomplete="password" required />
+                            </div>
+                            <div>
+                                <x-label for="confirm_password" :value="__('Confirm password')" required />
+                                <x-input id="confirm_password" class="block mt-1 w-full" type="password"
+                                    name="password_confirmation" autocomplete="confirm-password" required />
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end mt-4 ">
+                            <x-button class="ml-3" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                {{ __('Update Password') }}
                             </x-button>
                         </div>
                     </form>

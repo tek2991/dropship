@@ -26,9 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
     Route::resource('user', UserController::class)->only('show', 'edit', 'update');
-
     Route::put('user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
 });
 
@@ -40,6 +38,10 @@ Route::group(['middleware' => ['role:admin']], function () {
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
     ]);
+
+    Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
+    Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
+    Route::put('clients/{client}/update-password', [ClientController::class, 'updatePassword'])->name('clients.update-password');
 });
 
 require __DIR__ . '/auth.php';

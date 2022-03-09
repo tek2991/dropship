@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Driver;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreDriverRequest;
 use App\Http\Requests\cruds\UpdateDriverRequest;
 
@@ -105,5 +107,13 @@ class DriverController extends Controller
     public function destroy(Driver $driver)
     {
         return back();
+    }
+
+    public function updatePassword(Request $request, User $user){
+        $request->validate([
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+        $user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('drivers.index')->with('message', 'Driver: ' . $user->name . ' updated successfully.');
     }
 }
