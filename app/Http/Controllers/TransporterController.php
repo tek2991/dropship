@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Transporter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\cruds\StoreTransporterRequest;
 
 class TransporterController extends Controller
 {
@@ -26,7 +29,7 @@ class TransporterController extends Controller
      */
     public function create()
     {
-        //
+        return view('cruds.transporters.create');
     }
 
     /**
@@ -35,9 +38,22 @@ class TransporterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTransporterRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'password' => Hash::make($request->password),
+        ]);
+        $user->assignRole('transporter');
+        $user->transporter()->create([
+            'is_first_party' => $request->is_first_party,
+        ]);
+
+        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $user->name . ' created successfully.');
     }
 
     /**

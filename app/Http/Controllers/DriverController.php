@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Driver;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\cruds\StoreDriverRequest;
 use App\Http\Requests\cruds\UpdateDriverRequest;
 
@@ -39,7 +40,16 @@ class DriverController extends Controller
      */
     public function store(StoreDriverRequest $request)
     {
-        $user = User::create($request->validated());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'password' => Hash::make($request->password),
+        ]);
         $user->assignRole('driver');
         $user->driver()->create();
 

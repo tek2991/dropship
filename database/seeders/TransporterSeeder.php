@@ -35,7 +35,8 @@ class TransporterSeeder extends Seeder
     {
         for ($i = 0; $i < 100; $i++) {
             $user = User::factory(1)->create([
-                'gender' => 'na',
+                'gender' => null,
+                'dob' => null,
                 'name' => $this->faker->company(),
             ]);
             $user->each(function ($user) {
