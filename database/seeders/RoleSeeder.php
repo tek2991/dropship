@@ -34,5 +34,9 @@ class RoleSeeder extends Seeder
             'vehicle_crud',
             'client_crud',
         ]);
+
+        $role = Role::create(['name' => 'driver']);
+        $role = Role::create(['name' => 'transporter']);
+        $role = Role::create(['name' => 'client']);
     }
 }
