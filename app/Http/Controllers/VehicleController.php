@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\cruds\StoreVehicleRequest;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        //
+        return view('cruds.vehicles.create');
     }
 
     /**
@@ -35,9 +36,11 @@ class VehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreVehicleRequest $request)
     {
-        //
+        $vehicle = Vehicle::create($request->validated());
+
+        return redirect()->route('vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' created successfully.');
     }
 
     /**

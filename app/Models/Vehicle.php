@@ -9,6 +9,11 @@ class Vehicle extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'registration_number',
+        'is_active',
+    ];
+
     public function drivers(){
         return $this->belongsToMany(Driver::class, 'driver_vehicle', 'vehicle_id', 'driver_id');
     }
