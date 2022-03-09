@@ -26,7 +26,7 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
+        return view('cruds.drivers.create');
     }
 
     /**
