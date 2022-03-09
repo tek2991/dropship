@@ -74,7 +74,7 @@
                     <form method="POST" action="{{ route('user.update-password', ['user' => Auth::user()->id]) }}">
                         @method('PUT')
                         @csrf
-                        <h3 class="text-lg my-8 font-bold">Update Password</h3>
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Update Password</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="md:col-span-2">
                                 <x-label for="current_password" :value="__('Current Password')" required />
