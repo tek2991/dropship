@@ -9,7 +9,7 @@ use Faker\Factory as Faker;
 
 class TransporterSeeder extends Seeder
 {
-        /**
+    /**
      * The current Faker instance.
      *
      * @var \Faker\Generator
@@ -33,13 +33,15 @@ class TransporterSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::factory(100)->create([
-            'gender' => 'na',
-            'name' => $this->faker->unique()->company(),
-        ]);
-        $users->each(function ($user) {
-            $user->assignRole('transporter');
-            $user->transporter()->create();
-        });
+        for ($i = 0; $i < 100; $i++) {
+            $user = User::factory(1)->create([
+                'gender' => 'na',
+                'name' => $this->faker->company(),
+            ]);
+            $user->each(function ($user) {
+                $user->assignRole('transporter');
+                $user->transporter()->create();
+            });
+        }
     }
 }
