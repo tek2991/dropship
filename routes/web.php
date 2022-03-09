@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\VehicleController;
@@ -21,12 +22,18 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
-Route::group(['middleware' => ['role:admin']], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::resource('user', UserController::class)->only('show', 'edit', 'update');
+
+    Route::put('user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
+});
+
+
+Route::group(['middleware' => ['role:admin']], function () {
     Route::resources([
         'drivers' => DriverController::class,
         'vehicles' => VehicleController::class,

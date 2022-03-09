@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -40,45 +45,76 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        if(auth()->user()->id !== $user->id) {
+            return redirect()->route('dashboard');
+        }
+        return view('user.show', [
+            'user' => $user,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        if(auth()->user()->id !== $user->id) {
+            return redirect()->route('dashboard');
+        }
+        return view('user.edit', [
+            'user' => $user,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        if(auth()->user()->id !== $user->id) {
+            return redirect()->route('dashboard');
+        }
+        $user->update($request->validated());
+        return redirect()->route('user.show', $user)->with('message', 'Profile updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
         //
+    }
+
+
+
+    public function updatePassword(Request $request, User $user){
+        if(auth()->user()->id !== $user->id) {
+            return redirect()->route('dashboard');
+        }
+
+        $request->validate([
+            'current_password' => ['required', new MatchOldPassword($user)],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+   
+        $user->update(['password'=> Hash::make($request->password)]);
+
+        return redirect()->route('user.show', $user)->with('message', 'Password updated successfully');
     }
 }
