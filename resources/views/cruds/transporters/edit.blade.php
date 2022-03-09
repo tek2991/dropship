@@ -24,9 +24,9 @@
                                     value="{{ $transporter->user->name }}" />
                             </div>
                             <div>
-                                <x-label for="email" :value="__('Email *uneditable*')" />
+                                <x-label for="email" :value="__('Email')" />
                                 <x-input id="email" class="block mt-1 w-full" type="email" required
-                                    value="{{ $transporter->user->email }}" disabled />
+                                    value="{{ $transporter->user->email }}" name="email" />
                             </div>
                             <div class="md:col-span-2">
                                 <x-label for="address" :value="__('Address')" />

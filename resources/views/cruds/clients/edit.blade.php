@@ -23,9 +23,9 @@
                                     value="{{ $client->user->name }}" />
                             </div>
                             <div>
-                                <x-label for="email" :value="__('Email *uneditable*')" />
+                                <x-label for="email" :value="__('Email')" />
                                 <x-input id="email" class="block mt-1 w-full" type="email" required
-                                    value="{{ $client->user->email }}" disabled />
+                                    value="{{ $client->user->email }}" name="email" />
                             </div>
                             <div>
                                 <x-label for="gender" :value="__('Gender')" />
