@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\cruds\StoreClientRequest;
+use App\Http\Requests\cruds\UpdateClientRequest;
 
 class ClientController extends Controller
 {
@@ -15,7 +19,7 @@ class ClientController extends Controller
     public function index()
     {
         return view('cruds.clients.index', [
-            'clients' => Client::all(),
+            'clients' => Client::paginate(),
         ]);
     }
 
@@ -26,7 +30,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('cruds.clients.create');
     }
 
     /**
@@ -35,9 +39,22 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreClientRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'password' => Hash::make($request->password),
+        ]);
+        $user->assignRole('client');
+        $user->client()->create();
+
+        return redirect()->route('clients.index')->with('message', 'Client: ' . $user->name . ' created successfully.');
     }
 
     /**
@@ -48,7 +65,9 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return view('cruds.clients.show', [
+            'client' => $client,
+        ]);
     }
 
     /**
@@ -59,7 +78,9 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view('cruds.clients.edit', [
+            'client' => $client,
+        ]);
     }
 
     /**
@@ -69,9 +90,10 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        //
+        $client->user->update($request->validated());
+        return redirect()->route('clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 
     /**
