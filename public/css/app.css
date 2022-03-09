@@ -3720,6 +3720,9 @@ textarea.form-control.is-invalid {
 .mb-1 {
   margin-bottom: 0.25rem;
 }
+.mr-1 {
+  margin-right: 0.25rem;
+}
 .block {
   display: block;
 }
@@ -4527,6 +4530,10 @@ textarea.form-control.is-invalid {
 
   .sm\:h-20 {
     height: 5rem;
+  }
+
+  .sm\:min-w-full {
+    min-width: 100%;
   }
 
   .sm\:max-w-md {

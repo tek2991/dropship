@@ -4,15 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Driver Details') }}
             </h2>
-            <a href="{{ route('drivers.edit', ['driver' => $driver->id]) }}"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+            <x-button-link href="{{ route('drivers.edit', ['driver' => $driver->id]) }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
                 <span>Update</span>
-            </a>
+            </x-button-link>
         </span>
     </x-slot>
 
@@ -20,6 +19,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <x-success-message />
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <h3><strong>Name: </strong>{{ $driver->user->name }}</h3>
                         <h3 class="md:text-right"><strong>Status: </strong>
@@ -52,7 +52,7 @@
                         <h3>
                             <strong>
                                 D.O.B:
-                            </strong>{{ $driver->user->dob->format('d-m-Y') }}
+                            </strong>{{ $driver->user->dob->format('Y-m-d') }}
                         </h3>
                         <h3 class="md:text-right">
                             <strong>

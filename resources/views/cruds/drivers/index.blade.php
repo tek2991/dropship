@@ -4,14 +4,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Drivers') }}
             </h2>
-            <a href="{{ route('drivers.create') }}"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+            <x-button-link href="{{ route('drivers.create') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 <span>Create</span>
-            </a>
+            </x-button-link>
         </span>
     </x-slot>
 
@@ -46,7 +45,8 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             @foreach ($drivers as $driver)
-                                                <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                <tr
+                                                    class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         {{ $driver->user->name }}
                                                         @if ($driver->user->is_active)

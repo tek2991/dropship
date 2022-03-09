@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Driver;
 use Illuminate\Http\Request;
 use App\Http\Requests\cruds\StoreDriverRequest;
+use App\Http\Requests\cruds\UpdateDriverRequest;
 
 class DriverController extends Controller
 {
@@ -67,7 +68,9 @@ class DriverController extends Controller
      */
     public function edit(Driver $driver)
     {
-        //
+        return view('cruds.drivers.edit', [
+            'driver' => $driver->load('user'),
+        ]);
     }
 
     /**
@@ -77,9 +80,11 @@ class DriverController extends Controller
      * @param  \App\Models\Driver  $driver
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Driver $driver)
+    public function update(UpdateDriverRequest $request, Driver $driver)
     {
-        //
+        $driver->user->update($request->validated());
+
+        return redirect()->route('drivers.show', ['driver' => $driver->id])->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
     }
 
     /**
