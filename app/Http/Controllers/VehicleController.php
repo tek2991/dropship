@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\cruds\StoreVehicleRequest;
+use App\Http\Requests\cruds\UpdateVehicleRequest;
 use App\Models\Vehicle;
-use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
@@ -51,7 +51,9 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        //
+        return view('cruds.vehicles.show', [
+            'vehicle' => $vehicle,
+        ]);
     }
 
     /**
@@ -62,7 +64,9 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
-        //
+        return view('cruds.vehicles.edit', [
+            'vehicle' => $vehicle,
+        ]);
     }
 
     /**
@@ -72,9 +76,11 @@ class VehicleController extends Controller
      * @param  \App\Models\Vehicle  $vehicle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vehicle $vehicle)
+    public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        //
+        $vehicle->update($request->validated());
+
+        return redirect()->route('vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' updated successfully.');
     }
 
     /**

@@ -83,7 +83,7 @@ class DriverController extends Controller
     {
         $driver->user->update($request->validated());
 
-        return redirect()->route('drivers.show', ['driver' => $driver->id])->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
+        return redirect()->route('drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
     }
 
     /**
