@@ -11,7 +11,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    {{-- <x-validation-errors /> --}}
+                    <x-auth-validation-errors />
                     {{-- <x-success-message /> --}}
 
                     <form method="POST" action="{{ route('drivers.store') }}">
@@ -19,36 +19,41 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <x-label for="name" :value="__('Name')" />
-                                <x-input id="name" class="block mt-1 w-full" type="text" name="name" required />
+                                <x-input id="name" class="block mt-1 w-full" type="text" name="name" required
+                                    value="{{ old('name') }}" />
                             </div>
                             <div>
                                 <x-label for="email" :value="__('Email')" />
-                                <x-input id="email" class="block mt-1 w-full" type="email" name="email" required />
+                                <x-input id="email" class="block mt-1 w-full" type="email" name="email" required
+                                    value="{{ old('email') }}" />
                             </div>
                             <div>
                                 <x-label for="gender" :value="__('Gender')" />
                                 <x-input-select id="gender" class="block mt-1 w-full" name="gender" required>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
+                                    </option>
                                 </x-input-select>
                             </div>
                             <div>
                                 <x-label for="dob" :value="__('D.O.B')" />
-                                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob" required />
+                                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob" required
+                                    value="{{ old('dob') }}" />
                             </div>
                             <div class="md:col-span-2">
                                 <x-label for="address" :value="__('Address')" />
-                                <x-textarea id="address" class="block mt-1 w-full" type="text" name="address"
-                                    required />
+                                <x-textarea id="address" class="block mt-1 w-full" type="text" name="address" required>
+                                    {{ old('address') }}</x-textarea>
                             </div>
                             <div>
-                                <x-label for="phone_alternate" :value="__('Phone')" />
-                                <x-input id="phone_alternate" class="block mt-1 w-full" type="number" required
-                                    name="phone_alternate" />
+                                <x-label for="phone" :value="__('Phone')" />
+                                <x-input id="phone" class="block mt-1 w-full" type="number" name="phone"
+                                    value="{{ old('phone') }}" required />
                             </div>
                             <div>
-                                <x-label for="phone" :value="__('Phone (Alternate)')" />
-                                <x-input id="phone" class="block mt-1 w-full" type="number" name="phone" />
+                                <x-label for="alternate_phone" :value="__('Phone (Alternate)')" />
+                                <x-input id="alternate_phone" class="block mt-1 w-full" type="number"
+                                    name="alternate_phone" value="{{ old('alternate_phone') }}" />
                             </div>
                             <div>
                                 <x-label for="password" :value="__('Password')" required />

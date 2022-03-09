@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\cruds\StoreDriverRequest;
 use App\Models\Driver;
 use Illuminate\Http\Request;
 
@@ -35,9 +36,10 @@ class DriverController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDriverRequest $request)
     {
-        //
+        $driver = Driver::create($request->validated());
+        return redirect()->route('drivers.index');
     }
 
     /**
