@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\cruds;
 
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDriverRequest extends FormRequest
@@ -31,7 +32,7 @@ class StoreDriverRequest extends FormRequest
             'address' => 'required|string',
             'phone' => 'required|string|max:16',
             'alternate_phone' => 'nullable|string|max:16',
-            'password' => 'required|min:8|confirmed',
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 }

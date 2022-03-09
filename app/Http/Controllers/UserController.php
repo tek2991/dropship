@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -50,9 +50,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if(auth()->user()->id !== $user->id) {
-            return redirect()->route('dashboard');
-        }
+        $this->authorize('view', $user);
         return view('user.show', [
             'user' => $user,
         ]);
@@ -66,9 +64,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if(auth()->user()->id !== $user->id) {
-            return redirect()->route('dashboard');
-        }
+        $this->authorize('update', $user);
         return view('user.edit', [
             'user' => $user,
         ]);
@@ -83,9 +79,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if(auth()->user()->id !== $user->id) {
-            return redirect()->route('dashboard');
-        }
+        $this->authorize('update', $user);
         $user->update($request->validated());
         return redirect()->route('user.show', $user)->with('message', 'Profile updated successfully');
     }
@@ -104,17 +98,12 @@ class UserController extends Controller
 
 
     public function updatePassword(Request $request, User $user){
-        if(auth()->user()->id !== $user->id) {
-            return redirect()->route('dashboard');
-        }
-
+        $this->authorize('updatePassword', $user);
         $request->validate([
             'current_password' => ['required', new MatchOldPassword($user)],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-   
         $user->update(['password'=> Hash::make($request->password)]);
-
         return redirect()->route('user.show', $user)->with('message', 'Password updated successfully');
     }
 }
