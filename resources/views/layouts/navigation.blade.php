@@ -15,16 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('drivers')" :active="request()->routeIs('drivers')">
+                    <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.index')">
                         {{ __('Drivers') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('vehicles')" :active="request()->routeIs('vehicles')">
+                    <x-nav-link :href="route('vehicles.index')" :active="request()->routeIs('vehicles.index')">
                         {{ __('Vehicles') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('transporters')" :active="request()->routeIs('transporters')">
+                    <x-nav-link :href="route('transporters.index')" :active="request()->routeIs('transporters.index')">
                         {{ __('Transporters') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
+                    <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')">
                         {{ __('Clients') }}
                     </x-nav-link>
                 </div>
@@ -95,16 +95,16 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('drivers')">
+                <x-responsive-nav-link :href="route('drivers.index')">
                     {{ __('Drivers') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('vehicles')">
+                <x-responsive-nav-link :href="route('vehicles.index')">
                     {{ __('Vehicles') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('transporters')">
+                <x-responsive-nav-link :href="route('transporters.index')">
                     {{ __('Transporters') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('clients')">
+                <x-responsive-nav-link :href="route('clients.index')">
                     {{ __('Clients') }}
                 </x-responsive-nav-link>
                 <!-- Authentication -->

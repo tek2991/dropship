@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\TransporterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,18 +26,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/drivers', function () {
-        return view('drivers');
-    })->name('drivers');
-    Route::get('/vehicles', function () {
-        return view('vehicles');
-    })->name('vehicles');
-    Route::get('/transporters', function () {
-        return view('transporters');
-    })->name('transporters');
-    Route::get('/clients', function () {
-        return view('clients');
-    })->name('clients');
+
+    Route::resources([
+        'drivers' => DriverController::class,
+        'vehicles' => VehicleController::class,
+        'transporters' => TransporterController::class,
+        'clients' => ClientController::class,
+    ]);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -14,7 +14,9 @@ class TransporterController extends Controller
      */
     public function index()
     {
-        //
+        return view('cruds.transporters.index', [
+            'transporters' => Transporter::all(),
+        ]);
     }
 
     /**
