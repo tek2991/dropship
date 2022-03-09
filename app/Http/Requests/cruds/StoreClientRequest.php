@@ -26,12 +26,12 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'gender' => 'nullable|in:male,female',
             'dob' => 'nullable|date',
             'address' => 'required|string',
-            'phone' => 'required|string|max:16',
-            'alternate_phone' => 'nullable|string|max:16',
+            'phone' => 'required|numeric|unique:users,phone',
+            'alternate_phone' => 'nullable|numeric',
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }

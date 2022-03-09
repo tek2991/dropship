@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->date('dob')->nullable();
             $table->string('address')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone')->unique();
             $table->string('alternate_phone')->nullable();
             $table->boolean('is_active')->default(true);
         });

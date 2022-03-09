@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\cruds;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDriverRequest extends FormRequest
@@ -25,11 +26,20 @@ class UpdateDriverRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->driver->user_id, 'id'),
+            ],
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
             'address' => 'required|string',
-            'phone' => 'required|string|max:16',
-            'alternate_phone' => 'nullable|string|max:16',
+            'phone' => [
+                'required',
+                'numeric',
+                Rule::unique('users')->ignore($this->driver->user_id, 'id'),
+            ],
+            'alternate_phone' => 'nullable|numeric',
             'is_active' => 'required|boolean',
         ];
     }

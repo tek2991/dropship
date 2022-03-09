@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\cruds;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTransporterRequest extends FormRequest
@@ -25,9 +26,18 @@ class UpdateTransporterRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->transporter->user_id),
+            ],
             'address' => 'required|string',
-            'phone' => 'required|string|max:16',
-            'alternate_phone' => 'nullable|string|max:16',
+            'phone' => [
+                'required',
+                'numeric',
+                Rule::unique('users', 'phone')->ignore($this->transporter->user_id),
+            ],
+            'alternate_phone' => 'nullable|numeric',
             'is_first_party' => 'required|boolean',
             'is_active' => 'required|boolean',
         ];

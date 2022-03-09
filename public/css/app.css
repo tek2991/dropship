@@ -681,6 +681,23 @@ select {
   --bs-body-color: #212529;
   --bs-body-bg: #fff;
 }
+.btn-check[disabled] + .btn {
+  pointer-events: none;
+  filter: none;
+  opacity: 0.65;
+}
+.btn-check:disabled + .btn {
+  pointer-events: none;
+  filter: none;
+  opacity: 0.65;
+}
+.input-group .btn {
+  position: relative;
+  z-index: 2;
+}
+.input-group .btn:focus {
+  z-index: 3;
+}
 .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -767,7 +784,33 @@ textarea.form-control.is-invalid {
 .input-group .form-select.is-invalid:focus {
   z-index: 3;
 }
+.btn-check:focus + .btn {
+  outline: 0;
+  box-shadow: none;
+}
+.btn:focus {
+  outline: 0;
+  box-shadow: none;
+}
+.btn-check:checked + .btn {
+  box-shadow: none;
+}
+.btn-check:active + .btn {
+  box-shadow: none;
+}
+.btn:active {
+  box-shadow: none;
+}
 .btn.active {
+  box-shadow: none;
+}
+.btn-check:checked + .btn:focus {
+  box-shadow: none;
+}
+.btn-check:active + .btn:focus {
+  box-shadow: none;
+}
+.btn:active:focus {
   box-shadow: none;
 }
 .btn.active:focus {
@@ -3725,6 +3768,18 @@ textarea.form-control.is-invalid {
 .mt-6 {
   margin-top: 1.5rem;
 }
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-0 {
+  margin-bottom: 0px;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-3 {
+  margin-right: 0.75rem;
+}
 .block {
   display: block;
 }
@@ -4116,6 +4171,9 @@ textarea.form-control.is-invalid {
 }
 .pt-6 {
   padding-top: 1.5rem;
+}
+.pt-0 {
+  padding-top: 0px;
 }
 .text-left {
   text-align: left;

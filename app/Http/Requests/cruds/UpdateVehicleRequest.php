@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\cruds;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateVehicleRequest extends FormRequest
@@ -29,7 +30,7 @@ class UpdateVehicleRequest extends FormRequest
                 'alpha_num',
                 'min:8',
                 'max:12',
-                'unique:vehicles,registration_number,' . $this->vehicle->id,
+                Rule::unique('vehicles', 'registration_number')->ignore($this->vehicle->id),
             ],
             'is_active' => 'required|boolean',
         ];
