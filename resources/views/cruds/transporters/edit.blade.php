@@ -2,7 +2,7 @@
     <x-slot name="header">
         <span class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Edit driver') }}
+                {{ __('Edit transporter') }}
             </h2>
         </span>
     </x-slot>
@@ -13,57 +13,54 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <x-auth-validation-errors />
 
-                    <form method="POST" action="{{ route('drivers.update', ['driver' => $driver->id]) }}">
+                    <form method="POST"
+                        action="{{ route('transporters.update', ['transporter' => $transporter->id]) }}">
                         @method('PUT')
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <x-label for="name" :value="__('Name')" />
                                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" required
-                                    value="{{ $driver->user->name }}" />
+                                    value="{{ $transporter->user->name }}" />
                             </div>
                             <div>
                                 <x-label for="email" :value="__('Email *uneditable*')" />
                                 <x-input id="email" class="block mt-1 w-full" type="email" required
-                                    value="{{ $driver->user->email }}" disabled />
-                            </div>
-                            <div>
-                                <x-label for="gender" :value="__('Gender')" />
-                                <x-input-select id="gender" class="block mt-1 w-full" name="gender" required>
-                                    <option value="male" {{ $driver->user->gender == 'male' ? 'selected' : '' }}>Male
-                                    </option>
-                                    <option value="female" {{ $driver->user->gender == 'female' ? 'selected' : '' }}>
-                                        Female
-                                    </option>
-                                </x-input-select>
-                            </div>
-                            <div>
-                                <x-label for="dob" :value="__('D.O.B')" />
-                                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob" required
-                                    value="{{ $driver->user->dob->format('Y-m-d') }}" />
+                                    value="{{ $transporter->user->email }}" disabled />
                             </div>
                             <div class="md:col-span-2">
                                 <x-label for="address" :value="__('Address')" />
                                 <x-textarea id="address" class="block mt-1 w-full" type="text" name="address" required>
-                                    {{ $driver->user->address }}</x-textarea>
+                                    {{ $transporter->user->address }}</x-textarea>
                             </div>
                             <div>
                                 <x-label for="phone" :value="__('Phone')" />
                                 <x-input id="phone" class="block mt-1 w-full" type="text" name="phone"
-                                    value="{{ $driver->user->phone }}" required />
+                                    value="{{ $transporter->user->phone }}" required />
                             </div>
                             <div>
                                 <x-label for="alternate_phone" :value="__('Phone (Alternate)')" />
                                 <x-input id="alternate_phone" class="block mt-1 w-full" type="text"
-                                    name="alternate_phone" value="{{ $driver->user->alternate_phone }}" />
+                                    name="alternate_phone" value="{{ $transporter->user->alternate_phone }}" />
                             </div>
                             <div>
                                 <x-label for="status" :value="__('Status')" />
                                 <x-input-select id="status" class="block mt-1 w-full" name="is_active" required>
-                                    <option value="1" {{ $driver->user->is_active == true ? 'selected' : '' }}>Active
+                                    <option value="1" {{ $transporter->user->is_active == true ? 'selected' : '' }}>
+                                        Active
                                     </option>
-                                    <option value="0" {{ $driver->user->is_active != true ? 'selected' : '' }}>
-                                       Inactive
+                                    <option value="0" {{ $transporter->user->is_active != true ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+                                </x-input-select>
+                            </div>
+                            <div>
+                                <x-label for="is_first_party" :value="__('First party')" />
+                                <x-input-select id="status" class="block mt-1 w-full" name="is_first_party" required>
+                                    <option value="1" {{ $transporter->is_first_party == true ? 'selected' : '' }}>Yes
+                                    </option>
+                                    <option value="0" {{ $transporter->is_first_party != true ? 'selected' : '' }}>
+                                        No
                                     </option>
                                 </x-input-select>
                             </div>

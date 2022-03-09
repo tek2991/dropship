@@ -7,6 +7,7 @@ use App\Models\Transporter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\cruds\StoreTransporterRequest;
+use App\Http\Requests\cruds\UpdateTransporterRequest;
 
 class TransporterController extends Controller
 {
@@ -64,7 +65,9 @@ class TransporterController extends Controller
      */
     public function show(Transporter $transporter)
     {
-        //
+        return view('cruds.transporters.show', [
+            'transporter' => $transporter,
+        ]);
     }
 
     /**
@@ -75,7 +78,9 @@ class TransporterController extends Controller
      */
     public function edit(Transporter $transporter)
     {
-        //
+        return view('cruds.transporters.edit', [
+            'transporter' => $transporter,
+        ]);
     }
 
     /**
@@ -85,9 +90,20 @@ class TransporterController extends Controller
      * @param  \App\Models\Transporter  $transporter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transporter $transporter)
+    public function update(UpdateTransporterRequest $request, Transporter $transporter)
     {
-        //
+        $transporter->update([
+            'is_first_party' => $request->is_first_party,
+        ]);
+        $transporter->user->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'is_active' => $request->is_active,
+        ]);
+
+        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
     }
 
     /**
