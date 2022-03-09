@@ -17,7 +17,7 @@ class DriverController extends Controller
     public function index()
     {
         return view('cruds.drivers.index', [
-            'drivers' => Driver::all(),
+            'drivers' => Driver::paginate(),
         ]);
     }
 
