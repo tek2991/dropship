@@ -15,7 +15,7 @@ class VehicleController extends Controller
     public function index()
     {
         return view('cruds.vehicles.index', [
-            'vehicles' => Vehicle::all(),
+            'vehicles' => Vehicle::paginate(),
         ]);
     }
 
