@@ -9,6 +9,12 @@ class Transporter extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nuser_id',
+        'is_active',
+        'is_first_party',
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
