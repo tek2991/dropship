@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Driver;
-use Illuminate\Http\Request;
 use App\Http\Requests\cruds\StoreDriverRequest;
 use App\Http\Requests\cruds\UpdateDriverRequest;
 
