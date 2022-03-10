@@ -25,7 +25,7 @@ class StoreDriverRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:255',
+            'name' => 'required|regex:/^[a-zA-Z0-9_\s]+$/|max:255',
             'email' => 'required|email|unique:users,email',
             'gender' => 'nullable|in:male,female',
             'dob' => 'nullable|date',
