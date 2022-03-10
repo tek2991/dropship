@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('table_raw_data_imports', function (Blueprint $table) {
+        Schema::create('raw_data_imports', function (Blueprint $table) {
             $table->id();
             $table->string('log_sheet')->nullable();
             $table->string('date')->nullable();
@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('no_of_packs')->nullable();
             $table->string('driver_no')->nullable();
             $table->boolean('is_processed')->default(false);
-            $table->string('file_name');
         });
     }
 
@@ -39,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_raw_data_imports');
+        Schema::dropIfExists('raw_data_imports');
     }
 };

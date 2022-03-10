@@ -26,4 +26,8 @@ class Transporter extends Model
     public function vehicles(){
         return $this->belongsToMany(Vehicle::class, 'transporter_vehicle', 'transporter_id', 'vehicle_id');
     }
+
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 }
