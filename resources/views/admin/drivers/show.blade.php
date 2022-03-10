@@ -52,12 +52,12 @@
                         <h3>
                             <strong>
                                 D.O.B:
-                            </strong>{{ $driver->user->dob->format('Y-m-d') }}
+                            </strong>{{ $driver->user->dob ? $driver->user->dob->format('Y-m-d') : 'NA' }}
                         </h3>
                         <h3 class="md:text-right">
                             <strong>
                                 Gender:
-                            </strong>{{ $driver->user->gender }}
+                            </strong>{{ $driver->user->gender ? $driver->user->gender : 'NA' }}
                         </h3>
                     </div>
 

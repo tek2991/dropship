@@ -27,8 +27,8 @@ class StoreDriverRequest extends FormRequest
         return [
             'name' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:255',
             'email' => 'required|email|unique:users,email',
-            'gender' => 'required|in:male,female',
-            'dob' => 'required|date',
+            'gender' => 'nullable|in:male,female',
+            'dob' => 'nullable|date',
             'address' => 'required|string',
             'phone' => 'required|numeric|unique:users,phone',
             'alternate_phone' => 'nullable|numeric',

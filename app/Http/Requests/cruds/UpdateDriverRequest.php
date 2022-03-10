@@ -31,8 +31,8 @@ class UpdateDriverRequest extends FormRequest
                 'email',
                 Rule::unique('users', 'email')->ignore($this->driver->user_id, 'id'),
             ],
-            'gender' => 'required|in:male,female',
-            'dob' => 'required|date',
+            'gender' => 'nullable|in:male,female',
+            'dob' => 'nullable|date',
             'address' => 'required|string',
             'phone' => [
                 'required',

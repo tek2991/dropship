@@ -29,18 +29,20 @@
                             </div>
                             <div>
                                 <x-label for="gender" :value="__('Gender')" />
-                                <x-input-select id="gender" class="block mt-1 w-full" name="gender" required>
+                                <x-input-select id="gender" class="block mt-1 w-full" name="gender">
                                     <option value="male" {{ $driver->user->gender == 'male' ? 'selected' : '' }}>Male
                                     </option>
                                     <option value="female" {{ $driver->user->gender == 'female' ? 'selected' : '' }}>
                                         Female
                                     </option>
+                                    <option value="" {{ $driver->user->gender == null ? 'selected' : '' }}>Not
+                                        Applicable</option>
                                 </x-input-select>
                             </div>
                             <div>
                                 <x-label for="dob" :value="__('D.O.B')" />
-                                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob" required
-                                    value="{{ $driver->user->dob->format('Y-m-d') }}" />
+                                <x-input id="dob" class="block mt-1 w-full" type="date" name="dob"
+                                    value="{{ $driver->user->dob ? $driver->user->dob->format('Y-m-d') : '' }}" />
                             </div>
                             <div class="md:col-span-2">
                                 <x-label for="address" :value="__('Address')" />
