@@ -41,6 +41,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     ]);
 
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store');
+    Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');
 
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
     Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
