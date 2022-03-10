@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::group(['middleware' => ['role:admin']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function () {
     Route::resources([
         'drivers' => DriverController::class,
         'vehicles' => VehicleController::class,
