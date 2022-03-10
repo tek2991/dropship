@@ -55,7 +55,7 @@ class DriverController extends Controller
         $user->assignRole('driver');
         $user->driver()->create();
 
-        return redirect()->route('drivers.index')->with('message', 'Driver: ' . $user->name . ' created successfully.');
+        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $user->name . ' created successfully.');
     }
 
     /**
@@ -95,7 +95,7 @@ class DriverController extends Controller
     {
         $driver->user->update($request->validated());
 
-        return redirect()->route('drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
+        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
     }
 
     /**
@@ -114,6 +114,6 @@ class DriverController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
         $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('drivers.index')->with('message', 'Driver: ' . $user->name . ' updated successfully.');
+        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $user->name . ' updated successfully.');
     }
 }

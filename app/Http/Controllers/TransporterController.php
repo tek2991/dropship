@@ -55,7 +55,7 @@ class TransporterController extends Controller
             'is_first_party' => $request->is_first_party,
         ]);
 
-        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $user->name . ' created successfully.');
+        return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $user->name . ' created successfully.');
     }
 
     /**
@@ -104,7 +104,7 @@ class TransporterController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
+        return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
     }
 
     /**
@@ -123,6 +123,6 @@ class TransporterController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
         $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('transporters.index')->with('message', 'Transporter: ' . $user->name . ' updated successfully.');
+        return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $user->name . ' updated successfully.');
     }
 }

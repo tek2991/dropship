@@ -55,7 +55,7 @@ class ClientController extends Controller
         $user->assignRole('client');
         $user->client()->create();
 
-        return redirect()->route('clients.index')->with('message', 'Client: ' . $user->name . ' created successfully.');
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' created successfully.');
     }
 
     /**
@@ -94,7 +94,7 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, Client $client)
     {
         $client->user->update($request->validated());
-        return redirect()->route('clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 
     /**
@@ -113,6 +113,6 @@ class ClientController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
         $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
     }
 }

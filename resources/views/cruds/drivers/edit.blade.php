@@ -13,7 +13,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <x-auth-validation-errors />
 
-                    <form method="POST" action="{{ route('drivers.update', ['driver' => $driver->id]) }}">
+                    <form method="POST" action="{{ route('admin.drivers.update', ['driver' => $driver->id]) }}">
                         @method('PUT')
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -80,7 +80,7 @@
                         </div>
                     </form>
 
-                    <form method="POST" action="{{ route('drivers.update-password', ['driver' => $driver->id]) }}">
+                    <form method="POST" action="{{ route('admin.drivers.update-password', ['driver' => $driver->id]) }}">
                         @method('PUT')
                         @csrf
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Update Password</h2>

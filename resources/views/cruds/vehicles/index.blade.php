@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Vehicles') }}
             </h2>
-            <x-button-link href="{{ route('vehicles.create') }}">
+            <x-button-link href="{{ route('admin.vehicles.create') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -68,7 +68,7 @@
                                                     </td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="{{ route('vehicles.show', $vehicle) }}"
+                                                        <a href="{{ route('admin.vehicles.show', $vehicle) }}"
                                                             class="text-indigo-600 hover:text-indigo-900">View</a>
                                                     </td>
                                                 </tr>

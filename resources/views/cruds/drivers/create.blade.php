@@ -13,7 +13,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <x-auth-validation-errors />
 
-                    <form method="POST" action="{{ route('drivers.store') }}">
+                    <form method="POST" action="{{ route('admin.drivers.store') }}">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>

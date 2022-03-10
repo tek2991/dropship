@@ -16,17 +16,17 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (Auth::user()->isAdmin())
-                        <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.index')">
+                        <x-nav-link :href="route('admin.drivers.index')" :active="request()->routeIs('admin.drivers.index')">
                             {{ __('Drivers') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('vehicles.index')" :active="request()->routeIs('vehicles.index')">
+                        <x-nav-link :href="route('admin.vehicles.index')" :active="request()->routeIs('admin.vehicles.index')">
                             {{ __('Vehicles') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('transporters.index')"
-                            :active="request()->routeIs('transporters.index')">
+                        <x-nav-link :href="route('admin.transporters.index')"
+                            :active="request()->routeIs('admin.transporters.index')">
                             {{ __('Transporters') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('clients.index')" :active="request()->routeIs('clients.index')">
+                        <x-nav-link :href="route('admin.clients.index')" :active="request()->routeIs('admin.clients.index')">
                             {{ __('Clients') }}
                         </x-nav-link>
                     @endif
@@ -102,16 +102,16 @@
 
             <div class="mt-3 space-y-1">
                 @if (Auth::user()->isAdmin())
-                    <x-responsive-nav-link :href="route('drivers.index')">
+                    <x-responsive-nav-link :href="route('admin.drivers.index')">
                         {{ __('Drivers') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('vehicles.index')">
+                    <x-responsive-nav-link :href="route('admin.vehicles.index')">
                         {{ __('Vehicles') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('transporters.index')">
+                    <x-responsive-nav-link :href="route('admin.transporters.index')">
                         {{ __('Transporters') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('clients.index')">
+                    <x-responsive-nav-link :href="route('admin.clients.index')">
                         {{ __('Clients') }}
                     </x-responsive-nav-link>
                 @endif

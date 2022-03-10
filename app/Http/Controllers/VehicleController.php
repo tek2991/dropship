@@ -40,7 +40,7 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::create($request->validated());
 
-        return redirect()->route('vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' created successfully.');
+        return redirect()->route('admin.vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' created successfully.');
     }
 
     /**
@@ -80,7 +80,7 @@ class VehicleController extends Controller
     {
         $vehicle->update($request->validated());
 
-        return redirect()->route('vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' updated successfully.');
+        return redirect()->route('admin.vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' updated successfully.');
     }
 
     /**
