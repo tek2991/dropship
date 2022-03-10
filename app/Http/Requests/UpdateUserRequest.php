@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -28,8 +29,12 @@ class UpdateUserRequest extends FormRequest
             'gender' => 'required|in:male,female',
             'dob' => 'required|date',
             'address' => 'required|string',
-            'phone' => 'required|string|max:16',
-            'alternate_phone' => 'nullable|string|max:16',
+            'phone' => [
+                'required',
+                'numeric',
+                Rule::unique('users')->ignore($this->user->id, 'id'),
+            ],
+            'alternate_phone' => 'nullable|numeric',
         ];
     }
 }
