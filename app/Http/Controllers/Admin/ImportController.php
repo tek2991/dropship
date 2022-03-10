@@ -25,6 +25,6 @@ class ImportController extends Controller
         $import = new DataImport;
         $import->import($path);
 
-        return redirect()->route('admin.imports.index')->with('message', 'File Uploaded Successfully.' . $path);
+        return redirect()->route('admin.imports.index')->with('message', 'File Uploaded Successfully.');
     }
 }

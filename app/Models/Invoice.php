@@ -15,6 +15,7 @@ class Invoice extends Model
         'transporter_id',
         'vehicle_id',
         'destination',
+        'no_of_packs',
         'driver_id',
     ];
 
