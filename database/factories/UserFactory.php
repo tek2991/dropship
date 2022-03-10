@@ -27,8 +27,8 @@ class UserFactory extends Factory
             'gender' => $gender,
             'dob' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
             'address' => $this->faker->address(),
-            'phone' => $this->faker->unique()->numerify('9#########'),
-            'alternate_phone' => $this->faker->unique()->numerify('7#########'),
+            'phone' => $this->faker->uuid(),
+            'alternate_phone' => 'NA',
             'is_active' => $this->faker->boolean(),
         ];
     }
