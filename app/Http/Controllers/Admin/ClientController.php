@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Driver;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
-use App\Http\Requests\cruds\StoreDriverRequest;
-use App\Http\Requests\cruds\UpdateDriverRequest;
+use App\Http\Requests\cruds\StoreClientRequest;
+use App\Http\Requests\cruds\UpdateClientRequest;
 
-class DriverController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +20,8 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return view('cruds.drivers.index', [
-            'drivers' => Driver::with('user')->paginate(),
+        return view('admin.clients.index', [
+            'clients' => Client::paginate(),
         ]);
     }
 
@@ -31,7 +32,7 @@ class DriverController extends Controller
      */
     public function create()
     {
-        return view('cruds.drivers.create');
+        return view('admin.clients.create');
     }
 
     /**
@@ -40,7 +41,7 @@ class DriverController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDriverRequest $request)
+    public function store(StoreClientRequest $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -52,35 +53,35 @@ class DriverController extends Controller
             'alternate_phone' => $request->alternate_phone,
             'password' => Hash::make($request->password),
         ]);
-        $user->assignRole('driver');
-        $user->driver()->create();
+        $user->assignRole('client');
+        $user->client()->create();
 
-        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $user->name . ' created successfully.');
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Driver $driver)
+    public function show(Client $client)
     {
-        return view('cruds.drivers.show', [
-            'driver' => $driver->load('user'),
+        return view('admin.clients.show', [
+            'client' => $client,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Driver $driver)
+    public function edit(Client $client)
     {
-        return view('cruds.drivers.edit', [
-            'driver' => $driver->load('user'),
+        return view('admin.clients.edit', [
+            'client' => $client,
         ]);
     }
 
@@ -88,25 +89,24 @@ class DriverController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDriverRequest $request, Driver $driver)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        $driver->user->update($request->validated());
-
-        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
+        $client->user->update($request->validated());
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Driver  $driver
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Driver $driver)
+    public function destroy(Client $client)
     {
-        return back();
+        //
     }
 
     public function updatePassword(Request $request, User $user){
@@ -114,6 +114,6 @@ class DriverController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
         $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $user->name . ' updated successfully.');
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
     }
 }

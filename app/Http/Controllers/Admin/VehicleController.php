@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\cruds\StoreVehicleRequest;
 use App\Http\Requests\cruds\UpdateVehicleRequest;
 use App\Models\Vehicle;
@@ -15,7 +16,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return view('cruds.vehicles.index', [
+        return view('admin.vehicles.index', [
             'vehicles' => Vehicle::paginate(),
         ]);
     }
@@ -27,7 +28,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        return view('cruds.vehicles.create');
+        return view('admin.vehicles.create');
     }
 
     /**
@@ -51,7 +52,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        return view('cruds.vehicles.show', [
+        return view('admin.vehicles.show', [
             'vehicle' => $vehicle,
         ]);
     }
@@ -64,7 +65,7 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
-        return view('cruds.vehicles.edit', [
+        return view('admin.vehicles.edit', [
             'vehicle' => $vehicle,
         ]);
     }

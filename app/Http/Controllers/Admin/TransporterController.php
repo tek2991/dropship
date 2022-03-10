@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Transporter;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class TransporterController extends Controller
      */
     public function index()
     {
-        return view('cruds.transporters.index', [
+        return view('admin.transporters.index', [
             'transporters' => Transporter::paginate(),
         ]);
     }
@@ -31,7 +32,7 @@ class TransporterController extends Controller
      */
     public function create()
     {
-        return view('cruds.transporters.create');
+        return view('admin.transporters.create');
     }
 
     /**
@@ -66,7 +67,7 @@ class TransporterController extends Controller
      */
     public function show(Transporter $transporter)
     {
-        return view('cruds.transporters.show', [
+        return view('admin.transporters.show', [
             'transporter' => $transporter,
         ]);
     }
@@ -79,7 +80,7 @@ class TransporterController extends Controller
      */
     public function edit(Transporter $transporter)
     {
-        return view('cruds.transporters.edit', [
+        return view('admin.transporters.edit', [
             'transporter' => $transporter,
         ]);
     }
