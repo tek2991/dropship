@@ -28,5 +28,6 @@ class RawDataImport extends Model
         'no_of_packs',
         'driver_no',
         'is_processed',
+        'file_name',
     ];
 }

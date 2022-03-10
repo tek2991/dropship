@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('no_of_packs')->nullable();
             $table->string('driver_no')->nullable();
             $table->boolean('is_processed')->default(false);
+            $table->string('file_name');
         });
     }
 

@@ -2,7 +2,7 @@
     <x-slot name="header">
         <span class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Create driver') }}
+                {{ __('Import Data') }}
             </h2>
         </span>
     </x-slot>
@@ -13,13 +13,13 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <x-auth-validation-errors />
 
-                    <form method="POST" action="{{ route('admin.imports.store') }}">
+                    <form method="POST" action="{{ route('admin.imports.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <x-label for="name" :value="__('Name')" />
-                                <x-input id="name" class="block mt-1 w-full" type="text" name="name" required
-                                    value="{{ old('name') }}" />
+                                <x-label for="file" :value="__('Select Excel File')" />
+                                <x-input id="file" class="block mt-1 w-full" type="file" name="file" required
+                                    value="{{ old('file') }}" />
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-4 ">

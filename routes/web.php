@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\TransporterController;
 
@@ -38,6 +39,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
     ]);
+
+    Route::resource('imports', ImportController::class)->only('index', 'create', 'store');
 
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
     Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
