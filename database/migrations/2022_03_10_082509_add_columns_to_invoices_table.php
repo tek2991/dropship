@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->constrained('vehicles');
             $table->string('destination');
             $table->string('no_of_packs');
-            $table->foreignId('driver_id')->constrained('drivers');
+            $table->foreignId('driver_id')->nullable()->constrained('drivers');
         });
     }
 

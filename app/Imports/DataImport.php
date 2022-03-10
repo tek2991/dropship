@@ -135,28 +135,32 @@ class DataImport implements ToCollection, WithHeadingRow
 
 
 
-            $driver_exists = Driver::whereHas('user', function ($query) use ($row) {
-                $query->where('phone', $row['driver_no']);
-            })->count() > 0;
+            $driver = null;
+            if ($row['driver_no']) {
+                $driver_exists = Driver::whereHas('user', function ($query) use ($row) {
+                    $query->where('phone', $row['driver_no']);
+                })->count() > 0;
 
-            $driver_user = null;
+                $driver_user = null;
 
-            if (!$driver_exists) {
-                $driver_user = User::factory(1)->create([
-                    'name' => 'Driver_' . $row['driver_no'],
-                    'email' => 'driver_' . $row['driver_no'] . '@dropship.test',
-                    'gender' => null,
-                    'dob' => null,
-                    'phone' => $row['driver_no'],
-                    'address' => 'NA'
-                ])->first();
+                if (!$driver_exists) {
+                    $driver_user = User::factory(1)->create([
+                        'name' => 'Driver_' . $row['driver_no'],
+                        'email' => 'driver_' . $row['driver_no'] . '@dropship.test',
+                        'gender' => null,
+                        'dob' => null,
+                        'phone' => $row['driver_no'],
+                        'address' => 'NA'
+                    ])->first();
 
-                $driver_user->assignRole('driver');
-                $driver_user->driver()->create();
+                    $driver_user->assignRole('driver');
+                    $driver_user->driver()->create();
+                }
+
+                $driver = $driver_exists ? Driver::whereHas('user', function ($query) use ($row) {
+                    $query->where('phone', $row['driver_no']);
+                })->first() : $driver_user->driver;
             }
-            $driver = $driver_exists ? Driver::whereHas('user', function ($query) use ($row) {
-                $query->where('phone', $row['driver_no']);
-            })->first() : $driver_user->driver;
 
 
 
@@ -189,7 +193,7 @@ class DataImport implements ToCollection, WithHeadingRow
                     'transporter_id' => $transporter->id,
                     'vehicle_id' => $vehicle->id,
                     'destination' => $row['destination'],
-                    'driver_id' => $driver->id,
+                    'driver_id' => $driver ? $driver->id : null,
                     'no_of_packs' => $row['no_of_packs'],
                 ]
             );
