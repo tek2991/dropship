@@ -38,7 +38,7 @@ class DataImport implements ToCollection, WithHeadingRow
             '*.container_id' => 'nullable|string',
             '*.destination' => 'nullable|string',
             '*.no_of_packs' => 'nullable|numeric',
-            '*.driver_no' => 'nullable|string',
+            '*.driver_no' => 'nullable|numeric',
         ];
     }
 
@@ -89,7 +89,8 @@ class DataImport implements ToCollection, WithHeadingRow
                     'name' => $row['payer_name'],
                     'gender' => null,
                     'dob' => null,
-                    'address' => 'NA'
+                    'address' => 'NA',
+                    'is_active' => true,
                 ])->first();
 
                 $client_user->assignRole('client');
@@ -114,7 +115,8 @@ class DataImport implements ToCollection, WithHeadingRow
                     'name' => $row['tprt_name'],
                     'gender' => null,
                     'dob' => null,
-                    'address' => 'NA'
+                    'address' => 'NA',
+                    'is_active' => true,
                 ])->first();
 
                 $transporter_user->assignRole('transporter');
@@ -150,7 +152,8 @@ class DataImport implements ToCollection, WithHeadingRow
                         'gender' => null,
                         'dob' => null,
                         'phone' => $row['driver_no'],
-                        'address' => 'NA'
+                        'address' => 'NA',
+                        'is_active' => true,
                     ])->first();
 
                     $driver_user->assignRole('driver');
