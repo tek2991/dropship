@@ -117,6 +117,9 @@
                     <x-responsive-nav-link :href="route('admin.clients.index')">
                         {{ __('Clients') }}
                     </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.imports.index')">
+                        {{ __('Imports') }}
+                    </x-responsive-nav-link>
                 @endif
                 <x-responsive-nav-link :href="route('user.show', ['user' => Auth::user()->id])">
                     {{ __('Profile') }}
