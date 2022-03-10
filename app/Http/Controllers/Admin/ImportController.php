@@ -42,8 +42,6 @@ class ImportController extends Controller
             return redirect()->route('admin.imports.index')->withErrors('Import not found.');
         }
 
-        $import = Import::find($request->input('import_id'));
-
         if(Storage::exists($import->file_name)){
             return Storage::download($import->file_name, 'imported_'. $import->created_at .'.xlsx');
         }else{
