@@ -31,7 +31,7 @@ class LogSheetController extends Controller
     public function show(LogSheet $logSheet)
     {
         return view('admin.log-sheets.show', [
-            'logSheet' => $logSheet->load('driverUser', 'transporterUser', 'vehicle'),
+            'logSheet' => $logSheet->load('driverUser', 'transporterUser', 'vehicle', 'transporter', 'driver'),
             'invoices' => $logSheet->invoices()->with('clientUser', 'client')->paginate(),
         ]);
     }

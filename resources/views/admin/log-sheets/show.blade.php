@@ -26,21 +26,29 @@
                             <strong>Invoices: </strong>{{ $logSheet->invoices->count() }}
                         </h3>
                         <h3>
-                            <strong>Transporter: </strong> {{ $logSheet->transporterUser->name }}
+                            <strong>Transporter: </strong>
+                            <x-text-link href="{{ route('admin.transporters.show', $logSheet->transporter) }}">
+                                {{ $logSheet->transporterUser->name }}
+                            </x-text-link>
                         </h3>
                         <h3 class="md:text-right">
-                            <strong>Vehicle: </strong>{{ $logSheet->vehicle->registration_number }}
+                            <strong>Vehicle: </strong>
+                            <x-text-link href="{{ route('admin.vehicles.show', $logSheet->vehicle) }}">
+                                {{ $logSheet->vehicle->registration_number }}
+                            </x-text-link>
                         </h3>
                         <h3>
                             <strong>Driver: </strong>
-                            {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->name : 'NA' }}
+                            <x-text-link href="{{ route('admin.drivers.show', $logSheet->driver) }}">
+                                {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->name : 'NA' }}
+                            </x-text-link>
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Driver Phone: </strong>
                             {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->phone : 'NA' }}
                         </h3>
                         <h3>
-                            <strong>Total Gross Weight: </strong> {{ $logSheet->invoices->sum('gross_weight') }}
+                            <strong>Total Gross Weight: </strong> {{ $logSheet->invoices->sum('gross_weight') }} Kg
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Total Packs: </strong> {{ $logSheet->invoices->sum('no_of_packs') }}
@@ -97,7 +105,7 @@
                                                     </td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="{{ route('admin.invoices.show', $logSheet) }}"
+                                                        <a href="{{ route('admin.invoices.show', $invoice) }}"
                                                             class="text-indigo-600 hover:text-indigo-900">View</a>
                                                     </td>
                                                 </tr>
