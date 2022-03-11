@@ -14,13 +14,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 use Illuminate\Support\Facades\DB;
-// use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 
-class DataImport implements ToCollection, WithHeadingRow
+class DataImport implements ToCollection, WithHeadingRow, WithValidation
 {
     use Importable;
 
@@ -31,7 +31,7 @@ class DataImport implements ToCollection, WithHeadingRow
             '*.date' => 'required|date',
             '*.invoice_no' => 'required|alpha_num',
             '*.inv_date' => 'required|date',
-            '*.payer' => 'nullable|string',
+            '*.payer' => 'nullable|alpha_num',
             '*.payer_name' => 'nullable|string',
             '*.gross_wt.' => 'nullable|numeric',
             '*.tprt_name' => 'nullable|string',
