@@ -80,9 +80,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
 
 
 
-            $client_exists = Client::whereHas('user', function ($query) use ($row) {
-                $query->where('name', $row['payer_name']);
-            })->count() > 0;
+            $client_exists = Client::where('client_number', $row['payer'])->exists();
             $client_user = null;
             if (!$client_exists) {
                 $client_user = User::factory(1)->create([
@@ -94,11 +92,16 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 ])->first();
 
                 $client_user->assignRole('client');
-                $client_user->client()->create();
+                $client_user->client()->create([
+                    'client_number' => $row['payer'],
+                ]);
+            } else {
+                Client::firstWhere('client_number', $row['payer'])->user->update([
+                    'name' => $row['payer_name'],
+                    'is_active' => true,
+                ]);
             }
-            $client = $client_exists ? Client::whereHas('user', function ($query) use ($row) {
-                $query->where('name', $row['payer_name']);
-            })->first() : $client_user->client;
+            $client = $client_exists ? Client::firstWhere('client_number', $row['payer']) : $client_user->client;
 
 
 
@@ -108,7 +111,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
 
             $transporter_exists = Transporter::whereHas('user', function ($query) use ($row) {
                 $query->where('name', $row['tprt_name']);
-            })->count() > 0;
+            })->exists();
             $transporter_user = null;
             if (!$transporter_exists) {
                 $transporter_user = User::factory(1)->create([
@@ -141,7 +144,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             if ($row['driver_no']) {
                 $driver_exists = Driver::whereHas('user', function ($query) use ($row) {
                     $query->where('phone', $row['driver_no']);
-                })->count() > 0;
+                })->exists();
 
                 $driver_user = null;
 

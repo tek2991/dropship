@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            //
+            $table->string('client_number')->unique();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            //
+            $table->dropColumn('client_number');
         });
     }
 };

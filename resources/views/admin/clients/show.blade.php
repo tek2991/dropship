@@ -59,6 +59,11 @@
                                 Gender:
                             </strong>{{ $client->user->gender ? $client->user->gender : 'NA' }}
                         </h3>
+                        <h3>
+                            <strong>
+                                Client Number:
+                            </strong>{{ $client->client_number }}
+                        </h3>
                     </div>
 
                 </div>

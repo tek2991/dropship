@@ -54,7 +54,9 @@ class ClientController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('client');
-        $user->client()->create();
+        $user->client()->create([
+            'client_number' => $request->client_number,
+        ]);
 
         return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' created successfully.');
     }
@@ -94,7 +96,19 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        $client->user->update($request->validated());
+        $client->user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'is_active' => $request->is_active,
+        ]);
+        $client->update([
+            'client_number' => $request->client_number,
+        ]);
         return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 
@@ -109,11 +123,12 @@ class ClientController extends Controller
         //
     }
 
-    public function updatePassword(Request $request, User $user){
+    public function updatePassword(Request $request, User $user)
+    {
         $request->validate([
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-        $user->update(['password'=> Hash::make($request->password)]);
+        $user->update(['password' => Hash::make($request->password)]);
         return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
     }
 }

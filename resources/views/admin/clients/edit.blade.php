@@ -60,6 +60,11 @@
                                     name="alternate_phone" value="{{ $client->user->alternate_phone }}" />
                             </div>
                             <div>
+                                <x-label for="client_number" :value="__('Client number')" />
+                                <x-input id="client_number" class="block mt-1 w-full" type="text"
+                                    name="client_number" value="{{ $client->client_number }}" />
+                            </div>
+                            <div>
                                 <x-label for="status" :value="__('Status')" />
                                 <x-input-select id="status" class="block mt-1 w-full" name="is_active" required>
                                     <option value="1" {{ $client->user->is_active == true ? 'selected' : '' }}>Active

@@ -18,7 +18,9 @@ class ClientSeeder extends Seeder
         $users = User::factory(100)->create();
         $users->each(function ($user) {
             $user->assignRole('client');
-            $user->client()->create();
+            $user->client()->create([
+                'client_number' => 'CL_' . $user->id,
+            ]);
         });
     }
 }

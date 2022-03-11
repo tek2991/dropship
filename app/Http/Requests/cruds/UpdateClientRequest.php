@@ -41,6 +41,11 @@ class UpdateClientRequest extends FormRequest
             ],
             'alternate_phone' => 'nullable|numeric',
             'is_active' => 'required|boolean',
+            'client_number' => [
+                'required',
+                'alpha_num',
+                Rule::unique('clients', 'client_number')->ignore($this->client->id),
+            ],
         ];
     }
 }

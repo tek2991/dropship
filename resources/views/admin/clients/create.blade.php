@@ -30,8 +30,10 @@
                                 <x-label for="gender" :value="__('Gender')" />
                                 <x-input-select id="gender" class="block mt-1 w-full" name="gender" required>
                                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                                    <option value="" {{ old('gender') == null ? 'selected' : '' }}>Not Applicable</option>
+                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
+                                    </option>
+                                    <option value="" {{ old('gender') == null ? 'selected' : '' }}>Not Applicable
+                                    </option>
                                 </x-input-select>
                             </div>
                             <div>
@@ -54,6 +56,12 @@
                                 <x-input id="alternate_phone" class="block mt-1 w-full" type="number"
                                     name="alternate_phone" value="{{ old('alternate_phone') }}" />
                             </div>
+                            <div>
+                                <x-label for="client_number" :value="__('Client number')" />
+                                <x-input id="client_number" class="block mt-1 w-full" type="text" name="client_number"
+                                    value="{{ old('client_number') }}" required />
+                            </div>
+                            <div class="invisible md:visible"></div>
                             <div>
                                 <x-label for="password" :value="__('Password')" required />
                                 <x-input id="password" class="block mt-1 w-full" type="password" name="password"

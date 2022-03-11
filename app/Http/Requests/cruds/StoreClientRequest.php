@@ -31,6 +31,7 @@ class StoreClientRequest extends FormRequest
             'dob' => 'nullable|date',
             'address' => 'required|string',
             'phone' => 'required|numeric|unique:users,phone',
+            'client_number' => 'required|alpha_num|unique:clients,client_number',
             'alternate_phone' => 'nullable|numeric',
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
