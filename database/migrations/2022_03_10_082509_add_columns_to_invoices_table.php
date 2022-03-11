@@ -19,11 +19,7 @@ return new class extends Migration
             $table->string('date');
             $table->foreignId('client_id')->constrained('clients');
             $table->string('gross_weight');
-            $table->foreignId('transporter_id')->constrained('transporters');
-            $table->foreignId('vehicle_id')->constrained('vehicles');
-            $table->string('destination');
             $table->string('no_of_packs');
-            $table->foreignId('driver_id')->nullable()->constrained('drivers');
         });
     }
 

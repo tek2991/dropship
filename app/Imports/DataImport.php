@@ -51,6 +51,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             $date = Carbon::createFromFormat('d.m.Y', $row['date'])->format('Y-m-d');
             $invoice_date = Carbon::createFromFormat('d.m.Y', $row['inv_date'])->format('Y-m-d');
 
+            
             DB::table('raw_data_imports')->insert([
                 'log_sheet' => $row['log_sheet'],
                 'date' => $date,
@@ -65,19 +66,6 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 'no_of_packs' => $row['no_of_packs'],
                 'driver_no' => $row['driver_no'],
             ]);
-
-            $log_sheet = LogSheet::updateOrCreate(
-                [
-                    'log_sheet_no' => $row['log_sheet'],
-                ],
-                [
-                    'date' => $date,
-                ]
-            );
-
-
-
-
 
 
             $client_exists = Client::where('client_number', $row['payer'])->exists();
@@ -104,11 +92,6 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             $client = $client_exists ? Client::firstWhere('client_number', $row['payer']) : $client_user->client;
 
 
-
-
-
-
-
             $transporter_exists = Transporter::whereHas('user', function ($query) use ($row) {
                 $query->where('name', $row['tprt_name']);
             })->exists();
@@ -125,29 +108,16 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 $transporter_user->assignRole('transporter');
                 $transporter_user->transporter()->create();
             }
-
-
             $transporter = $transporter_exists ? Transporter::whereHas('user', function ($query) use ($row) {
                 $query->where('name', $row['tprt_name']);
             })->first() : $transporter_user->transporter;
-
-
-
-
-
-
-
-
-
 
             $driver = null;
             if ($row['driver_no']) {
                 $driver_exists = Driver::whereHas('user', function ($query) use ($row) {
                     $query->where('phone', $row['driver_no']);
                 })->exists();
-
                 $driver_user = null;
-
                 if (!$driver_exists) {
                     $driver_user = User::factory(1)->create([
                         'name' => 'Driver_' . $row['driver_no'],
@@ -158,22 +128,13 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                         'address' => 'NA',
                         'is_active' => true,
                     ])->first();
-
                     $driver_user->assignRole('driver');
                     $driver_user->driver()->create();
                 }
-
                 $driver = $driver_exists ? Driver::whereHas('user', function ($query) use ($row) {
                     $query->where('phone', $row['driver_no']);
                 })->first() : $driver_user->driver;
             }
-
-
-
-
-
-
-
 
 
             $vehicle = Vehicle::firstOrCreate([
@@ -181,10 +142,18 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             ], ['is_active' => true]);
 
 
-
-
-
-
+            $log_sheet = LogSheet::updateOrCreate(
+                [
+                    'log_sheet_no' => $row['log_sheet'],
+                ],
+                [
+                    'date' => $date,
+                    'transporter_id' => $transporter->id,
+                    'vehicle_id' => $vehicle->id,
+                    'destination' => $row['destination'],
+                    'driver_id' => $driver ? $driver->id : null,
+                ]
+            );
 
 
             Invoice::updateOrCreate(
@@ -196,10 +165,6 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     'date' => $invoice_date,
                     'client_id' => $client->id,
                     'gross_weight' => $row['gross_wt'],
-                    'transporter_id' => $transporter->id,
-                    'vehicle_id' => $vehicle->id,
-                    'destination' => $row['destination'],
-                    'driver_id' => $driver ? $driver->id : null,
                     'no_of_packs' => $row['no_of_packs'],
                 ]
             );

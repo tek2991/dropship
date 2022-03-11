@@ -5,7 +5,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ImportController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\Admin\LogSheetController;
 use App\Http\Controllers\Admin\TransporterController;
 
 /*
@@ -40,6 +42,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'clients' => ClientController::class,
     ]);
 
+    Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
+    Route::resource('invoices', InvoiceController::class)->only('index', 'show');
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store');
     Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');
 

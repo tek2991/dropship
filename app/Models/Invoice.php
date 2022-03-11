@@ -12,11 +12,7 @@ class Invoice extends Model
         'date',
         'client_id',
         'gross_weight',
-        'transporter_id',
-        'vehicle_id',
-        'destination',
         'no_of_packs',
-        'driver_id',
     ];
 
     public function logSheet()
@@ -29,18 +25,7 @@ class Invoice extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function transporter()
-    {
-        return $this->belongsTo(Transporter::class);
-    }
-
-    public function vehicle()
-    {
-        return $this->belongsTo(Vehicle::class);
-    }
-
-    public function driver()
-    {
-        return $this->belongsTo(Driver::class);
+    public function clientUser(){
+        return $this->hasOneThrough(User::class, Client::class, 'id', 'id', 'client_id', 'user_id');
     }
 }

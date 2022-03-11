@@ -40,12 +40,12 @@
                                 'log_sheets' => [
                                     'title' => 'Log Sheets',
                                     'count' => \App\Models\LogSheet::count(),
-                                    'url' => '#',
+                                    'url' => route('admin.log-sheets.index'),
                                 ],
                                 'invoices' => [
                                     'title' => 'Invoices',
                                     'count' => \App\Models\Invoice::count(),
-                                    'url' => '#',
+                                    'url' => route('admin.invoices.index'),
                                 ],
                             ];
                         @endphp

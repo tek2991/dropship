@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('log_sheet_no');
             $table->date('date');
+            $table->foreignId('transporter_id')->constrained('transporters');
+            $table->foreignId('vehicle_id')->constrained('vehicles');
+            $table->string('destination');
+            $table->foreignId('driver_id')->nullable()->constrained('drivers');
             $table->timestamps();
         });
     }

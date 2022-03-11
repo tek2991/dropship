@@ -32,6 +32,12 @@
                         <x-nav-link :href="route('admin.imports.index')" :active="request()->routeIs('admin.imports.index')">
                             {{ __('Imports') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.log-sheets.index')" :active="request()->routeIs('admin.log-sheets.index')">
+                            {{ __('Log Sheets') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.invoices.index')" :active="request()->routeIs('admin.invoices.index')">
+                            {{ __('Invoices') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -119,6 +125,12 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.imports.index')">
                         {{ __('Imports') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.log-sheets.index')">
+                        {{ __('Log Sheets') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.invoices.index')">
+                        {{ __('Invoices') }}
                     </x-responsive-nav-link>
                 @endif
                 <x-responsive-nav-link :href="route('user.show', ['user' => Auth::user()->id])">
