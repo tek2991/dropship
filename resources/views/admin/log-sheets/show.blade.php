@@ -39,9 +39,13 @@
                         </h3>
                         <h3>
                             <strong>Driver: </strong>
-                            <x-text-link href="{{ route('admin.drivers.show', $logSheet->driver) }}">
-                                {{ $logSheet->driverUser != null ? $logSheet->driverUser->name : 'NA' }}
-                            </x-text-link>
+                            @if ($logSheet->driverUser != null)
+                                <x-text-link href="{{ route('admin.drivers.show', $logSheet->driver) }}">
+                                    {{ $logSheet->driverUser->name }}
+                                </x-text-link>
+                            @else
+                                NA
+                            @endif
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Driver Phone: </strong>

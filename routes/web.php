@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'vehicles' => VehicleController::class,
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
-    ]);
+    ], ['except' => ['destroy']]);
 
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
     Route::resource('invoices', InvoiceController::class)->only('index', 'show');
