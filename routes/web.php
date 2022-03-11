@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\LogSheetController;
 use App\Http\Controllers\Admin\TransporterController;
+use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
     Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
     Route::put('clients/{client}/update-password', [ClientController::class, 'updatePassword'])->name('clients.update-password');
+
+    Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
+    Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');
 });
 
 require __DIR__ . '/auth.php';

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Storage;
+use App\Models\Import;
 use App\Imports\DataImport;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
-use App\Models\Import;
-use Storage;
 
 class ImportController extends Controller
 {
@@ -22,19 +23,24 @@ class ImportController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
-            'file' => 'required|file|mimes:xls,xlsx,csv,ods|max:2048',
-        ]);
-        $path = $request->file('file')->store('imports');
+        $temporaryFile = TemporaryFile::where('folder', $request->file)->first();
 
-        $import = new DataImport;
-        $import->import($path);
+        if($temporaryFile){
+            Storage::move('uploads/tmp/' . $request->file . '/' . $temporaryFile->filename , 'imports/' . $request->file . '/' . $temporaryFile->filename);
+            $path = 'imports/' . $request->file . '/' . $temporaryFile->filename;
+            $import = new DataImport;
+            $import->import($path);
+            Import::create([
+                'file_name' => $path,
+            ]);
+            Storage::deleteDirectory('uploads/tmp/' . $request->file);
+            $temporaryFile->delete();
+    
+            return redirect()->route('admin.imports.index')->with('message', 'File Imported Successfully.');
+        }else{
+            return redirect()->route('admin.imports.create')->withErrors('Temporary File not found.');
+        }
 
-        Import::create([
-            'file_name' => $path,
-        ]);
-
-        return redirect()->route('admin.imports.index')->with('message', 'File Uploaded Successfully.');
     }
 
     public function download(Request $request){

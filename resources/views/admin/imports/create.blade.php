@@ -15,11 +15,13 @@
 
                     <form method="POST" action="{{ route('admin.imports.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <x-label for="file" :value="__('Select Excel File')" />
-                                <x-input id="file" class="block mt-1 w-full" type="file" name="file" required
-                                    value="{{ old('file') }}" />
+                                <x-label for="file" :value="__('Select Data File')" />
+                                <x-label for="file" class="text-xs text-red-800"
+                                    :value="__('Accepted formats: xls, xlsx, csv, ods')" />
+                                <x-label for="file" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
+                                <x-input id="file" class="block mt-1 w-full" type="file" name="file" required />
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-4 ">
@@ -37,4 +39,49 @@
             </div>
         </div>
     </div>
+    @section('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // get a reference to the fieldset element
+                const fieldsetElement = document.querySelector("input[id='file']");
+
+                // create a FilePond instance at the fieldset element location
+                const pond = FilePond.create(fieldsetElement);
+
+                // configure FilePond
+                let serverREsponse = null;
+                pond.setOptions({
+                    labelIdle: '{!! __('Drag and drop or <span class="text-blue-500">browse</span>') !!}',
+                    // acceptedFileTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
+                    maxFileSize: '2MB',
+                    server: {
+                        process: {
+                            url: '{{ route('admin.uploads.store') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            onerror: (response) => {
+                                serverResponse = JSON.parse(response);
+                                pond.setOptions({
+                                    labelError: serverResponse.message
+                                });
+                            }
+                        },
+                        revert: {
+                            url: '{{ route('admin.uploads.destroy') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                '_method': 'DELETE'
+                            }
+                        }
+                    },
+
+                    labelFileProcessingError: () => {
+                        // replaces the error on the FilePond error label
+                        return serverResponse.message;
+                    },
+                });
+            });
+        </script>
+    @endsection
 </x-app-layout>
