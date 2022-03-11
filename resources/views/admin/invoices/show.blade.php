@@ -43,10 +43,10 @@
                         </h3>
                         <h3>
                             <strong>Driver: </strong>
-                            @if ($invoice->logSheet->driverUser()->exists())
+                            @if ($invoice->logSheet->driverUser !== null)
                                 <x-text-link
                                     href="{{ route('admin.drivers.show', $invoice->logSheet->driverUser) }}">
-                                    {{ $invoice->logSheet->driverUser()->exists() ? $invoice->logSheet->driverUser->name : 'NA' }}
+                                    {{ $invoice->logSheet->driverUser->name }}
                                 </x-text-link>
                             @else
                                 NA
@@ -54,7 +54,7 @@
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Driver Phone: </strong>
-                            {{ $invoice->logSheet->driverUser()->exists() ? $invoice->logSheet->driverUser->phone : 'NA' }}
+                            {{ $invoice->logSheet->driverUser != null ? $invoice->logSheet->driverUser->phone : 'NA' }}
                         </h3>
                         <h3>
                             <strong>Gross Weight: </strong> {{ $invoice->gross_weight }} Kg

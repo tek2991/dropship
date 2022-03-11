@@ -40,12 +40,12 @@
                         <h3>
                             <strong>Driver: </strong>
                             <x-text-link href="{{ route('admin.drivers.show', $logSheet->driver) }}">
-                                {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->name : 'NA' }}
+                                {{ $logSheet->driverUser != null ? $logSheet->driverUser->name : 'NA' }}
                             </x-text-link>
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Driver Phone: </strong>
-                            {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->phone : 'NA' }}
+                            {{ $logSheet->driverUser != null ? $logSheet->driverUser->phone : 'NA' }}
                         </h3>
                         <h3>
                             <strong>Total Gross Weight: </strong> {{ $logSheet->invoices->sum('gross_weight') }} Kg

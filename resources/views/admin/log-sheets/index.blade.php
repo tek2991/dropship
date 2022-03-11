@@ -51,9 +51,9 @@
                                                         {{ $logSheet->invoices_count }} Invoices
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->name : 'NA' }}
+                                                        {{ $logSheet->driverUser != null ? $logSheet->driverUser->name : 'NA' }}
                                                         <br>
-                                                        Ph: {{ $logSheet->driverUser()->exists() ? $logSheet->driverUser->phone : 'NA' }}
+                                                        Ph: {{ $logSheet->driverUser != null ? $logSheet->driverUser->phone : 'NA' }}
                                                     </td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
