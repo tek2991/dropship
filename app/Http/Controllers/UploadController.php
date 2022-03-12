@@ -12,7 +12,8 @@ class UploadController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'bail|required|file|mimes:xls,xlsx,csv,ods|max:2048',
+            'file' => 'bail|nullable|file|mimes:xls,xlsx,csv,ods|max:2048',
+            '*.image' => 'bail|nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -20,7 +21,7 @@ class UploadController extends Controller
         }
 
         try {
-            $file = $request->file('file');
+            $file = $request->file('file') ? $request->file('file') : $request->file('image')[0];
             $filename = $file->getClientOriginalName();
             $folder = uniqid() . '_' . now()->timestamp;
             $file->storeAs('uploads/tmp/' . $folder,  $filename);

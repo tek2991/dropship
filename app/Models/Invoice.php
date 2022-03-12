@@ -13,6 +13,8 @@ class Invoice extends Model
         'client_id',
         'gross_weight',
         'no_of_packs',
+        'is_delivered',
+        'updated_by',
     ];
 
     public function logSheet()
@@ -27,5 +29,15 @@ class Invoice extends Model
 
     public function clientUser(){
         return $this->hasOneThrough(User::class, Client::class, 'id', 'id', 'client_id', 'user_id');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function hasImages()
+    {
+        return $this->images()->count() > 0;
     }
 }
