@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-4 ">
-                            <x-button class="ml-3" type="submit">
+                            <x-button class="ml-3" type="submit" id="submit" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,8 +45,12 @@
                 // get a reference to the fieldset element
                 const fieldsetElement = document.querySelector("input[id='file']");
 
+                //  get a reference to the submit button
+                const submitButton = document.querySelector("button[id='submit']");
+
                 // create a FilePond instance at the fieldset element location
                 const pond = FilePond.create(fieldsetElement);
+
 
                 // configure FilePond
                 let serverREsponse = null;
@@ -80,6 +84,21 @@
                         // replaces the error on the FilePond error label
                         return serverResponse.message;
                     },
+
+                    onaddfilestart: function(file) {
+                        // disable submit button while file is uploading
+                        submitButton.setAttribute('disabled', 'true');
+                    },
+
+                    onprocessfiles: () => {
+                        // enable submit button when file is uploaded
+                        submitButton.removeAttribute('disabled');
+                    },
+                    onupdatefiles(files){
+                        // disable submit button if no files are selected
+                        const count_files = files.length;
+                        count_files > 0 ? submitButton.removeAttribute('disabled') : submitButton.setAttribute('disabled', 'true');
+                    }
                 });
             });
         </script>

@@ -5649,8 +5649,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.FilePond = filepond__WEBPACK_IMPORTED_MODULE_0__;
-filepond__WEBPACK_IMPORTED_MODULE_0__.registerPlugin((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_1___default()));
-filepond__WEBPACK_IMPORTED_MODULE_0__.registerPlugin((filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_2___default()));
+filepond__WEBPACK_IMPORTED_MODULE_0__.registerPlugin((filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_1___default()), (filepond_plugin_file_validate_size__WEBPACK_IMPORTED_MODULE_2___default()));
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].start();
