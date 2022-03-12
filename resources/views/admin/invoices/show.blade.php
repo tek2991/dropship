@@ -95,8 +95,74 @@
                             @endif
                         </h3>
                     </div>
+
+                    <div class="my-8 p-8">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Images</h2>
+
+                        <div id="main-image-slider" class="splide mb-2 col-md-8 offset-md-2">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    @forelse ($invoice->images as $image)
+                                        <li class="splide__slide">
+                                            <img src="{{ Storage::url($image->url) }}">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="thumbnail-image-slider" class="splide mt-4">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    @forelse ($invoice->images as $image)
+                                        <li class="splide__slide">
+                                            <img src="{{ Storage::url($image->url) }}">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @section('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var main = new Splide('#main-image-slider', {
+                    type: 'fade',
+                    rewind: true,
+                    pagination: false,
+                    arrows: false,
+                    fixedHeight: '550px',
+                    autoWidth: true,
+                    cover: true,
+                    breakpoints: {
+                        600: {
+                            fixedHeight: '200px',
+                        },
+                    },
+                });
+                var thumbnails = new Splide('#thumbnail-image-slider', {
+                    fixedWidth: 150,
+                    fixedHeight: 90,
+                    gap: 10,
+                    rewind: true,
+                    pagination: false,
+                    cover: true,
+                    focus: 'center',
+                    isNavigation: true,
+                    breakpoints: {
+                        600: {
+                            fixedWidth: 60,
+                            fixedHeight: 44,
+                        },
+                    },
+                });
+                main.sync(thumbnails);
+                main.mount();
+                thumbnails.mount();
+            });
+        </script>
+    @endsection
 </x-app-layout>

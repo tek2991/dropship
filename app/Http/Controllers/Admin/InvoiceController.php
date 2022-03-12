@@ -34,7 +34,7 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     {
         return view('admin.invoices.show', [
-            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle'),
+            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle', 'images'),
         ]);
     }
 
@@ -47,7 +47,7 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         return view('admin.invoices.edit', [
-            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle'),
+            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle', 'images'),
         ]);
     }
 
@@ -75,7 +75,7 @@ class InvoiceController extends Controller
         foreach ($images as $image) {
             if ($image) {
                 $temporaryFile = TemporaryFile::firstWhere('folder', $image);
-                Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'invoices/' . $invoice->id . '/' . $image . '/' . $temporaryFile->filename);
+                Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'public/invoices/' . $invoice->id . '/' . $image . '/' . $temporaryFile->filename);
 
                 $image = Image::create([
                     'url' => 'invoices/' . $invoice->id . '/' . $image . '/' . $temporaryFile->filename,
@@ -84,7 +84,7 @@ class InvoiceController extends Controller
 
                 $invoice->images()->save($image);
 
-                Storage::deleteDirectory('uploads/tmp/' . $request->file);
+                Storage::deleteDirectory('uploads/tmp/' . $image);
                 $temporaryFile->delete();
             }
         }

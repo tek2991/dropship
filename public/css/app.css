@@ -3716,6 +3716,10 @@ textarea.form-control.is-invalid {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
@@ -3878,6 +3882,9 @@ textarea.form-control.is-invalid {
 }
 .max-w-6xl {
   max-width: 72rem;
+}
+.max-w-sm {
+  max-width: 24rem;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -4122,6 +4129,9 @@ textarea.form-control.is-invalid {
 }
 .p-4 {
   padding: 1rem;
+}
+.p-8 {
+  padding: 2rem;
 }
 .px-4 {
   padding-left: 1rem;
@@ -4574,6 +4584,214 @@ textarea.form-control.is-invalid {
 .filepond--root .filepond--list-scroller{margin-top:1em;margin-bottom:1em}
 .filepond--root .filepond--credits{position:absolute;right:0;opacity:.175;line-height:.85;font-size:11px;color:inherit;text-decoration:none;z-index:3;bottom:-14px}
 .filepond--root .filepond--credits[style]{top:0;bottom:auto;margin-top:14px}
+/*!
+ * FilePondPluginImagePreview 4.6.10
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+/* eslint-disable */
+.filepond--image-preview-markup {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.filepond--image-preview-wrapper {
+  z-index: 2;
+}
+.filepond--image-preview-overlay {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 5rem;
+  max-height: 7rem;
+  margin: 0;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.filepond--image-preview-overlay svg {
+  width: 100%;
+  height: auto;
+  color: inherit;
+  max-height: inherit;
+}
+.filepond--image-preview-overlay-idle {
+  mix-blend-mode: multiply;
+  color: rgba(40, 40, 40, 0.85);
+}
+.filepond--image-preview-overlay-success {
+  mix-blend-mode: normal;
+  color: rgba(54, 151, 99, 1);
+}
+.filepond--image-preview-overlay-failure {
+  mix-blend-mode: normal;
+  color: rgba(196, 78, 71, 1);
+}
+/* disable for Safari as mix-blend-mode causes the overflow:hidden of the parent container to not work */
+@supports (-webkit-marquee-repetition: infinite) and
+  ((-o-object-fit: fill) or (object-fit: fill)) {
+  .filepond--image-preview-overlay-idle {
+    mix-blend-mode: normal;
+  }
+}
+.filepond--image-preview-wrapper {
+  /* no interaction */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  /* have preview fill up all available space */
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+
+  /* radius is .05em less to prevent the panel background color from shining through */
+  border-radius: 0.45em;
+  overflow: hidden;
+
+  /* this seems to prevent Chrome from redrawing this layer constantly */
+  background: rgba(0, 0, 0, 0.01);
+}
+.filepond--image-preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: flex; /* this aligns the graphic vertically if the panel is higher than the image */
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  background: #222;
+
+  /* will be animated */
+  will-change: transform, opacity;
+}
+.filepond--image-clip {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+
+  /* transparency indicator (currently only supports grid or basic color) */
+}
+.filepond--image-clip[data-transparency-indicator='grid'] img,
+.filepond--image-clip[data-transparency-indicator='grid'] canvas {
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' fill='%23eee'%3E%3Cpath d='M0 0 H50 V50 H0'/%3E%3Cpath d='M50 50 H100 V100 H50'/%3E%3C/svg%3E");
+  background-size: 1.25em 1.25em;
+}
+.filepond--image-bitmap,
+.filepond--image-vector {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+.filepond--root[data-style-panel-layout~='integrated']
+  .filepond--image-preview-wrapper {
+  border-radius: 0;
+}
+.filepond--root[data-style-panel-layout~='integrated']
+  .filepond--image-preview {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--image-preview-wrapper {
+  border-radius: 99999rem;
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--image-preview-overlay {
+  top: auto;
+  bottom: 0;
+  transform: scaleY(-1);
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--file
+  .filepond--file-action-button[data-align*='bottom']:not([data-align*='center']) {
+  margin-bottom: 0.325em;
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--file
+  [data-align*='left'] {
+  left: calc(50% - 3em);
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--file
+  [data-align*='right'] {
+  right: calc(50% - 3em);
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--progress-indicator[data-align*='bottom'][data-align*='left'],
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--progress-indicator[data-align*='bottom'][data-align*='right'] {
+  margin-bottom: calc(0.325em + 0.1875em);
+}
+.filepond--root[data-style-panel-layout~='circle']
+  .filepond--progress-indicator[data-align*='bottom'][data-align*='center'] {
+  margin-top: 0;
+  margin-bottom: 0.1875em;
+  margin-left: 0.1875em;
+}
+.splide__container{box-sizing:border-box;position:relative}
+.splide__list{-webkit-backface-visibility:hidden;backface-visibility:hidden;display:flex;height:100%;margin:0!important;padding:0!important;transform-style:preserve-3d}
+.splide.is-initialized:not(.is-active) .splide__list{display:block}
+.splide__pagination{align-items:center;display:flex;flex-wrap:wrap;justify-content:center;margin:0;pointer-events:none}
+.splide__pagination li{display:inline-block;line-height:1;list-style-type:none;margin:0;pointer-events:auto}
+.splide__progress__bar{width:0}
+.splide{outline:none;position:relative;visibility:hidden}
+.splide.is-initialized,.splide.is-rendered{visibility:visible}
+.splide__slide{-webkit-backface-visibility:hidden;backface-visibility:hidden;box-sizing:border-box;flex-shrink:0;list-style-type:none!important;margin:0;outline:none;position:relative}
+.splide__slide img{vertical-align:bottom}
+.splide__slider{position:relative}
+.splide__spinner{-webkit-animation:splide-loading 1s linear infinite;animation:splide-loading 1s linear infinite;border:2px solid #999;border-left-color:transparent;border-radius:50%;bottom:0;contain:strict;display:inline-block;height:20px;left:0;margin:auto;position:absolute;right:0;top:0;width:20px}
+.splide__track{overflow:hidden;position:relative;z-index:0}
+@-webkit-keyframes splide-loading{0%{transform:rotate(0)}to{transform:rotate(1turn)}}
+@keyframes splide-loading{0%{transform:rotate(0)}to{transform:rotate(1turn)}}
+.splide--draggable>.splide__slider>.splide__track,.splide--draggable>.splide__track{-webkit-user-select:none;-ms-user-select:none;-moz-user-select:none;user-select:none}
+.splide--fade>.splide__slider>.splide__track>.splide__list,.splide--fade>.splide__track>.splide__list{display:block}
+.splide--fade>.splide__slider>.splide__track>.splide__list>.splide__slide,.splide--fade>.splide__track>.splide__list>.splide__slide{left:0;opacity:0;position:absolute;top:0;z-index:0}
+.splide--fade>.splide__slider>.splide__track>.splide__list>.splide__slide.is-active,.splide--fade>.splide__track>.splide__list>.splide__slide.is-active{opacity:1;position:relative;z-index:1}
+.splide--rtl{direction:rtl}
+.splide--ttb.is-active>.splide__slider>.splide__track>.splide__list,.splide--ttb.is-active>.splide__track>.splide__list{display:block}
+.splide__arrow{align-items:center;background:#ccc;border:0;border-radius:50%;cursor:pointer;display:flex;height:2em;justify-content:center;opacity:.7;padding:0;position:absolute;top:50%;transform:translateY(-50%);width:2em;z-index:1}
+.splide__arrow svg{fill:#000;height:1.2em;width:1.2em}
+.splide__arrow:hover{opacity:.9}
+.splide__arrow:focus{outline:none}
+.splide__arrow--prev{left:1em}
+.splide__arrow--prev svg{transform:scaleX(-1)}
+.splide__arrow--next{right:1em}
+.splide__pagination{bottom:.5em;left:0;padding:0 1em;position:absolute;right:0;z-index:1}
+.splide__pagination__page{background:#ccc;border:0;border-radius:50%;display:inline-block;height:8px;margin:3px;opacity:.7;padding:0;transition:transform .2s linear;width:8px}
+.splide__pagination__page.is-active{background:#fff;transform:scale(1.4)}
+.splide__pagination__page:hover{cursor:pointer;opacity:.9}
+.splide__pagination__page:focus{outline:none}
+.splide__progress__bar{background:#ccc;height:3px}
+.splide--nav>.splide__slider>.splide__track>.splide__list>.splide__slide,.splide--nav>.splide__track>.splide__list>.splide__slide{border:3px solid transparent;cursor:pointer}
+.splide--nav>.splide__slider>.splide__track>.splide__list>.splide__slide.is-active,.splide--nav>.splide__track>.splide__list>.splide__slide.is-active{border:3px solid #000}
+.splide--nav>.splide__slider>.splide__track>.splide__list>.splide__slide:focus,.splide--nav>.splide__track>.splide__list>.splide__slide:focus{outline:none}
+.splide--rtl>.splide__arrows .splide__arrow--prev,.splide--rtl>.splide__slider>.splide__track>.splide__arrows .splide__arrow--prev,.splide--rtl>.splide__track>.splide__arrows .splide__arrow--prev{left:auto;right:1em}
+.splide--rtl>.splide__arrows .splide__arrow--prev svg,.splide--rtl>.splide__slider>.splide__track>.splide__arrows .splide__arrow--prev svg,.splide--rtl>.splide__track>.splide__arrows .splide__arrow--prev svg{transform:scaleX(1)}
+.splide--rtl>.splide__arrows .splide__arrow--next,.splide--rtl>.splide__slider>.splide__track>.splide__arrows .splide__arrow--next,.splide--rtl>.splide__track>.splide__arrows .splide__arrow--next{left:1em;right:auto}
+.splide--rtl>.splide__arrows .splide__arrow--next svg,.splide--rtl>.splide__slider>.splide__track>.splide__arrows .splide__arrow--next svg,.splide--rtl>.splide__track>.splide__arrows .splide__arrow--next svg{transform:scaleX(-1)}
+.splide--ttb>.splide__arrows .splide__arrow,.splide--ttb>.splide__slider>.splide__track>.splide__arrows .splide__arrow,.splide--ttb>.splide__track>.splide__arrows .splide__arrow{left:50%;transform:translate(-50%)}
+.splide--ttb>.splide__arrows .splide__arrow--prev,.splide--ttb>.splide__slider>.splide__track>.splide__arrows .splide__arrow--prev,.splide--ttb>.splide__track>.splide__arrows .splide__arrow--prev{top:1em}
+.splide--ttb>.splide__arrows .splide__arrow--prev svg,.splide--ttb>.splide__slider>.splide__track>.splide__arrows .splide__arrow--prev svg,.splide--ttb>.splide__track>.splide__arrows .splide__arrow--prev svg{transform:rotate(-90deg)}
+.splide--ttb>.splide__arrows .splide__arrow--next,.splide--ttb>.splide__slider>.splide__track>.splide__arrows .splide__arrow--next,.splide--ttb>.splide__track>.splide__arrows .splide__arrow--next{bottom:1em;top:auto}
+.splide--ttb>.splide__arrows .splide__arrow--next svg,.splide--ttb>.splide__slider>.splide__track>.splide__arrows .splide__arrow--next svg,.splide--ttb>.splide__track>.splide__arrows .splide__arrow--next svg{transform:rotate(90deg)}
+.splide--ttb>.splide__pagination,.splide--ttb>.splide__slider>.splide__pagination{bottom:0;display:flex;flex-direction:column;left:auto;padding:1em 0;right:.5em;top:0}
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
