@@ -22,6 +22,10 @@
                                     :value="__('Accepted formats: xls, xlsx, csv, ods')" />
                                 <x-label for="file" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
                                 <x-input id="file" class="block mt-1 w-full" type="file" name="file" required />
+                                <a href="{{ url('assets/templates/DATA_IMPORT_TEMPLATE.xls') }}"
+                                    class="cursor-pointer text-xs font-bold text-blue-500 no-underline hover:underline">
+                                    Download Template
+                                </a>
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-4 ">
@@ -56,7 +60,10 @@
                 let serverREsponse = null;
                 pond.setOptions({
                     labelIdle: '{!! __('Drag and drop or <span class="text-blue-500">browse</span>') !!}',
-                    // acceptedFileTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'],
+                    acceptedFileTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'application/vnd.ms-excel', 'text/csv',
+                        'application/vnd.oasis.opendocument.spreadsheet'
+                    ],
                     maxFileSize: '2MB',
                     server: {
                         process: {
@@ -94,10 +101,11 @@
                         // enable submit button when file is uploaded
                         submitButton.removeAttribute('disabled');
                     },
-                    onupdatefiles(files){
+                    onupdatefiles(files) {
                         // disable submit button if no files are selected
                         const count_files = files.length;
-                        count_files > 0 ? submitButton.removeAttribute('disabled') : submitButton.setAttribute('disabled', 'true');
+                        count_files > 0 ? submitButton.removeAttribute('disabled') : submitButton.setAttribute(
+                            'disabled', 'true');
                     }
                 });
             });

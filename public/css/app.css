@@ -1444,6 +1444,15 @@ textarea.form-control.is-invalid {
 .offcanvas.show {
   transform: none;
 }
+.link-primary {
+  color: #0d6efd;
+}
+.link-primary:hover {
+  color: #0a58ca;
+}
+.link-primary:focus {
+  color: #0a58ca;
+}
 .sticky-top {
   position: -webkit-sticky;
   position: sticky;
@@ -3916,6 +3925,9 @@ textarea.form-control.is-invalid {
 .cursor-default {
   cursor: default;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .resize {
   resize: both;
 }
@@ -4234,6 +4246,9 @@ textarea.form-control.is-invalid {
 }
 .font-semibold {
   font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
 }
 .uppercase {
   text-transform: uppercase;
