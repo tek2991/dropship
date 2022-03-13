@@ -126,7 +126,7 @@
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                             <img src="{{ Storage::url($image->folder . '/' . $image->filename) }}"
                                                                 class="h-12 w-12 cursor-pointer max-w-none"
-                                                                data-height="480" data-fancybox="gallery">
+                                                                data-fancybox="gallery">
                                                             </img>
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
