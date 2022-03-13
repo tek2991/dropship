@@ -35,8 +35,6 @@ class ImportController extends Controller
             ]);
             Storage::deleteDirectory('uploads/tmp/' . $request->file);
             $temporaryFile->delete();
-            dd($request->file);
-    
             return redirect()->route('admin.imports.index')->with('message', 'File Imported Successfully.');
         }else{
             return redirect()->route('admin.imports.create')->withErrors('Temporary File not found.');
