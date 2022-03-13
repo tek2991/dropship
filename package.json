@@ -21,6 +21,7 @@
         "tailwindcss": "^3.0.18"
     },
     "dependencies": {
+        "@fancyapps/ui": "^4.0.26",
         "@splidejs/splide": "^3.6.12",
         "filepond": "^4.30.3",
         "filepond-plugin-file-validate-size": "^2.2.5",

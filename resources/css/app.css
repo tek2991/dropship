@@ -4,3 +4,4 @@
 @import 'filepond/dist/filepond.min.css';
 @import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 @import '@splidejs/splide/dist/css/splide.min.css';
+@import "@fancyapps/ui/dist/fancybox.css";

@@ -37,9 +37,9 @@
                                 </x-input-select>
                             </div>
                             <div>
-                                <x-label for="image" :value="__('Select Images')" />
+                                <x-label for="image" :value="__('Add Images')" />
                                 <x-label for="image" class="text-xs text-red-800"
-                                    :value="__('Accepted formats: xls, xlsx, csv, ods')" />
+                                    :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
                                 <x-label for="image" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
                                 <x-input id="image" class="block mt-1 w-full" type="file" name="image[]" multiple />
                             </div>
@@ -56,6 +56,82 @@
                         </div>
                     </form>
 
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Uploaded Images</h2>
+
+                    <div class="flex flex-col mt-8">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-200 table-auto">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="relative px-6 py-3">
+                                                    <span class="sr-only">Image</span>
+                                                </th>
+                                                <th scope="col"
+                                                    class="truncate px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Created by
+                                                </th>
+                                                <th scope="col"
+                                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Created at
+                                                </th>
+                                                <th scope="col" class="relative px-6 py-3">
+                                                    <span class="sr-only">Delete</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach ($invoice->images as $image)
+                                                <tr
+                                                    class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <img src="{{ Storage::url($image->folder. '/' . $image->filename) }}"
+                                                            class="h-12 w-12 cursor-pointer max-w-none"
+                                                            data-height="480" data-fancybox="gallery">
+                                                        </img>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        {{ $image->createdBy->name }}
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        {{ $image->created_at->format('d/m/Y') }}
+                                                    </td>
+                                                    <td
+                                                        class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button type="button" class="text-red-500 hover:text-red-900"
+                                                            data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                                                            onclick="setHiddenImage({{ $image->id }})">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <x-modal id="confirmDelete">
+                        <x-slot name="title">
+                            Delete Image
+                        </x-slot>
+                        <x-slot name="body">
+                            <p class="text-gray-600">Are you sure you want to delete this image?</p>
+                        </x-slot>
+                        <x-slot name="footer">
+                            <button data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <form method="POST" action="{{ route('admin.invoices.image.destroy', $invoice) }}"
+                                class="ml-8">
+                                @method('DELETE')
+                                @csrf
+                                <input type="hidden" name="image_to_delete" id="image_to_delete" value="">
+                                <button type="submit" class="text-red-500 hover:text-red-900">Delete</button>
+                            </form>
+                        </x-slot>
+                    </x-modal>
                 </div>
             </div>
         </div>
@@ -127,6 +203,13 @@
                     }
                 });
             });
+        </script>
+
+        <script>
+            function setHiddenImage(image) {
+                const hiddenInput = document.getElementById('image_to_delete');
+                hiddenInput.value = image;
+            }
         </script>
     @endsection
 </x-app-layout>

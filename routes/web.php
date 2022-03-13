@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     ], ['except' => ['destroy']]);
 
     Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit');
+    Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
     
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store');

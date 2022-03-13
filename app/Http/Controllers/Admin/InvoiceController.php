@@ -7,7 +7,8 @@ use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
+use File;
+use Storage;
 
 
 class InvoiceController extends Controller
@@ -75,20 +76,41 @@ class InvoiceController extends Controller
         foreach ($images as $image) {
             if ($image) {
                 $temporaryFile = TemporaryFile::firstWhere('folder', $image);
-                Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'public/invoices/' . $invoice->id . '/' . $image . '/' . $temporaryFile->filename);
+                Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'public/invoices/' . $invoice->invoice_no . '/' . $image . '/' . $temporaryFile->filename);
 
-                $image = Image::create([
-                    'url' => 'invoices/' . $invoice->id . '/' . $image . '/' . $temporaryFile->filename,
+                $imageModel = Image::create([
+                    'folder' => 'invoices/' . $invoice->invoice_no . '/' . $image,
+                    'filename' => $temporaryFile->filename,
                     'created_by' => auth()->user()->id,
                 ]);
 
-                $invoice->images()->save($image);
-
+                $invoice->images()->save($imageModel);
                 Storage::deleteDirectory('uploads/tmp/' . $image);
                 $temporaryFile->delete();
             }
         }
 
-        return redirect()->route('admin.invoices.index')->with('message', 'Invoice Updated Successfully.');
+        return redirect()->route('admin.invoices.show', $invoice)->with('message', 'Invoice Updated Successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Invoice  $invoice
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyImage(Request $request, Invoice $invoice)
+    {
+        $request->validate([
+            'image_to_delete' => 'required|exists:images,id',
+        ]);
+
+        $image = Image::find($request->image_to_delete);
+        $folder = $image->folder;
+        Storage::deleteDirectory('public/' . $folder);
+        $image->delete();
+
+        return redirect()->route('admin.invoices.edit', $invoice)->with('message', 'Image Deleted Successfully.');
     }
 }

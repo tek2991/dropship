@@ -16,9 +16,13 @@ FilePond.registerPlugin(
     FilePondPluginImageExifOrientation
 );
 
-import Splide from '@splidejs/splide';
-window.Splide = Splide;
+// import Splide from "@splidejs/splide";
+// window.Splide = Splide;
 
+import { Fancybox } from "@fancyapps/ui";
+window.Fancybox = Fancybox;
+
+import 'tw-elements';
 
 import Alpine from "alpinejs";
 

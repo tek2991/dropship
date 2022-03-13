@@ -96,73 +96,58 @@
                         </h3>
                     </div>
 
-                    <div class="my-8 p-8">
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Images</h2>
+                    @if ($invoice->images->count() > 0)
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">Uploaded Images</h2>
 
-                        <div id="main-image-slider" class="splide mb-2 col-md-8 offset-md-2">
-                            <div class="splide__track">
-                                <ul class="splide__list">
-                                    @forelse ($invoice->images as $image)
-                                        <li class="splide__slide">
-                                            <img src="{{ Storage::url($image->url) }}">
-                                        </li>
-                                    @endforeach
-                                </ul>
+                        <div class="flex flex-col mt-8">
+                            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200 table-auto">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="relative px-6 py-3">
+                                                        <span class="sr-only">Image</span>
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="truncate px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Created by
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Created at
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                @foreach ($invoice->images as $image)
+                                                    <tr
+                                                        class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            <img src="{{ Storage::url($image->folder . '/' . $image->filename) }}"
+                                                                class="h-12 w-12 cursor-pointer max-w-none"
+                                                                data-height="480" data-fancybox="gallery">
+                                                            </img>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {{ $image->createdBy->name }}
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {{ $image->created_at->format('d/m/Y') }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div id="thumbnail-image-slider" class="splide mt-4">
-                            <div class="splide__track">
-                                <ul class="splide__list">
-                                    @forelse ($invoice->images as $image)
-                                        <li class="splide__slide">
-                                            <img src="{{ Storage::url($image->url) }}">
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    @else
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight my-6">No Uploaded Images</h2>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    @section('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var main = new Splide('#main-image-slider', {
-                    type: 'fade',
-                    rewind: true,
-                    pagination: false,
-                    arrows: false,
-                    fixedHeight: '550px',
-                    autoWidth: true,
-                    cover: true,
-                    breakpoints: {
-                        600: {
-                            fixedHeight: '200px',
-                        },
-                    },
-                });
-                var thumbnails = new Splide('#thumbnail-image-slider', {
-                    fixedWidth: 150,
-                    fixedHeight: 90,
-                    gap: 10,
-                    rewind: true,
-                    pagination: false,
-                    cover: true,
-                    focus: 'center',
-                    isNavigation: true,
-                    breakpoints: {
-                        600: {
-                            fixedWidth: 60,
-                            fixedHeight: 44,
-                        },
-                    },
-                });
-                main.sync(thumbnails);
-                main.mount();
-                thumbnails.mount();
-            });
-        </script>
-    @endsection
 </x-app-layout>

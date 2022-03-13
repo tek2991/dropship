@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('folder');
+            $table->string('filename');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('imageable_id')->nullable();
             $table->string('imageable_type')->nullable();
