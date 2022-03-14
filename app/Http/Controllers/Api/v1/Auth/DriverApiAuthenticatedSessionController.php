@@ -14,13 +14,13 @@ use App\Http\Requests\Api\v1\Auth\DriverLoginRequest;
 class DriverApiAuthenticatedSessionController extends Controller
 {
     /**
-     * Driver Login API
+     * Driver Login
      * 
      * API endpoint for driver login. If everything is okay, you'll get a 200 Status with JSON response containing the token and user object.
      * 
-     * <aside class="notice">The token need to need to be passed in the Authorization header of all subsequest request.</aside>
-     * 
      * Otherwise, the request will fail with a 422 error, and a JSON response with error details.
+     * 
+     * <aside class="notice">The token need to need to be passed in the Authorization header of all subsequest request.</aside>
      * 
      * @response status=200 scenario=Success {
      *  "token": "1|cmNFo7NCyMz0L4gbWPuTn5yxN246TVfKw56dOOxd",
@@ -63,15 +63,14 @@ class DriverApiAuthenticatedSessionController extends Controller
 
 
     /**
-     * Logout API
-     * 
+     * Logout
      * 
      * API endpoint for logout. If everything is okay, you'll get a 200 Status with success message in JSON format.
      * 
      * Otherwise, the request will fail with a 401 error, and a JSON response with the error detail.
      * 
      * <aside class="notice">Logout API is common for all user levels.</aside>
-     *
+     * 
      * @authenticated
      * 
      * @response status=200 scenario=Success {

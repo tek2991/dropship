@@ -22,8 +22,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [DriverApiAuthenticatedSessionController::class, 'destroy']);
 
     Route::group(['prefix' => 'driver', 'as' => 'driver.', 'middleware' => ['role:driver']], function () {
-        Route::get('profile', function () {
-            return response()->json(['user' => auth()->user()]);
-        });
+        
     });
 });
