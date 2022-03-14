@@ -93,7 +93,6 @@
             </div>
 
             <ul class="toc-footer" id="toc-footer">
-                            <li><a href="{{ route("scribe.postman") }}">View Postman collection</a></li>
                             <li><a href="{{ route("scribe.openapi") }}">View OpenAPI spec</a></li>
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
@@ -147,8 +146,8 @@ const headers = {
 };
 
 let body = {
-    "phone": "qui",
-    "password": "qui"
+    "phone": "illo",
+    "password": "nesciunt"
 };
 
 fetch(url, {
@@ -164,8 +163,8 @@ fetch(url, {
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"phone\": \"qui\",
-    \"password\": \"qui\"
+    \"phone\": \"illo\",
+    \"password\": \"nesciunt\"
 }"
 </code></pre></div>
 
@@ -255,7 +254,7 @@ fetch(url, {
                 <input type="text"
                name="phone"
                data-endpoint="POSTapi-v1-driver-login"
-               value="qui"
+               value="illo"
                data-component="body" hidden>
     <br>
 
@@ -265,7 +264,7 @@ fetch(url, {
                 <input type="text"
                name="password"
                data-endpoint="POSTapi-v1-driver-login"
-               value="qui"
+               value="nesciunt"
                data-component="body" hidden>
     <br>
 
