@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1\Driver;
+namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Api\v1\Driver\LoginRequest;
+use App\Http\Requests\Api\v1\Auth\DriverLoginRequest;
 
 
 
-class AuthenticatedSessionController extends Controller
+
+class DriverApiAuthenticatedSessionController extends Controller
 {
     
      
-    public function store(LoginRequest $request)
+    public function store(DriverLoginRequest $request)
     {
         $request->authenticate();
 

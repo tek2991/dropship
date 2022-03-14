@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\v1\Driver\AuthenticatedSessionController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\Auth\DriverApiAuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/driver-login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/driver-login', [DriverApiAuthenticatedSessionController::class, 'store']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::post('logout', [DriverApiAuthenticatedSessionController::class, 'destroy']);
 
     Route::group(['prefix' => 'driver', 'as' => 'driver.', 'middleware' => ['role:driver']], function () {
         Route::get('profile', function () {
