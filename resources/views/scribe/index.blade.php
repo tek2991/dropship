@@ -93,7 +93,6 @@
             </div>
 
             <ul class="toc-footer" id="toc-footer">
-                            <li><a href="{{ route("scribe.openapi") }}">View OpenAPI spec</a></li>
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
         <ul class="toc-footer" id="last-updated">
@@ -116,7 +115,7 @@ You can switch the language used with the tabs at the top right (or from the nav
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
 <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
-<p>You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.</p>
+<p>To generate a token use the respective Login API <b>Try it out</b> button.</p>
 
         <h1 id="endpoints">Endpoints</h1>
 
@@ -146,8 +145,8 @@ const headers = {
 };
 
 let body = {
-    "phone": "illo",
-    "password": "nesciunt"
+    "phone": "sit",
+    "password": "et"
 };
 
 fetch(url, {
@@ -163,8 +162,8 @@ fetch(url, {
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"phone\": \"illo\",
-    \"password\": \"nesciunt\"
+    \"phone\": \"sit\",
+    \"password\": \"et\"
 }"
 </code></pre></div>
 
@@ -254,7 +253,7 @@ fetch(url, {
                 <input type="text"
                name="phone"
                data-endpoint="POSTapi-v1-driver-login"
-               value="illo"
+               value="sit"
                data-component="body" hidden>
     <br>
 
@@ -264,7 +263,7 @@ fetch(url, {
                 <input type="text"
                name="password"
                data-endpoint="POSTapi-v1-driver-login"
-               value="nesciunt"
+               value="et"
                data-component="body" hidden>
     <br>
 
