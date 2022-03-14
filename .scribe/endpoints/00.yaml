@@ -25,14 +25,14 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: sit
+        example: eaque
         type: string
         custom: []
       password:
         name: password
         description: ''
         required: true
-        example: et
+        example: exercitationem
         type: string
         custom: []
     responses:

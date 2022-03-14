@@ -110,7 +110,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <blockquote>
 <p>Base URL</p>
 </blockquote>
-<pre><code class="language-yaml">http://dropship.test</code></pre>
+<pre><code class="language-yaml">http://dropship.webrefiner.com</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
@@ -136,7 +136,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://dropship.test/api/v1/driver-login"
+    "http://dropship.webrefiner.com/api/v1/driver-login"
 );
 
 const headers = {
@@ -145,8 +145,8 @@ const headers = {
 };
 
 let body = {
-    "phone": "sit",
-    "password": "et"
+    "phone": "eaque",
+    "password": "exercitationem"
 };
 
 fetch(url, {
@@ -158,12 +158,12 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://dropship.test/api/v1/driver-login" \
+    "http://dropship.webrefiner.com/api/v1/driver-login" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"phone\": \"sit\",
-    \"password\": \"et\"
+    \"phone\": \"eaque\",
+    \"password\": \"exercitationem\"
 }"
 </code></pre></div>
 
@@ -253,7 +253,7 @@ fetch(url, {
                 <input type="text"
                name="phone"
                data-endpoint="POSTapi-v1-driver-login"
-               value="sit"
+               value="eaque"
                data-component="body" hidden>
     <br>
 
@@ -263,7 +263,7 @@ fetch(url, {
                 <input type="text"
                name="password"
                data-endpoint="POSTapi-v1-driver-login"
-               value="et"
+               value="exercitationem"
                data-component="body" hidden>
     <br>
 
@@ -284,7 +284,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://dropship.test/api/v1/logout"
+    "http://dropship.webrefiner.com/api/v1/logout"
 );
 
 const headers = {
@@ -301,7 +301,7 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://dropship.test/api/v1/logout" \
+    "http://dropship.webrefiner.com/api/v1/logout" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -390,7 +390,7 @@ fetch(url, {
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://dropship.test/api/v1/driver/profile"
+    "http://dropship.webrefiner.com/api/v1/driver/profile"
 );
 
 const headers = {
@@ -406,7 +406,7 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://dropship.test/api/v1/driver/profile" \
+    --get "http://dropship.webrefiner.com/api/v1/driver/profile" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -485,7 +485,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://dropship.test/api/v1/user"
+    "http://dropship.webrefiner.com/api/v1/user"
 );
 
 const headers = {
@@ -501,7 +501,7 @@ fetch(url, {
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://dropship.test/api/v1/user" \
+    --get "http://dropship.webrefiner.com/api/v1/user" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
