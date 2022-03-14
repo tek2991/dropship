@@ -29,6 +29,7 @@ class PendingInvoiceController extends Controller
      *                "is_delivered": false,
      *                "updated_at": "2022-03-14T09:09:52.000000Z",
      *                "updated_by": null,
+     *                "remarks": null,
      *                "client": {
      *                    "id": 156,
      *                    "name": "VIJAY ENTERPRISES",

@@ -37,6 +37,7 @@ class UpdatedInvoiceController extends Controller
      *                  "alternate_phone": "NA",
      *                  "address": "4381 Estella Stravenue\nRunolfssonton, PA 09896-6519"
      *              },
+     *              "remarks": "Delivered to recepient",
      *              "client": {
      *                  "id": 2,
      *                  "name": "B R Residency",

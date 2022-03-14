@@ -15,6 +15,7 @@ class Invoice extends Model
         'no_of_packs',
         'is_delivered',
         'updated_by',
+        'remarks',
     ];
 
     public function logSheet()

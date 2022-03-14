@@ -37,6 +37,12 @@
                                 </x-input-select>
                             </div>
                             <div>
+                                <x-label for="remarks" :value="__('Remarks')" />
+                                <x-textarea id="remarks" class="block mt-1 w-full" name="remarks" required>
+                                {{ $invoice->remarks }}
+                                </x-textarea>
+                            </div>
+                            <div>
                                 <x-label for="image" :value="__('Add Images')" />
                                 <x-label for="image" class="text-xs text-red-800"
                                     :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
@@ -86,7 +92,7 @@
                                                 <tr
                                                     class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        <img src="{{ Storage::url($image->folder. '/' . $image->filename) }}"
+                                                        <img src="{{ Storage::url($image->folder . '/' . $image->filename) }}"
                                                             class="h-12 w-12 cursor-pointer max-w-none"
                                                             data-fancybox="gallery">
                                                         </img>
