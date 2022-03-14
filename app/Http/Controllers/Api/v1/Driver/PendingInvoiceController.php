@@ -11,7 +11,7 @@ class PendingInvoiceController extends Controller
     /**
      * Pending Invoices
      * 
-     * API endpoint for drivers pending invoices. If everything is okay, you'll get a 200 Status with response data in JSON format.
+     * API endpoint for driver's pending invoices. If everything is okay, you'll get a 200 Status with response data in JSON format.
      * 
      * Otherwise, the request will fail with a 401 error, and a JSON response with the error detail.
      * 
@@ -20,20 +20,29 @@ class PendingInvoiceController extends Controller
      * @authenticated
      * 
      * @response status=200 scenario=Success {
-     *      {
-     *         "id": 1,
-     *         "created_at": "2022-03-14T04:59:57.000000Z",
-     *         "updated_at": "2022-03-14T04:59:57.000000Z",
-     *         "log_sheet_id": 1,
-     *         "invoice_no": "1240072314",
-     *         "date": "2021-12-28",
-     *         "client_id": 1,
-     *         "gross_weight": "4030",
-     *         "no_of_packs": "100",
-     *         "is_delivered": 0,
-     *         "updated_by": null,
-     *         "laravel_through_key": 1
-     *       }
+     *      "data": [
+     *            {
+     *                "log_sheet_id": 1,
+     *                "invoice_no": "1240077996",
+     *                "date": "2021-12-28",
+     *                "client_id": 88,
+     *                "gross_weight": "6.12",
+     *                "no_of_packs": "2",
+     *                "is_delivered": false,
+     *                "updated_at": "2022-03-14T09:09:52.000000Z",
+     *                "updated_by": null,
+     *                "client": {
+     *                    "id": 156,
+     *                    "name": "VIJAY ENTERPRISES",
+     *                    "email": "lane08@example.org",
+     *                    "phone": "a8eb49ba-75e3-3177-b60c-30d76fa0746a",
+     *                    "alternate_phone": "NA",
+     *                    "address": "NA"
+     *                },
+     *                "images": []
+     *            },
+     *          ]
+     *      }
      */
     public function index(){
         $user = Auth::user();
