@@ -40,4 +40,9 @@ class Invoice extends Model
     {
         return $this->images()->count() > 0;
     }
+
+    public function updatedByUser()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

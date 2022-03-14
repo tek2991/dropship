@@ -22,6 +22,6 @@ class Driver extends Model
     }
 
     public function invoices(){
-        return $this->hasMany(Invoice::class);
+        return $this->hasManyThrough(Invoice::class, LogSheet::class, 'driver_id', 'log_sheet_id');
     }
 }

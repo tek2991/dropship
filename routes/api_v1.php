@@ -1,8 +1,7 @@
 <?php
 
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\Driver\PendingInvoiceController;
 use App\Http\Controllers\Api\v1\Auth\DriverApiAuthenticatedSessionController;
 
 /*
@@ -22,6 +21,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('logout', [DriverApiAuthenticatedSessionController::class, 'destroy']);
 
     Route::group(['prefix' => 'driver', 'as' => 'driver.', 'middleware' => ['role:driver']], function () {
-        
+        Route::get('pending-invoices', [PendingInvoiceController::class, 'index']);
     });
 });
