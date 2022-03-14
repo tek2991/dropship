@@ -14,7 +14,9 @@ class UpdatedInvoiceController extends Controller
      * 
      * API endpoint for driver's invoices history. If everything is okay, you'll get a 200 Status with response data in JSON format.
      * 
-     * <aside class="notice">Returns empty data array [ ... ] id no invoice history exists.</aside>
+     * <aside class="notice">data [ ... ] contains array of Invoices</aside>
+     * 
+     * <aside class="notice">Returns empty data array [ ... ] if invoice history does not exists.</aside>
      * 
      * @authenticated
      * 

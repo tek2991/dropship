@@ -13,7 +13,9 @@ class PendingInvoiceController extends Controller
      * 
      * API endpoint for driver's pending invoices. If everything is okay, you'll get a 200 Status with response data in JSON format.
      * 
-     * <aside class="notice">Returns empty data array [ ... ] id not pending invoices.</aside>
+     * <aside class="notice">data [ ... ] contains array of Invoices</aside>
+     * 
+     * <aside class="notice">Returns empty data array [ ... ] if there are no pending invoices.</aside>
      * 
      * @authenticated
      * 
