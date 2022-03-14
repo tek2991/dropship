@@ -13,9 +13,7 @@ class PendingInvoiceController extends Controller
      * 
      * API endpoint for driver's pending invoices. If everything is okay, you'll get a 200 Status with response data in JSON format.
      * 
-     * Otherwise, the request will fail with a 401 error, and a JSON response with the error detail.
-     * 
-     * <aside class="notice">Logout API is common for all user levels.</aside>
+     * <aside class="notice">Returns empty data array [ ... ] id not pending invoices.</aside>
      * 
      * @authenticated
      * 

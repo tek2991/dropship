@@ -20,7 +20,7 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * Otherwise, the request will fail with a 422 error, and a JSON response with error details.
      * 
-     * <aside class="notice">The token need to need to be passed in the Authorization header of all subsequest request.</aside>
+     * <aside class="notice">The <b>token</b> need to need to be sent as an <b>Authorization</b> header with the value <b>"Bearer {YOUR_AUTH_KEY}"</b> for all subsequest request.</aside>
      * 
      * @response status=200 scenario=Success {
      * "data": {
@@ -73,7 +73,7 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * Otherwise, the request will fail with a 401 error, and a JSON response with the error detail.
      * 
-     * <aside class="notice">Logout API is common for all user levels.</aside>
+     * <aside class="notice">Logout method is common for all user levels.</aside>
      * 
      * @authenticated
      * 
