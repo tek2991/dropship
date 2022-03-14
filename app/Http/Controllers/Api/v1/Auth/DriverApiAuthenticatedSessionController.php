@@ -65,19 +65,20 @@ class DriverApiAuthenticatedSessionController extends Controller
     /**
      * Logout API
      * 
-     * API endpoint for logout. If everything is okay, you'll get a 200 Status with JSON response containing the token and user object.
      * 
-     * @authenticated
+     * API endpoint for logout. If everything is okay, you'll get a 200 Status with success message in JSON format.
+     * 
+     * Otherwise, the request will fail with a 401 error, and a JSON response with the error detail.
      * 
      * <aside class="notice">Logout API is common for all user levels.</aside>
-     * 
-     * Otherwise, the request will fail with a 401 error, and a JSON response with error details.
+     *
+     * @authenticated
      * 
      * @response status=200 scenario=Success {
      *      "message": "Logout successfully"
      *  }
      * @response status=422 scenario="Incorrect credentials" {
-     *      "message": "message": "Unauthenticated."
+     *      "message": "Unauthenticated."
      *  }
      */
     public function destroy()
