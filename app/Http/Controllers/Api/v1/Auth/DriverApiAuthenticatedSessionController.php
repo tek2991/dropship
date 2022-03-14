@@ -56,8 +56,10 @@ class DriverApiAuthenticatedSessionController extends Controller
         $token = $user->createToken('driver')->plainTextToken;
 
         return response()->json([
-            'token' => $token,
-            'user' => $user
+            'data' => [
+                'token' => $token,
+                'user' => $user
+            ]
         ]);
     }
 
