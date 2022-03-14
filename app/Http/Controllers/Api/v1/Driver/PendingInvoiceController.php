@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1\Driver;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\InvoiceResource;
 use Auth;
 
 class PendingInvoiceController extends Controller
@@ -37,6 +38,7 @@ class PendingInvoiceController extends Controller
     public function index(){
         $user = Auth::user();
         $invoices = $user->driver->invoices()->where('is_delivered', false)->with('clientUser', 'images', 'updatedByUser')->get();
-        return response()->json($invoices);
+        
+        return InvoiceResource::collection($invoices);
     }
 }
