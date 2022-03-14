@@ -8,8 +8,13 @@ endpoints:
       - POST
     uri: api/v1/driver-login
     metadata:
-      title: ''
-      description: ''
+      title: 'Driver Login API'
+      description: |-
+        API endpoint for driver login. If everything is okay, you'll get a 200 Status with JSON response containing the token and user object.
+
+        <aside class="notice">The token need to need to be passed in the Authorization header of all subsequest request.</aside>
+
+        Otherwise, the request will fail with a 422 error, and a JSON response with error details.
       authenticated: false
       custom: []
     headers:
@@ -22,34 +27,86 @@ endpoints:
         name: phone
         description: ''
         required: true
-        example: culpa
+        example: qui
         type: string
         custom: []
       password:
         name: password
         description: ''
         required: true
-        example: voluptatum
+        example: qui
         type: string
         custom: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+           "token": "1|cmNFo7NCyMz0L4gbWPuTn5yxN246TVfKw56dOOxd",
+             "user": {
+                 "id": 4,
+                 "name": "Driver_8011302757",
+                 "email": "driver_8011302757@dropship.test",
+                 "email_verified_at": "2022-03-14T04:59:57.000000Z",
+                 "created_at": "2022-03-14T04:59:57.000000Z",
+                 "updated_at": "2022-03-14T04:59:57.000000Z",
+                 "gender": null,
+                 "dob": null,
+                 "address": "NA",
+                 "phone": "8011302757",
+                 "alternate_phone": "NA",
+                 "is_active": 1
+             }
+           }
+        headers: []
+        description: '200, Success'
+      -
+        status: 422
+        content: |-
+          {
+           "message": "These credentials do not match our records.",
+               "errors": {
+                   "phone": [
+                       "These credentials do not match our records."
+                   ]
+              }
+            }
+        headers: []
+        description: '422, Incorrect credentials'
     responseFields: []
   -
     httpMethods:
       - POST
     uri: api/v1/logout
     metadata:
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Logout API'
+      description: 'API endpoint for logout. If everything is okay, you''ll get a 200 Status with JSON response containing the token and user object.'
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
     queryParameters: []
     bodyParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+               "message": "Logout successfully"
+           }
+        headers: []
+        description: '200, Success'
+      -
+        status: 422
+        content: |-
+          {
+               "message": "message": "Unauthenticated."
+           }
+        headers: []
+        description: '422, Incorrect credentials'
     responseFields: []
   -
     httpMethods:

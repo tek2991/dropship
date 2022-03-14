@@ -21,8 +21,8 @@
 
     <style id="language-style">
         /* starts out as display none and is replaced with js later  */
-                    body .content .bash-example code { display: none; }
                     body .content .javascript-example code { display: none; }
+                    body .content .bash-example code { display: none; }
             </style>
 
     <script>
@@ -36,7 +36,7 @@
 
 </head>
 
-<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+<body data-languages="[&quot;javascript&quot;,&quot;bash&quot;]">
 
 <a href="#" id="nav-button">
     <span>
@@ -47,8 +47,8 @@
 <div class="tocify-wrapper">
     
             <div class="lang-selector">
-                                            <button type="button" class="lang-button" data-language-name="bash">bash</button>
                                             <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                            <button type="button" class="lang-button" data-language-name="bash">bash</button>
                     </div>
     
     <div class="search">
@@ -75,10 +75,10 @@
                 </li>
                                     <ul id="tocify-subheader-endpoints" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-driver-login">
-                        <a href="#endpoints-POSTapi-v1-driver-login">POST api/v1/driver-login</a>
+                        <a href="#endpoints-POSTapi-v1-driver-login">Driver Login API</a>
                     </li>
                                     <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-logout">
-                        <a href="#endpoints-POSTapi-v1-logout">POST api/v1/logout</a>
+                        <a href="#endpoints-POSTapi-v1-logout">Logout API</a>
                     </li>
                                     <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-driver-profile">
                         <a href="#endpoints-GETapi-v1-driver-profile">GET api/v1/driver/profile</a>
@@ -115,7 +115,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <pre><code class="language-yaml">http://dropship.test</code></pre>
 
         <h1 id="authenticating-requests">Authenticating requests</h1>
-<p>Authenticate requests to this API's endpoints by sending an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
+<p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
 <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
 <p>You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.</p>
 
@@ -123,27 +123,17 @@ You can switch the language used with the tabs at the top right (or from the nav
 
     
 
-            <h2 id="endpoints-POSTapi-v1-driver-login">POST api/v1/driver-login</h2>
+            <h2 id="endpoints-POSTapi-v1-driver-login">Driver Login API</h2>
 
 <p>
 </p>
 
-
+<p>API endpoint for driver login. If everything is okay, you'll get a 200 Status with JSON response containing the token and user object.</p>
+<aside class="notice">The token need to need to be passed in the Authorization header of all subsequest request.</aside>
+<p>Otherwise, the request will fail with a 422 error, and a JSON response with error details.</p>
 
 <span id="example-requests-POSTapi-v1-driver-login">
 <blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request POST \
-    "http://dropship.test/api/v1/driver-login" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"phone\": \"culpa\",
-    \"password\": \"voluptatum\"
-}"
-</code></pre></div>
 
 
 <div class="javascript-example">
@@ -157,8 +147,8 @@ const headers = {
 };
 
 let body = {
-    "phone": "culpa",
-    "password": "voluptatum"
+    "phone": "qui",
+    "password": "qui"
 };
 
 fetch(url, {
@@ -167,10 +157,59 @@ fetch(url, {
     body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://dropship.test/api/v1/driver-login" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"phone\": \"qui\",
+    \"password\": \"qui\"
+}"
+</code></pre></div>
+
 </span>
 
 <span id="example-responses-POSTapi-v1-driver-login">
-</span>
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;token&quot;: &quot;1|cmNFo7NCyMz0L4gbWPuTn5yxN246TVfKw56dOOxd&quot;,
+    &quot;user&quot;: {
+        &quot;id&quot;: 4,
+        &quot;name&quot;: &quot;Driver_8011302757&quot;,
+        &quot;email&quot;: &quot;driver_8011302757@dropship.test&quot;,
+        &quot;email_verified_at&quot;: &quot;2022-03-14T04:59:57.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2022-03-14T04:59:57.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2022-03-14T04:59:57.000000Z&quot;,
+        &quot;gender&quot;: null,
+        &quot;dob&quot;: null,
+        &quot;address&quot;: &quot;NA&quot;,
+        &quot;phone&quot;: &quot;8011302757&quot;,
+        &quot;alternate_phone&quot;: &quot;NA&quot;,
+        &quot;is_active&quot;: 1
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Incorrect credentials):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;These credentials do not match our records.&quot;,
+    &quot;errors&quot;: {
+        &quot;phone&quot;: [
+            &quot;These credentials do not match our records.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-driver-login" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-driver-login"></span>:
@@ -216,7 +255,7 @@ fetch(url, {
                 <input type="text"
                name="phone"
                data-endpoint="POSTapi-v1-driver-login"
-               value="culpa"
+               value="qui"
                data-component="body" hidden>
     <br>
 
@@ -226,29 +265,23 @@ fetch(url, {
                 <input type="text"
                name="password"
                data-endpoint="POSTapi-v1-driver-login"
-               value="voluptatum"
+               value="qui"
                data-component="body" hidden>
     <br>
 
         </p>
         </form>
 
-            <h2 id="endpoints-POSTapi-v1-logout">POST api/v1/logout</h2>
+            <h2 id="endpoints-POSTapi-v1-logout">Logout API</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
-
+<p>API endpoint for logout. If everything is okay, you'll get a 200 Status with JSON response containing the token and user object.</p>
 
 <span id="example-requests-POSTapi-v1-logout">
 <blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request POST \
-    "http://dropship.test/api/v1/logout" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -257,6 +290,7 @@ fetch(url, {
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -266,10 +300,36 @@ fetch(url, {
     headers,
 }).then(response =&gt; response.json());</code></pre></div>
 
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://dropship.test/api/v1/logout" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
 </span>
 
 <span id="example-responses-POSTapi-v1-logout">
-</span>
+            <blockquote>
+            <p>Example response (200, Success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Logout successfully&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422, Incorrect credentials):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;message&quot;: &quot;message&quot;: &quot;Unauthenticated.&quot;
+ }</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-logout" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-logout"></span>:
@@ -282,10 +342,10 @@ fetch(url, {
 </span>
 <form id="form-POSTapi-v1-logout" data-method="POST"
       data-path="api/v1/logout"
-      data-authed="0"
+      data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      data-headers='{"Authorization":"Bearer {YOUR_AUTH_KEY}","Content-Type":"application\/json","Accept":"application\/json"}'
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-logout', this);">
     <h3>
@@ -309,7 +369,15 @@ fetch(url, {
             <small class="badge badge-black">POST</small>
             <b><code>api/v1/logout</code></b>
         </p>
-                    </form>
+                <p>
+            <label id="auth-POSTapi-v1-logout" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-v1-logout"
+                                                                data-component="header"></label>
+        </p>
+                </form>
 
             <h2 id="endpoints-GETapi-v1-driver-profile">GET api/v1/driver/profile</h2>
 
@@ -320,13 +388,6 @@ fetch(url, {
 
 <span id="example-requests-GETapi-v1-driver-profile">
 <blockquote>Example request:</blockquote>
-
-
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "http://dropship.test/api/v1/driver/profile" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
@@ -343,6 +404,13 @@ fetch(url, {
     method: "GET",
     headers,
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://dropship.test/api/v1/driver/profile" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 </span>
 
@@ -417,13 +485,6 @@ access-control-allow-origin: *
 <blockquote>Example request:</blockquote>
 
 
-<div class="bash-example">
-    <pre><code class="language-bash">curl --request GET \
-    --get "http://dropship.test/api/v1/user" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
-
-
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
     "http://dropship.test/api/v1/user"
@@ -438,6 +499,13 @@ fetch(url, {
     method: "GET",
     headers,
 }).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://dropship.test/api/v1/user" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
 
 </span>
 
@@ -507,8 +575,8 @@ access-control-allow-origin: *
     </div>
     <div class="dark-box">
                     <div class="lang-selector">
-                                                        <button type="button" class="lang-button" data-language-name="bash">bash</button>
                                                         <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                                                        <button type="button" class="lang-button" data-language-name="bash">bash</button>
                             </div>
             </div>
 </div>
