@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\Driver\UpdateInvoiceController;
 use App\Http\Controllers\Api\v1\Driver\PendingInvoiceController;
 use App\Http\Controllers\Api\v1\Driver\UpdatedInvoiceController;
+use App\Http\Controllers\Api\v1\Driver\UploadInvoicePhotoController;
 use App\Http\Controllers\Api\v1\Auth\DriverApiAuthenticatedSessionController;
 
 /*
@@ -26,5 +27,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('pending-invoices', [PendingInvoiceController::class, 'index']);
         Route::get('updated-invoices', [UpdatedInvoiceController::class, 'index']);
         Route::put('update-invoice/{invoice}', [UpdateInvoiceController::class, 'update']);
+        Route::post('upload-invoice-photo/{invoice}', [UploadInvoicePhotoController::class, 'store']);
     });
 });
