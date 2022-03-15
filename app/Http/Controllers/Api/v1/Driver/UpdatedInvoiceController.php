@@ -23,6 +23,7 @@ class UpdatedInvoiceController extends Controller
      * @response status=200 scenario=Success {
      *      "data": [
      *          {
+     *              "invoice_id": 1,
      *              "log_sheet_id": 1,
      *              "invoice_no": "1240072314",
      *              "date": "2021-12-28",
@@ -32,7 +33,7 @@ class UpdatedInvoiceController extends Controller
      *              "is_delivered": true,
      *              "updated_at": "2022-03-14T13:26:45.000000Z",
      *              "updated_by": {
-     *                  "id": 1,
+     *                  "user_id": 1,
      *                  "name": "Admin",
      *                  "email": "tek2991@gmail.com",
      *                  "phone": "856d0f73-dcf9-3df4-b323-5a4a334087e9",
@@ -41,7 +42,7 @@ class UpdatedInvoiceController extends Controller
      *              },
      *              "remarks": "Delivered to recepient",
      *              "client": {
-     *                  "id": 2,
+     *                  "user_id": 2,
      *                  "name": "B R Residency",
      *                  "email": "althea.murphy@example.net",
      *                  "phone": "be7a117d-868b-34ac-bedd-8c38e7fd53aa",

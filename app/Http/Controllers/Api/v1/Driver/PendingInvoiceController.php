@@ -22,6 +22,7 @@ class PendingInvoiceController extends Controller
      * @response status=200 scenario=Success {
      *      "data": [
      *            {
+     *                "invoice_id": 1,
      *                "log_sheet_id": 1,
      *                "invoice_no": "1240077996",
      *                "date": "2021-12-28",
@@ -33,7 +34,7 @@ class PendingInvoiceController extends Controller
      *                "updated_by": null,
      *                "remarks": null,
      *                "client": {
-     *                    "id": 156,
+     *                    "user_id": 156,
      *                    "name": "VIJAY ENTERPRISES",
      *                    "email": "lane08@example.org",
      *                    "phone": "a8eb49ba-75e3-3177-b60c-30d76fa0746a",
