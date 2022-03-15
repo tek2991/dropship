@@ -19,7 +19,7 @@ class UpdateInvoiceController extends Controller
      * @authenticated
      * 
      * @response status=200 scenario=Success {
-     *     "message": "Invoices updated successfully.",
+     *     "message": "Invoice updated successfully.",
      *  }
      */
     public function update(UpdateInvoiceRequest $request, Invoice $invoice){

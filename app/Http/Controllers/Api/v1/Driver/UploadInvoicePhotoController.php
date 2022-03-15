@@ -21,7 +21,7 @@ class UploadInvoicePhotoController extends Controller
      * @authenticated
      * 
      * @response status=200 scenario=Success {
-     *     "message": "Invoices updated successfully.",
+     *     "message": "Photo uploaded successfully.",
      *  }
      */
     public function store(UploadInvoicePhotoRequest $request, Invoice $invoice)
