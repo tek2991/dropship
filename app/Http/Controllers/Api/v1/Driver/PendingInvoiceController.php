@@ -11,11 +11,13 @@ class PendingInvoiceController extends Controller
     /**
      * Pending Invoices
      * 
-     * API endpoint for driver's pending invoices. If everything is okay, you'll get a 200 Status with response data in JSON format.
+     * API endpoint for driver's pending invoices. If everything is okay, you'll get a 200 Status with paginated response data in JSON format.
      * 
      * <aside class="notice">data [ ... ] contains array of Invoices</aside>
      * 
      * <aside class="notice">Returns empty data array [ ... ] if there are no pending invoices.</aside>
+     * 
+     * <aside class="notice">The links and meta objects contain pagination information</aside>
      * 
      * @authenticated
      * 
@@ -43,12 +45,25 @@ class PendingInvoiceController extends Controller
      *                },
      *                "images": []
      *            },
-     *          ]
+     *          ],
+     *         "links": {
+     *             "first": "http://dropship.test/api/v1/driver/pending-invoices?page=1",
+     *             "last": null,
+     *             "prev": null,
+     *             "next": null
+     *         },
+     *         "meta": {
+     *             "current_page": 1,
+     *             "from": 1,
+     *             "path": "http://dropship.test/api/v1/driver/pending-invoices",
+     *             "per_page": 15,
+     *             "to": 1
+     *         }
      *      }
      */
     public function index(){
         $user = Auth::user();
-        $invoices = $user->driver->invoices()->where('is_delivered', false)->with('clientUser', 'images', 'updatedByUser')->get();
+        $invoices = $user->driver->invoices()->where('is_delivered', false)->with('clientUser', 'images', 'updatedByUser')->simplePaginate();
         
         return InvoiceResource::collection($invoices);
     }
