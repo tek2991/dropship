@@ -272,7 +272,7 @@ INTRO
      * Setting `laravel.add_routes` to true (above) will also add a route for the collection.
      */
     'postman' => [
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Manually override some generated content in the spec. Dot notation is supported.
@@ -289,7 +289,7 @@ INTRO
      * Setting `laravel.add_routes` to true (above) will also add a route for the spec.
      */
     'openapi' => [
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * Manually override some generated content in the spec. Dot notation is supported.

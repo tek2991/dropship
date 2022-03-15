@@ -26,6 +26,14 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('docs/postman' , function () {
+    return Storage::download('scribe/collection.json');
+})->name('scribe.postman');
+
+Route::get('docs/openapi' , function () {
+    return Storage::download('scribe/openapi.yaml');
+})->name('scribe.openapi');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
