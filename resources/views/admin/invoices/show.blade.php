@@ -70,8 +70,11 @@
                         <h3 class="md:text-right">
                             <strong>Packs: </strong> {{ $invoice->no_of_packs }}
                         </h3>
-                        <h3 class="md:col-span-2">
-                            <strong>Remarks: </strong>{{ $invoice->remarks ? $invoice->remarks : 'NA' }}
+                        <h3>
+                            <strong>Client: </strong>
+                            <x-text-link href="{{ route('admin.clients.show', $invoice->client) }}">
+                                {{ $invoice->clientUser->name }}
+                            </x-text-link>
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Status: </strong>
@@ -91,11 +94,8 @@
                                     </svg></span>
                             @endif
                         </h3>
-                        <h3>
-                            <strong>Remark: </strong>
-                            <x-text-link href="{{ route('admin.clients.show', $invoice->client) }}">
-                                {{ $invoice->clientUser->name }}
-                            </x-text-link>
+                        <h3 class="md:col-span-2">
+                            <strong>Remarks: </strong><i>{{ $invoice->remarks }}</i>
                         </h3>
                     </div>
 
