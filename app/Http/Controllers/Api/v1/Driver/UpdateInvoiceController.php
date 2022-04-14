@@ -18,20 +18,31 @@ class UpdateInvoiceController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {
-     *     "message": "Invoice updated successfully.",
-     *  }
+     * @response status=200 scenario=Success {"status": true, "message": "Invoice updated successfully.", "data": []}
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice){
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    {
 
-        $invoice->update([
-            'is_delivered' => $request->is_delivered,
-            'remarks' => $request->remarks,
-            'updated_by' => auth()->user()->id,
-        ]);
+        try {
+            $invoice->update([
+                'is_delivered' => $request->is_delivered,
+                'remarks' => $request->remarks,
+                'updated_by' => auth()->user()->id,
+            ]);
 
-        return response()->json([
-            'message' => 'Invoice updated successfully',
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Invoice updated successfully.',
+                'data' => []
+            ]);
+        } catch (\Exception $e) {
+            // 🧐 
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to update invoice.',
+                'errors' => $e->getMessage(),
+                'data' => []
+            ], 200);
+        }
     }
 }

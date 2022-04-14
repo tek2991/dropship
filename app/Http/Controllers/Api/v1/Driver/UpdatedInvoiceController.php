@@ -14,7 +14,7 @@ class UpdatedInvoiceController extends Controller
      * 
      * API endpoint for driver's invoices history. If everything is okay, you'll get a 200 Status with paginated response data in JSON format.
      * 
-     * <aside class="notice">data [ ... ] contains array of Invoices</aside>
+     * <aside class="notice">data { ... } contains a data [ ... ] array of Invoices with pagination data.</aside>
      * 
      * <aside class="notice">Returns empty data array [ ... ] if invoice history does not exists.</aside>
      * 
@@ -22,68 +22,32 @@ class UpdatedInvoiceController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {
-     *        "data": [
-     *            {
-     *                "invoice_id": 1,
-     *                "log_sheet_id": 1,
-     *                "invoice_no": "1240072314",
-     *                "date": "2021-12-28",
-     *                "client_id": 1,
-     *                "gross_weight": "4030",
-     *                "no_of_packs": "100",
-     *                "is_delivered": true,
-     *                "updated_at": "2022-03-14T13:26:45.000000Z",
-     *                "updated_by": {
-     *                    "user_id": 1,
-     *                    "name": "Admin",
-     *                    "email": "tek2991@gmail.com",
-     *                    "phone": "856d0f73-dcf9-3df4-b323-5a4a334087e9",
-     *                    "alternate_phone": "NA",
-     *                    "address": "4381 Estella Stravenue\nRunolfssonton, PA 09896-6519"
-     *                },
-     *                "remarks": "Delivered to recepient",
-     *                "client": {
-     *                    "user_id": 2,
-     *                    "name": "B R Residency",
-     *                    "email": "althea.murphy@example.net",
-     *                    "phone": "be7a117d-868b-34ac-bedd-8c38e7fd53aa",
-     *                    "alternate_phone": "NA",
-     *                    "address": "NA"
-     *                },
-     *                "images": [
-     *                    {
-     *                        "folder": "invoices/1240072314/622f428f2966d_1647264399",
-     *                        "filename": "doc_2.jpg",
-     *                        "url": "http://dropship.test/storage/invoices/1240072314/622f428f2966d_1647264399/doc_2.jpg"
-     *                    },
-     *                    {
-     *                        "folder": "invoices/1240072314/622f428f29748_1647264399",
-     *                        "filename": "doc_1.jpg",
-     *                        "url": "http://dropship.test/storage/invoices/1240072314/622f428f29748_1647264399/doc_1.jpg"
-     *                    }
-     *                ]
-     *            }
-     *        ],
-     *        "links": {
-     *            "first": "http://dropship.test/api/v1/driver/updated-invoices?page=1",
-     *            "last": null,
-     *            "prev": null,
-     *            "next": null
-     *        },
-     *        "meta": {
-     *            "current_page": 1,
-     *            "from": 1,
-     *            "path": "http://dropship.test/api/v1/driver/updated-invoices",
-     *            "per_page": 15,
-     *            "to": 1
-     *        }
-     *  }
+     * @response status=200 scenario=Success {"status": true, "message": "Invoices History", "data":{"data": [{"invoice_id": 6, "log_sheet_id": "6", "invoice_no": "1240069561", "date": "2021-12-28", "client_id": "6", "gross_weight": "286.688", "no_of_packs": "39", "is_delivered": true, "updated_at": "2022-04-14T14:03:41.000000Z", "updated_by":{"user_id": 23, "name": "Driver_1231479550", "email": "driver_1231479550@dropship.test", "phone": "1231479550", "alternate_phone": "NA", "address": "NA"}, "remarks": "The drivers remarks", "client":{"user_id": 13, "name": "Divyam Agencies", "email": "brakus.rocio@example.org", "phone": "68da9768-cd4b-329c-913e-88d2df0a4b92", "alternate_phone": "NA", "address": "NA"}, "images": []}], "links":{"first": "http://localhost:8000/api/v1/driver/updated-invoices?page=1", "last": null, "prev": null, "next": null}, "meta":{"current_page": 1, "from": 1, "path": "http://localhost:8000/api/v1/driver/updated-invoices", "per_page": 15, "to": 1}}}
      */
-    public function index(){
-        $user = Auth::user();
-        $invoices = $user->driver->invoices()->where('is_delivered', true)->with('clientUser', 'images', 'updatedByUser')->simplePaginate();
-        
-        return InvoiceResource::collection($invoices);
+    public function index()
+    {
+        try {
+            $user = Auth::user();
+            $invoices = InvoiceResource::collection(
+                $user->driver->invoices()
+                    ->where('is_delivered', true)
+                    ->with('clientUser', 'images', 'updatedByUser')
+                    ->simplePaginate()
+            );
+            $invoices = $invoices->response()->getData(); // Get the response data. Otherwise, json response does not include pagination data. 😓 
+            return response()->json([
+                'status' => true,
+                'message' => 'Invoices History',
+                'data' => $invoices
+            ]);
+        } catch (\Exception $e) {
+            // 🧐 
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch invoices',
+                'errors' => $e->getMessage(),
+                'data' => []
+            ], 200);
+        }
     }
 }

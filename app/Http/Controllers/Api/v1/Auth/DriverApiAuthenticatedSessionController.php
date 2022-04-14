@@ -22,47 +22,33 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * <aside class="notice">The <b>token</b> need to need to be sent as an <b>Authorization</b> header with the value <b>"Bearer {YOUR_AUTH_KEY}"</b> for all subsequest request.</aside>
      * 
-     * @response status=200 scenario=Success {
-     * "data": {
-     *      "token": "1|cmNFo7NCyMz0L4gbWPuTn5yxN246TVfKw56dOOxd",
-     *      "user": {
-     *          "id": 4,
-     *          "name": "Driver_8011302757",
-     *          "email": "driver_8011302757@dropship.test",
-     *          "email_verified_at": "2022-03-14T04:59:57.000000Z",
-     *          "created_at": "2022-03-14T04:59:57.000000Z",
-     *          "updated_at": "2022-03-14T04:59:57.000000Z",
-     *          "gender": null,
-     *          "dob": null,
-     *          "address": "NA",
-     *          "phone": "8011302757",
-     *          "alternate_phone": "NA",
-     *          "is_active": 1
-     *          }
-     *      }
-     *  }
-     * @response status=422 scenario="Incorrect credentials" {
-     *  "message": "These credentials do not match our records.",
-     *      "errors": {
-     *          "phone": [
-     *              "These credentials do not match our records."
-     *          ]
-     *     }
-     *   }
+     * @response status=200 scenario=Success {"statuus": true, "message": "Login Successful", "data":{"token": "3|6IQUnouHGwrsWunp8FwUBu9DCNG0itMvwaOfLNzF", "user":{"id": 4, "name": "Driver_1231479540", "email": "driver_1231479540@dropship.test", "email_verified_at": "2022-04-14T09:16:26.000000Z", "created_at": "2022-04-14T09:16:26.000000Z", "updated_at": "2022-04-14T09:16:26.000000Z", "gender": null, "dob": null, "address": "NA", "phone": "1231479540", "alternate_phone": "NA", "is_active": "1"}}}
+     * 
+     * @response status=200 scenario="Incorrect credentials" {"status": false, "message": "These credentials do not match our records.", "data": []}
      */
     public function store(DriverLoginRequest $request)
     {
-        $request->authenticate();
-
-        $user = User::firstWhere('phone', $request->phone);
-        $token = $user->createToken('driver')->plainTextToken;
-
-        return response()->json([
-            'data' => [
-                'token' => $token,
-                'user' => $user
-            ]
-        ]);
+        try {
+            $request->authenticate();
+            $user = User::firstWhere('phone', $request->phone);
+            $token = $user->createToken('driver')->plainTextToken;
+            return response()->json([
+                'statuus' => true,
+                'message' => 'Login Successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => $user
+                ]
+            ]);
+        } catch (\Exception $e) {
+            // 🧐 
+            return response()->json([
+                'status' => false,
+                'message' => 'Login Failed',
+                'errors' => $e->getMessage(),
+                'data' => []
+            ], 200);
+        }
     }
 
 
@@ -77,16 +63,15 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {
-     *      "message": "Logout successfully"
-     *  }
-     * @response status=422 scenario="Incorrect credentials" {
-     *      "message": "Unauthenticated."
-     *  }
+     * @response status=200 scenario=Success {"status": true, "message": "Logout successfully", "data": []}
      */
     public function destroy()
     {
         Auth::user()->tokens()->delete();
-        return response()->json(['message' => 'Logout successfully']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Logout successfully',
+            'data' => []
+        ]);
     }
 }

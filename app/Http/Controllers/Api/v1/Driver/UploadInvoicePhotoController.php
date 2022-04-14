@@ -20,9 +20,7 @@ class UploadInvoicePhotoController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {
-     *     "message": "Photo uploaded successfully.",
-     *  }
+     * @response status=200 scenario=Success {"status": true, "message": "Image uploaded successfully", "data": []}
      */
     public function store(UploadInvoicePhotoRequest $request, Invoice $invoice)
     {
@@ -39,11 +37,19 @@ class UploadInvoicePhotoController extends Controller
             ]);
             $invoice->images()->save($imageModel);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'File upload failed!'], 400);
+            // 🧐 
+            return response()->json([
+                'status' => false,
+                'message' => 'File upload failed!',
+                'errors' => $e->getMessage(),
+                'data' => [],
+            ], 200);
         }
 
         return response()->json([
+            'status' => true,
             'message' => 'Image uploaded successfully',
+            'data' => [],
         ]);
     }
 }

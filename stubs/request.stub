@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\Driver;
+namespace {{ namespace }};
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadInvoicePhotoRequest extends FormRequest
+class {{ class }} extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UploadInvoicePhotoRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->driver->invoices->contains($this->invoice);
+        return false;
     }
 
     /**
@@ -24,7 +24,7 @@ class UploadInvoicePhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'bail|required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            //
         ];
     }
 }
