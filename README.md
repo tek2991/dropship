@@ -1,64 +1,62 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Dropship
+Server setup guide on Ubuntu 20.04 LTS (ARM64 AWS Graviton2 EC2)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This will setup a LEMP stack with PostgreSQL as the DBMS, MySql is also fully compitable.
+## PostgreSQL
+ - Install: `sudo apt install postgresql postgresql-contrib`
+ - *Status:* `sudo systemctl status postgresql` or `ps aux | grep postgres`
+  ##### Setup Database
+ - Switch to PostgreSQL: `sudo -i -u postgres`
+ - Create new role: `createuser --interactive` (***recommended:** select 'n' for all prompts*)
+ - Create new DB: `createdb database_name-same-as-user`
+ - Open PostgreSQL prompt: `psql`
+ - Set user password (in PostgreSQL prompt): `ALTER USER user_name PASSWORD 'password';`
+## PHP 8.0 fpm
+ - Install prerequisite: `sudo apt install software-properties-common`
+ - Add PPA: `sudo add-apt-repository ppa:ondrej/php`
+ - Update: `sudo apt update`
+ - Install for Nginx: `sudo apt install php8.0-fpm`
+ - *Status:* `systemctl status php8.0-fpm` or `ps aux | grep php-fpm`
+### PHP extensions
+*Note: PHP version number may be omitted as applicable*
+ - php8.0-bcmath: `sudo apt install php8.0-bcmath`
+ - php8.0-curl: `sudo apt install php8.0-curl`
+ - php8.0-gd: `sudo apt install php8.0-gd`
+ - php8.0-mbstring: `sudo apt install php8.0-mbstring`
+ - php8.0-pgsql: `sudo apt install php8.0-pgsql`
+ - php8.0-xml: `sudo apt install php8.0-xml`
+ - php8.0-zip:  `sudo apt install php8.0-zip`
+ - php8.0-intl: `sudo apt install php8.0-intl`
+##### *Install all:* `sudo apt install php8.0-bcmath php8.0-curl php8.0-gd php8.0-mbstring php8.0-pgsql php8.0-xml php8.0-zip php8.0-intl`
+## NGINX
+ - Install: `sudo apt install nginx`
+ - *Status:* `sudo systemctl status nginx` or `ps aux | grep nginx`
+### Configure Nginx
+ - Find PHP 8.0 fpm socket: `find / -name *fpm.sock`
+ - *Result (may vary):* `/run/php/php8.0-fpm.sock`
+ - Create new config file: `sudo nano /etc/nginx/sites-available/site_name`
+ - Create symbolic link: `sudo ln -s /etc/nginx/sites-available/site_name /etc/nginx/sites-enabled/`
+ - Test configuration: `sudo nginx -t`
+ - Reload Nginx: `sudo systemctl reload nginx`
+## Package managers
+### Composer for PHP
+ - Follow guide at: [https://getcomposer.org/download/](https://getcomposer.org/download/)
+ - ***Note-*** Install composer globally: `sudo mv composer.phar /usr/local/bin/composer`
+### NPM (Node.js)
+ - Add Node.js LTS (v14.x): `curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -`
+ - Install: `sudo apt-get install -y nodejs`
+## Laravel configuration
+ - Create .env file: `sudo cp .env.example .env`
+ - Setup .env as required.
+ - Composer intall: `composer install`
+ - NPM install: `npm install`
+ - Build for production: `npm run production`
+ - Generate App key: `php artisan key:generate`
+ - Link storage: `php artisan storage:link`
+## Laravel Folder Permissions
+ ### Setup with user as owner: 
+ - Nagivate to root directory: `cd /var/www/site_name`
+- Set User as owner & web-server as group: `sudo chown -R $USER:www-data .`
+- Set file permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type f -exec chmod 664 {} \;`
+- Set directory permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type d -exec chmod 775 {} \;`
+- give the webserver the rights to read and write to storage and cache: `sudo chgrp -R www-data storage bootstrap/cache` and `sudo chmod -R ug+rwx storage bootstrap/cache`
