@@ -46,7 +46,7 @@ class UpdatedInvoiceController extends Controller
                 'status' => false,
                 'message' => 'Failed to fetch invoices',
                 'errors' => $e->getMessage(),
-                'data' => []
+                'data' => (object)[],
             ], 200);
         }
     }

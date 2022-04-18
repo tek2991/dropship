@@ -24,7 +24,7 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * @response status=200 scenario=Success {"statuus": true, "message": "Login Successful", "data":{"token": "3|6IQUnouHGwrsWunp8FwUBu9DCNG0itMvwaOfLNzF", "user":{"id": 4, "name": "Driver_1231479540", "email": "driver_1231479540@dropship.test", "email_verified_at": "2022-04-14T09:16:26.000000Z", "created_at": "2022-04-14T09:16:26.000000Z", "updated_at": "2022-04-14T09:16:26.000000Z", "gender": null, "dob": null, "address": "NA", "phone": "1231479540", "alternate_phone": "NA", "is_active": "1"}}}
      * 
-     * @response status=200 scenario="Incorrect credentials" {"status": false, "message": "These credentials do not match our records.", "data": []}
+     * @response status=200 scenario="Incorrect credentials" {"status": false, "message": "These credentials do not match our records.", "data": {}}
      */
     public function store(DriverLoginRequest $request)
     {
@@ -46,7 +46,7 @@ class DriverApiAuthenticatedSessionController extends Controller
                 'status' => false,
                 'message' => 'Login Failed',
                 'errors' => $e->getMessage(),
-                'data' => []
+                'data' => (object)[],
             ], 200);
         }
     }
@@ -63,7 +63,7 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {"status": true, "message": "Logout successfully", "data": []}
+     * @response status=200 scenario=Success {"status": true, "message": "Logout successfully", "data": {}}
      */
     public function destroy()
     {
@@ -71,7 +71,7 @@ class DriverApiAuthenticatedSessionController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Logout successfully',
-            'data' => []
+            'data' => (object)[],
         ]);
     }
 }

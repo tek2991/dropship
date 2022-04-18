@@ -18,7 +18,7 @@ class UpdateInvoiceController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {"status": true, "message": "Invoice updated successfully.", "data": []}
+     * @response status=200 scenario=Success {"status": true, "message": "Invoice updated successfully.", "data": {}}
      */
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
@@ -33,7 +33,7 @@ class UpdateInvoiceController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Invoice updated successfully.',
-                'data' => []
+                'data' => (object)[],
             ]);
         } catch (\Exception $e) {
             // 🧐 
@@ -41,7 +41,7 @@ class UpdateInvoiceController extends Controller
                 'status' => false,
                 'message' => 'Failed to update invoice.',
                 'errors' => $e->getMessage(),
-                'data' => []
+                'data' => (object)[]
             ], 200);
         }
     }

@@ -36,7 +36,7 @@ class PendingInvoiceController extends Controller
             $invoices = $invoices->response()->getData(); // Get the response data. Otherwise, json response does not include pagination data. 😓 
             
             return response()->json([
-                'success' => true,
+                'status' => true,
                 'message' => 'Pending Invoices',
                 'data' => $invoices,
             ]);
@@ -46,7 +46,7 @@ class PendingInvoiceController extends Controller
                 'status' => false,
                 'message' => 'Failed to fetch pending invoices',
                 'errors' => $e->getMessage(),
-                'data' => []
+                'data' => (object)[],
             ], 200);
         }
     }
