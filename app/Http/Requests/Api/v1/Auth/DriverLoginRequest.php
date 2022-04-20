@@ -29,7 +29,7 @@ class DriverLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required', 'string', 'exists:users,phone'],
+            'phone' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }

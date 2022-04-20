@@ -46,7 +46,7 @@ class UploadInvoicePhotoController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'File upload failed!',
-                'errors' => $e->getMessage(),
+                // 'errors' => $e->getMessage(),
                 'data' => (object)[],
             ], 200);
         }

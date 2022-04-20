@@ -45,7 +45,7 @@ class PendingInvoiceController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to fetch pending invoices',
-                'errors' => $e->getMessage(),
+                // 'errors' => $e->getMessage(),
                 'data' => (object)[],
             ], 200);
         }

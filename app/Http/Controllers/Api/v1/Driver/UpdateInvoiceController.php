@@ -40,7 +40,7 @@ class UpdateInvoiceController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to update invoice.',
-                'errors' => $e->getMessage(),
+                // 'errors' => $e->getMessage(),
                 'data' => (object)[]
             ], 200);
         }
