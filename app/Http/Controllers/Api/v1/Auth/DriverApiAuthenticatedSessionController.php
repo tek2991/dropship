@@ -22,9 +22,9 @@ class DriverApiAuthenticatedSessionController extends Controller
      * 
      * <aside class="notice">The <b>token</b> need to need to be sent as an <b>Authorization</b> header with the value <b>"Bearer {YOUR_AUTH_KEY}"</b> for all subsequest request.</aside>
      * 
-     * @response status=200 scenario=Success {"status": true, "message": "Login Successful", "data":{"token": "3|6IQUnouHGwrsWunp8FwUBu9DCNG0itMvwaOfLNzF", "user":{"id": 4, "name": "Driver_1231479540", "email": "driver_1231479540@dropship.test", "email_verified_at": "2022-04-14T09:16:26.000000Z", "created_at": "2022-04-14T09:16:26.000000Z", "updated_at": "2022-04-14T09:16:26.000000Z", "gender": null, "dob": null, "address": "NA", "phone": "1231479540", "alternate_phone": "NA", "is_active": "1"}}}
+     * @response status=200 scenario=Success {"status": true, "message": "Login Successful", "data":{"token": "9|MXCoGNxqdUtiays8MLg3isoLBwZztMB4eEan4PfM", "user":{"id": 23, "name": "Driver_1231479550", "email": "driver_1231479550@dropship.test", "email_verified_at": "2022-04-14T09:16:27.000000Z", "created_at": "2022-04-14T09:16:27.000000Z", "updated_at": "2022-04-14T09:16:27.000000Z", "gender": null, "dob": null, "address": "NA", "phone": "1231479550", "alternate_phone": "NA", "is_active": "1"}}}
      * 
-     * @response status=200 scenario="Incorrect credentials" {"status": false, "message": "These credentials do not match our records.", "data": {}}
+     * @response status=200 scenario="Incorrect credentials" {"status": false, "message": "Login Failed", "errors": "These credentials do not match our records.", "data":{}}
      */
     public function store(DriverLoginRequest $request)
     {
@@ -67,21 +67,11 @@ class DriverApiAuthenticatedSessionController extends Controller
      */
     public function destroy()
     {
-        try {
-            Auth::user()->tokens()->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Logout successfully',
-                'data' => (object)[],
-            ]);
-        } catch (\Exception $e) {
-            // 🧐 
-            return response()->json([
-                'status' => false,
-                'message' => 'Logout Failed',
-                'errors' => $e->getMessage(),
-                'data' => (object)[],
-            ], 200);
-        }
+        Auth::user()->tokens()->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Logout successfully',
+            'data' => (object)[],
+        ]);
     }
 }

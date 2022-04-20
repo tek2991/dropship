@@ -21,7 +21,7 @@ class PendingInvoiceController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {"success": true, "message": "Pending Invoices", "data":{"data": [{"invoice_id": 7, "log_sheet_id": "6", "invoice_no": "1240070535", "date": "2021-12-28", "client_id": "7", "gross_weight": "42.2", "no_of_packs": "3", "is_delivered": false, "updated_at": "2022-04-14T09:16:26.000000Z", "updated_by": null, "remarks": null, "client":{"user_id": 15, "name": "RAVI UDYOG", "email": "vberge@example.com", "phone": "6990de17-80ed-34c4-a2b9-fe236e8303b7", "alternate_phone": "NA", "address": "NA"}, "images": []}], "links":{"first": "http://localhost:8000/api/v1/driver/pending-invoices?page=1", "last": null, "prev": null, "next": null}, "meta":{"current_page": 1, "from": 1, "path": "http://localhost:8000/api/v1/driver/pending-invoices", "per_page": 15, "to": 5}}}
+     * @response status=200 scenario=Success {"status": true, "message": "Pending Invoices", "data":{"data": [{"invoice_id": 7, "log_sheet_id": "6", "invoice_no": "1240070535", "date": "2021-12-28", "client_id": "7", "gross_weight": "42.2", "no_of_packs": "3", "is_delivered": false, "updated_at": "2022-04-14T09:16:26.000000Z", "updated_by": null, "remarks": null, "client":{"user_id": 15, "name": "RAVI UDYOG", "email": "vberge@example.com", "phone": "6990de17-80ed-34c4-a2b9-fe236e8303b7", "alternate_phone": "NA", "address": "NA"}, "images": []}], "links":{"first": "http://localhost:8000/api/v1/driver/pending-invoices?page=1", "last": null, "prev": null, "next": null}, "meta":{"current_page": 1, "from": 1, "path": "http://localhost:8000/api/v1/driver/pending-invoices", "per_page": 15, "to": 5}}}
      */
     public function index(){
         try {
