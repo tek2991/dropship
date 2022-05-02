@@ -20,9 +20,7 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return view('admin.drivers.index', [
-            'drivers' => Driver::with('user')->paginate(),
-        ]);
+        return view('admin.drivers.index');
     }
 
     /**
