@@ -37,6 +37,7 @@ final class VehicleTable extends PowerGridComponent
         $this->showCheckBox()
             ->showPerPage()
             ->showSearchInput()
+            ->showToggleColumns()
             ->showExportOption('download', ['excel', 'csv']);
     }
 
