@@ -53,7 +53,7 @@
                             <strong>Driver: </strong>
                             @if ($invoice->logSheet->driverUser !== null)
                                 <x-text-link
-                                    href="{{ route('admin.drivers.show', $invoice->logSheet->driverUser) }}">
+                                    href="{{ route('admin.drivers.show', $invoice->logSheet->driver) }}">
                                     {{ $invoice->logSheet->driverUser->name }}
                                 </x-text-link>
                             @else
