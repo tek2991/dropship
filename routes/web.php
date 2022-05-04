@@ -51,10 +51,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'clients' => ClientController::class,
     ], ['except' => ['destroy']]);
 
-    Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit');
+    Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit', 'destroy');
     Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
     
-    Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
+    Route::resource('log-sheets', LogSheetController::class)->only('index', 'show', 'update', 'edit');
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store');
     Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');
 

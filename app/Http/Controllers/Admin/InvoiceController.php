@@ -104,6 +104,18 @@ class InvoiceController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param  \App\Models\Invoice  $invoice
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     *
+     */
+    public function destroy(Invoice $invoice){
+        $invoice->delete();
+        return redirect()->route('admin.invoices.index')->with('message', 'Invoice Deleted Successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Invoice  $invoice
