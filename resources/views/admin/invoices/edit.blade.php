@@ -26,9 +26,22 @@
                         @method('PUT')
                         @csrf
                         <div class="grid grid-cols-1 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <x-label for="client" :value="__('Client')" />
+                                    <x-input-select id="client" class="block mt-1 w-full" name="client_id" required>
+                                        @foreach ($clients as $client)
+                                            <option value="{{ $client->id }}" {{ $client->id == $invoice->client_id ? 'selected' : '' }}>
+                                                {{ $client->user->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
+                            </div>
                             <div>
                                 <x-label for="is_delivered" :value="__('Status')" />
-                                <x-input-select id="is_delivered" class="block mt-1 w-full" name="is_delivered" required>
+                                <x-input-select id="is_delivered" class="block mt-1 w-full" name="is_delivered"
+                                    required>
                                     <option value="1" {{ $invoice->is_delivered == true ? 'selected' : '' }}>Delivered
                                     </option>
                                     <option value="0" {{ $invoice->is_delivered != true ? 'selected' : '' }}>
@@ -39,13 +52,12 @@
                             <div>
                                 <x-label for="remarks" :value="__('Remarks')" />
                                 <x-textarea id="remarks" class="block mt-1 w-full" name="remarks" required>
-                                {{ $invoice->remarks }}
+                                    {{ $invoice->remarks }}
                                 </x-textarea>
                             </div>
                             <div>
                                 <x-label for="image" :value="__('Add Images')" />
-                                <x-label for="image" class="text-xs text-red-800"
-                                    :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
+                                <x-label for="image" class="text-xs text-red-800" :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
                                 <x-label for="image" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
                                 <x-input id="image" class="block mt-1 w-full" type="file" name="image[]" multiple />
                             </div>

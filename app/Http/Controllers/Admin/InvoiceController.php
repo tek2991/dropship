@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use File;
+use Storage;
 use App\Models\Image;
+use App\Models\Client;
+use App\Models\Driver;
 use App\Models\Invoice;
+use App\Models\Vehicle;
+use App\Models\Transporter;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
-use File;
-use Storage;
 
 
 class InvoiceController extends Controller
@@ -49,6 +53,7 @@ class InvoiceController extends Controller
     {
         return view('admin.invoices.edit', [
             'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle', 'images'),
+            'clients' => Client::all(),
         ]);
     }
 
@@ -62,14 +67,16 @@ class InvoiceController extends Controller
     public function update(Request $request, Invoice $invoice)
     {
         $request->validate([
+            'client_id' => 'required|exists:clients,id',
             'is_delivered' => 'required|boolean',
             'remarks' => 'nullable|string|max:255',
             '*.image' => 'nullable|exists:temporary_files,folder',
         ]);
 
         $invoice->update([
+            'client_id' => $request->client_id,
             'is_delivered' => $request->is_delivered,
-            'remarks' => $request->remarks,
+            '' => $request->remarks,
             'updated_by' => auth()->user()->id,
         ]);
 
