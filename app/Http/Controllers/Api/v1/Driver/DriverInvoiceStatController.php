@@ -23,15 +23,14 @@ class DriverInvoiceStatController extends Controller
             $user = Auth::user();
 
             $total_pending_invoices = $user->driver->invoices()->where('is_delivered', false)->count();
-            $today = date('Y-m-d');
-            $invoices_delivered_today = $user->driver->invoices()->where('is_delivered', true)->where('invoices.updated_at', '>=', $today)->count();
+            $pending_gross_weight = $user->driver->invoices()->where('is_delivered', false)->sum('gross_weight');
 
             return response()->json([
                 'status' => true,
                 'message' => 'Driver Invoice statistics',
                 'data' => (object)[
                     'total_pending_invoices' => $total_pending_invoices,
-                    'invoices_delivered_today' => $invoices_delivered_today,
+                    'pending_gross_weight' => $pending_gross_weight,
                 ],
             ]);
         } catch (\Exception $e) {
