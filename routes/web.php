@@ -22,6 +22,12 @@ use App\Http\Controllers\UploadController;
 |
 */
 
+Route::get('/link-storage', function () {
+    Artisan::call('storage:link'); // this will do the command line job
+    return('Storage Link Successfull');
+});
+
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
