@@ -68,15 +68,15 @@ class InvoiceController extends Controller
     {
         $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'is_delivered' => 'required|boolean',
+            'delivery_status' => 'required|string|in:delivered,pending,cancelled',
             'remarks' => 'nullable|string|max:255',
             '*.image' => 'nullable|exists:temporary_files,folder',
         ]);
 
         $invoice->update([
             'client_id' => $request->client_id,
-            'is_delivered' => $request->is_delivered,
-            '' => $request->remarks,
+            'delivery_status' => $request->delivery_status,
+            'remarks' => $request->remarks,
             'updated_by' => auth()->user()->id,
         ]);
 

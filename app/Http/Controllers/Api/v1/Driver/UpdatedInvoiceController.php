@@ -22,7 +22,7 @@ class UpdatedInvoiceController extends Controller
      * 
      * @authenticated
      * 
-     * @response status=200 scenario=Success {"status": true, "message": "Invoices History", "data":{"data": [{"invoice_id": 6, "log_sheet_id": "6", "invoice_no": "1240069561", "date": "2021-12-28", "client_id": "6", "gross_weight": "286.688", "no_of_packs": "39", "is_delivered": true, "updated_at": "2022-04-14T14:03:41.000000Z", "updated_by":{"user_id": 23, "name": "Driver_1231479550", "email": "driver_1231479550@dropship.test", "phone": "1231479550", "alternate_phone": "NA", "address": "NA"}, "remarks": "The drivers remarks", "client":{"user_id": 13, "name": "Divyam Agencies", "email": "brakus.rocio@example.org", "phone": "68da9768-cd4b-329c-913e-88d2df0a4b92", "alternate_phone": "NA", "address": "NA"}, "images": []}], "links":{"first": "http://localhost:8000/api/v1/driver/updated-invoices?page=1", "last": null, "prev": null, "next": null}, "meta":{"current_page": 1, "from": 1, "path": "http://localhost:8000/api/v1/driver/updated-invoices", "per_page": 15, "to": 1}}}
+     * @response status=200 scenario=Success {"status": true, "message": "Invoices History", "data":{"data": [{"invoice_id": 6, "log_sheet_id": "6", "invoice_no": "1240069561", "date": "2021-12-28", "client_id": "6", "gross_weight": "286.688", "no_of_packs": "39", "delivery_status": "Delivered", "updated_at": "2022-04-14T14:03:41.000000Z", "updated_by":{"user_id": 23, "name": "Driver_1231479550", "email": "driver_1231479550@dropship.test", "phone": "1231479550", "alternate_phone": "NA", "address": "NA"}, "remarks": "The drivers remarks", "client":{"user_id": 13, "name": "Divyam Agencies", "email": "brakus.rocio@example.org", "phone": "68da9768-cd4b-329c-913e-88d2df0a4b92", "alternate_phone": "NA", "address": "NA"}, "images": []}], "links":{"first": "http://localhost:8000/api/v1/driver/updated-invoices?page=1", "last": null, "prev": null, "next": null}, "meta":{"current_page": 1, "from": 1, "path": "http://localhost:8000/api/v1/driver/updated-invoices", "per_page": 15, "to": 1}}}
      */
     public function index()
     {
@@ -30,7 +30,7 @@ class UpdatedInvoiceController extends Controller
             $user = Auth::user();
             $invoices = InvoiceResource::collection(
                 $user->driver->invoices()
-                    ->where('is_delivered', true)
+                    ->where('delivery_status', 'delivered')
                     ->with('clientUser', 'images', 'updatedByUser')
                     ->simplePaginate()
             );

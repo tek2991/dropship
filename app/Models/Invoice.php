@@ -16,7 +16,7 @@ class Invoice extends Model
         'client_id',
         'gross_weight',
         'no_of_packs',
-        'is_delivered',
+        'delivery_status',
         'updated_by',
         'remarks',
     ];

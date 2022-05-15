@@ -31,7 +31,8 @@
                                     <x-label for="client" :value="__('Client')" />
                                     <x-input-select id="client" class="block mt-1 w-full" name="client_id" required>
                                         @foreach ($clients as $client)
-                                            <option value="{{ $client->id }}" {{ $client->id == $invoice->client_id ? 'selected' : '' }}>
+                                            <option value="{{ $client->id }}"
+                                                {{ $client->id == $invoice->client_id ? 'selected' : '' }}>
                                                 {{ $client->user->name }}
                                             </option>
                                         @endforeach
@@ -39,13 +40,19 @@
                                 </div>
                             </div>
                             <div>
-                                <x-label for="is_delivered" :value="__('Status')" />
-                                <x-input-select id="is_delivered" class="block mt-1 w-full" name="is_delivered"
+                                <x-label for="delivery_status" :value="__('Status')" />
+                                <x-input-select id="delivery_status" class="block mt-1 w-full" name="delivery_status"
                                     required>
-                                    <option value="1" {{ $invoice->is_delivered == true ? 'selected' : '' }}>Delivered
+                                    <option value="delivered"
+                                        {{ $invoice->delivery_status == 'delivered' ? 'selected' : '' }}>Delivered
                                     </option>
-                                    <option value="0" {{ $invoice->is_delivered != true ? 'selected' : '' }}>
+                                    <option value="pending"
+                                        {{ $invoice->delivery_status == 'pending' ? 'selected' : '' }}>
                                         Pending
+                                    </option>
+                                    <option value="cancelled"
+                                        {{ $invoice->delivery_status == 'cancelled' ? 'selected' : '' }}>
+                                        Cancelled
                                     </option>
                                 </x-input-select>
                             </div>

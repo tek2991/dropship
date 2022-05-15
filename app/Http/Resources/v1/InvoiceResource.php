@@ -22,7 +22,7 @@ class InvoiceResource extends JsonResource
             'client_id' => $this->client_id,
             'gross_weight' => $this->gross_weight,
             'no_of_packs' => $this->no_of_packs,
-            'is_delivered' => $this->is_delivered ? true : false,
+            'delivery_status' => ucfirst($this->delivery_status),
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by ?  new UserResource($this->updatedByUser) : null,
             'remarks' => $this->remarks,

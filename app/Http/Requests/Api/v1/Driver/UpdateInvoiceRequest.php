@@ -24,7 +24,7 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_delivered' => 'required|boolean',
+            'delivery_status' => 'required|string|in:delivered,pending,cancelled',
             'remarks' => 'required|string|max:255',
         ];
     }
