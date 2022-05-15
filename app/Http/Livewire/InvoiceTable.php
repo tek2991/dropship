@@ -106,7 +106,10 @@ final class InvoiceTable extends PowerGridComponent
                 return $model->gross_weight . ' Kg';
             })
             ->addColumn('no_of_packs')
-            ->addColumn('logSheet.log_sheet_no');
+            ->addColumn('logSheet.log_sheet_no')
+            ->addColumn('delivery_status', function (Invoice $model) {
+                return ucfirst($model->delivery_status);
+            });
     }
 
     /*
@@ -151,13 +154,16 @@ final class InvoiceTable extends PowerGridComponent
                 ->sortable(),
 
             Column::add()
-                ->title('NO OF PACKS')
+                ->title('PACKS')
                 ->field('no_of_packs')
                 ->sortable(),
 
             Column::add()
                 ->title('LOG SHEET NO')
-                ->field('logSheet.log_sheet_no')
+                ->field('logSheet.log_sheet_no'),
+            Column::add()
+                ->title('STATUS')
+                ->field('delivery_status')
                 ->sortable(),
         ];
     }
