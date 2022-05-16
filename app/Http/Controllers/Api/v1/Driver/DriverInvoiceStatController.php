@@ -23,7 +23,6 @@ class DriverInvoiceStatController extends Controller
             $user = Auth::user();
             $total_pending_invoices = $user->driver->invoices()->where('delivery_status', 'pending')->count();
             $pending_gross_weight = $user->driver->invoices()->where('delivery_status', 'pending')->sum('gross_weight');
-
             return response()->json([
                 'status' => true,
                 'message' => 'Driver Invoice statistics',
