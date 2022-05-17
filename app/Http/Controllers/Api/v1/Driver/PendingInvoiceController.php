@@ -28,7 +28,7 @@ class PendingInvoiceController extends Controller
             $user = Auth::user();
             $invoices = InvoiceResource::collection(
                 $user->driver->invoices()
-                ->whereIn('delivery_status', ['pending', 'cancelled'])
+                ->whereIn('delivery_status', ['pending'])
                 ->with('clientUser', 'images', 'updatedByUser')
                 ->simplePaginate(15)
             );
