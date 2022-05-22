@@ -65,7 +65,7 @@
                             <div>
                                 <x-label for="image" :value="__('Add Images')" />
                                 <x-label for="image" class="text-xs text-red-800" :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
-                                <x-label for="image" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
+                                <x-label for="image" class="text-xs text-red-800" :value="__('Max size: 5MB')" />
                                 <x-input id="image" class="block mt-1 w-full" type="file" name="image[]" multiple />
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                     imagePreviewMaxHeight: '200px',
                     maxFiles: 5,
                     acceptedFileTypes: ['image/*'],
-                    maxFileSize: '2MB',
+                    maxFileSize: '5MB',
                     server: {
                         process: {
                             url: '{{ route('admin.uploads.store') }}',
