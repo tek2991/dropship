@@ -12,8 +12,8 @@ class UploadController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'bail|nullable|file|mimes:xls,xlsx,csv,ods|max:2048',
-            '*.image' => 'bail|nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'bail|nullable|file|mimes:xls,xlsx,csv,ods|max:5120',
+            '*.image' => 'bail|nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
         if ($validator->fails()) {

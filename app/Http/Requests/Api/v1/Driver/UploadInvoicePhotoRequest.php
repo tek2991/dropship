@@ -24,7 +24,7 @@ class UploadInvoicePhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'bail|required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'bail|required|file|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ];
     }
 }
