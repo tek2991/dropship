@@ -18,6 +18,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- FavIcon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body class="font-sans antialiased">
