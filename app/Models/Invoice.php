@@ -17,6 +17,7 @@ class Invoice extends Model
         'gross_weight',
         'no_of_packs',
         'delivery_status',
+        'delivery_state_id',
         'updated_by',
         'remarks',
     ];
@@ -48,5 +49,10 @@ class Invoice extends Model
     public function updatedByUser()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function deliveryState()
+    {
+        return $this->belongsTo(DeliveryState::class);
     }
 }

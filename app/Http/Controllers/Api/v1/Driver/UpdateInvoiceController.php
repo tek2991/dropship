@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1\Driver;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use App\Models\DeliveryState;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\Driver\UpdateInvoiceRequest;
 
@@ -27,6 +28,7 @@ class UpdateInvoiceController extends Controller
         try {
             $invoice->update([
                 'delivery_status' => $request->delivery_status,
+                'delivery_state_id' => DeliveryState::where('name', $request->delivery_status)->first()->id,
                 'remarks' => $request->remarks,
                 'updated_by' => auth()->user()->id,
             ]);

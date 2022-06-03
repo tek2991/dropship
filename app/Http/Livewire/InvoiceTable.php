@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\DeliveryState;
 use App\Models\Invoice;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
@@ -164,6 +165,7 @@ final class InvoiceTable extends PowerGridComponent
             Column::add()
                 ->title('STATUS')
                 ->field('delivery_status')
+                ->makeInputSelect(DeliveryState::all(), 'name', 'delivery_state_id')
                 ->sortable(),
         ];
     }

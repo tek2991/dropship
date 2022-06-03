@@ -13,7 +13,7 @@ use App\Models\Transporter;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
-
+use App\Models\DeliveryState;
 
 class InvoiceController extends Controller
 {
@@ -76,6 +76,7 @@ class InvoiceController extends Controller
         $invoice->update([
             'client_id' => $request->client_id,
             'delivery_status' => $request->delivery_status,
+            'delivery_state_id' => DeliveryState::where('name', $request->delivery_status)->first()->id,
             'remarks' => $request->remarks,
             'updated_by' => auth()->user()->id,
         ]);
