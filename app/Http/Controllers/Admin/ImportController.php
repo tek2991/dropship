@@ -14,7 +14,7 @@ class ImportController extends Controller
     public function index(){
 
         return view('admin.imports.index', [
-            'imports' => Import::paginate(),
+            'imports' => Import::orderBy('id', 'desc')->paginate(),
         ]);
     }
 
@@ -48,7 +48,8 @@ class ImportController extends Controller
         }
 
         if(Storage::exists($import->file_name)){
-            return Storage::download($import->file_name, 'imported_'. $import->created_at .'.xlsx');
+            $uploaded_file_name = basename($import->file_name);
+            return Storage::download($import->file_name, 'imported_'. $import->created_at . '_' . $uploaded_file_name);
         }else{
             return redirect()->route('admin.imports.index')->withErrors('File not found.');
         }
