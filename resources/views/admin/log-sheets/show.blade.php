@@ -4,14 +4,6 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Log Sheet Details') }}
             </h2>
-            <x-button-link href="{{ route('admin.log-sheets.edit', ['log_sheet' => $logSheet->id]) }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <span>Update</span>
-            </x-button-link>
         </span>
     </x-slot>
 
@@ -28,41 +20,12 @@
                             <strong>Created: </strong>{{ $logSheet->created_at->format('d/m/Y') }}
                         </h3>
                         <h3>
-                            <strong>Destination: </strong>{{ $logSheet->destination }}
-                        </h3>
-                        <h3 class="md:text-right">
                             <strong>Invoices: </strong>{{ $logSheet->invoices->count() }}
                         </h3>
-                        <h3>
-                            <strong>Transporter: </strong>
-                            <x-text-link href="{{ route('admin.transporters.show', $logSheet->transporter) }}">
-                                {{ $logSheet->transporterUser->name }}
-                            </x-text-link>
-                        </h3>
                         <h3 class="md:text-right">
-                            <strong>Vehicle: </strong>
-                            <x-text-link href="{{ route('admin.vehicles.show', $logSheet->vehicle) }}">
-                                {{ $logSheet->vehicle->registration_number }}
-                            </x-text-link>
-                        </h3>
-                        <h3>
-                            <strong>Driver: </strong>
-                            @if ($logSheet->driverUser != null)
-                                <x-text-link href="{{ route('admin.drivers.show', $logSheet->driver) }}">
-                                    {{ $logSheet->driverUser->name }}
-                                </x-text-link>
-                            @else
-                                NA
-                            @endif
-                        </h3>
-                        <h3 class="md:text-right">
-                            <strong>Driver Phone: </strong>
-                            {{ $logSheet->driverUser != null ? $logSheet->driverUser->phone : 'NA' }}
-                        </h3>
-                        <h3>
                             <strong>Total Gross Weight: </strong> {{ $logSheet->invoices->sum('gross_weight') }} Kg
                         </h3>
-                        <h3 class="md:text-right">
+                        <h3>
                             <strong>Total Packs: </strong> {{ $logSheet->invoices->sum('no_of_packs') }}
                         </h3>
                     </div>

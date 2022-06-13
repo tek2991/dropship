@@ -56,7 +56,7 @@ final class LogSheetTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return LogSheet::query()->withCount('invoices')->with('driverUser');
+        return LogSheet::query()->withCount('invoices')->with('invoices');
     }
 
     /*
@@ -75,11 +75,6 @@ final class LogSheetTable extends PowerGridComponent
     public function relationSearch(): array
     {
         return [
-            'driverUser' => [
-                'name',
-                'email',
-                'phone',
-            ],
         ];
     }
 
@@ -98,10 +93,7 @@ final class LogSheetTable extends PowerGridComponent
             ->addColumn('date_formatted', function (LogSheet $model) {
                 return Carbon::parse($model->date)->format('d/m/Y');
             })
-            ->addColumn('destination')
-            ->addColumn('invoices_count')
-            ->addColumn('driverUser.name')
-            ->addColumn('driverUser.phone');
+            ->addColumn('invoices_count');
     }
 
     /*
@@ -136,24 +128,8 @@ final class LogSheetTable extends PowerGridComponent
                 ->makeInputDatePicker('date'),
 
             Column::add()
-                ->title('DESTINATION')
-                ->field('destination')
-                ->sortable()
-                ->searchable()
-                ->makeInputText(),
-
-            Column::add()
                 ->title('Invoices')
                 ->field('invoices_count'),
-
-            Column::add()
-                ->title('DRIVER')
-                ->field('driverUser.name')
-                ->searchable(),
-
-            Column::add()
-                ->title('DRIVER PHONE')
-                ->field('driverUser.phone'),
         ];
     }
 

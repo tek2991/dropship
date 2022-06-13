@@ -20,26 +20,28 @@ class LogSheet extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function transporter()
-    {
-        return $this->belongsTo(Transporter::class);
-    }
+    // To be deleted
 
-    public function vehicle()
-    {
-        return $this->belongsTo(Vehicle::class);
-    }
+    // public function transporter()
+    // {
+    //     return $this->belongsTo(Transporter::class);
+    // }
 
-    public function driver()
-    {
-        return $this->belongsTo(Driver::class);
-    }
+    // public function vehicle()
+    // {
+    //     return $this->belongsTo(Vehicle::class);
+    // }
 
-    public function driverUser(){
-        return $this->hasOneThrough(User::class, Driver::class, 'id', 'id', 'driver_id', 'user_id');
-    }
+    // public function driver()
+    // {
+    //     return $this->belongsTo(Driver::class);
+    // }
 
-    public function transporterUser(){
-        return $this->hasOneThrough(User::class, Transporter::class, 'id', 'id', 'transporter_id', 'user_id');
-    }
+    // public function driverUser(){
+    //     return $this->hasOneThrough(User::class, Driver::class, 'id', 'id', 'driver_id', 'user_id');
+    // }
+
+    // public function transporterUser(){
+    //     return $this->hasOneThrough(User::class, Transporter::class, 'id', 'id', 'transporter_id', 'user_id');
+    // }
 }

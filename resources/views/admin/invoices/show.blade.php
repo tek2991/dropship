@@ -28,7 +28,7 @@
                             <strong>Created: </strong>{{ $invoice->created_at->format('d/m/Y') }}
                         </h3>
                         <h3>
-                            <strong>Destination: </strong>{{ $invoice->logSheet->destination }}
+                            <strong>Destination: </strong>{{ $invoice->destination }}
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Log Sheet: </strong>
@@ -39,22 +39,22 @@
                         <h3>
                             <strong>Transporter: </strong>
                             <x-text-link
-                                href="{{ route('admin.transporters.show', $invoice->logSheet->transporter) }}">
-                                {{ $invoice->logSheet->transporterUser->name }}
+                                href="{{ route('admin.transporters.show', $invoice->transporter) }}">
+                                {{ $invoice->transporterUser->name }}
                             </x-text-link>
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Vehicle: </strong>
-                            <x-text-link href="{{ route('admin.vehicles.show', $invoice->logSheet->vehicle) }}">
-                                {{ $invoice->logSheet->vehicle->registration_number }}
+                            <x-text-link href="{{ route('admin.vehicles.show', $invoice->vehicle) }}">
+                                {{ $invoice->vehicle->registration_number }}
                             </x-text-link>
                         </h3>
                         <h3>
                             <strong>Driver: </strong>
-                            @if ($invoice->logSheet->driverUser !== null)
+                            @if ($invoice->driverUser !== null)
                                 <x-text-link
-                                    href="{{ route('admin.drivers.show', $invoice->logSheet->driver) }}">
-                                    {{ $invoice->logSheet->driverUser->name }}
+                                    href="{{ route('admin.drivers.show', $invoice->driver) }}">
+                                    {{ $invoice->driverUser->name }}
                                 </x-text-link>
                             @else
                                 NA
@@ -62,7 +62,7 @@
                         </h3>
                         <h3 class="md:text-right">
                             <strong>Driver Phone: </strong>
-                            {{ $invoice->logSheet->driverUser != null ? $invoice->logSheet->driverUser->phone : 'NA' }}
+                            {{ $invoice->driverUser != null ? $invoice->driverUser->phone : 'NA' }}
                         </h3>
                         <h3>
                             <strong>Gross Weight: </strong> {{ $invoice->gross_weight }} Kg

@@ -21,7 +21,11 @@ class Driver extends Model
         return $this->belongsToMany(Vehicle::class, 'driver_vehicle', 'driver_id', 'vehicle_id');
     }
 
+    // public function invoices(){
+    //     return $this->hasManyThrough(Invoice::class, LogSheet::class, 'driver_id', 'log_sheet_id');
+    // }
+
     public function invoices(){
-        return $this->hasManyThrough(Invoice::class, LogSheet::class, 'driver_id', 'log_sheet_id');
+        return $this->hasMany(Invoice::class);
     }
 }

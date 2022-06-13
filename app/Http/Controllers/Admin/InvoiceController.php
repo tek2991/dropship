@@ -39,7 +39,7 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     {
         return view('admin.invoices.show', [
-            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle', 'images'),
+            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images'),
         ]);
     }
 
@@ -52,7 +52,7 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         return view('admin.invoices.edit', [
-            'invoice' => $invoice->load('clientUser', 'client', 'logSheet.driverUser', 'logSheet.transporterUser', 'logSheet.vehicle', 'images'),
+            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images'),
             'clients' => Client::all(),
         ]);
     }

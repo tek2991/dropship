@@ -148,6 +148,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 ],
                 [
                     'date' => $date,
+                    // To be reomved
                     'transporter_id' => $transporter->id,
                     'vehicle_id' => $vehicle->id,
                     'destination' => $row['destination'],
@@ -166,6 +167,10 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     'client_id' => $client->id,
                     'gross_weight' => $row['gross_wt'],
                     'no_of_packs' => $row['no_of_packs'],
+                    'transporter_id' => $transporter->id,
+                    'vehicle_id' => $vehicle->id,
+                    'destination' => $row['destination'],
+                    'driver_id' => $driver ? $driver->id : null,
                 ]
             );
         }
