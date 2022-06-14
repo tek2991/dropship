@@ -28,6 +28,10 @@ class InvoiceResource extends JsonResource
             'remarks' => $this->remarks,
             'client' => $this->clientUser ? new UserResource($this->clientUser) : null,
             'images' => $this->images ? ImageResource::collection($this->images) : null,
+            'transporter' => $this->transporterUser->name,
+            'vehicle' => $this->vehicle->registration_number,
+            'driver' => $this->driverUser->name,
+            'destination' => $this->destination,
         ];
     }
 }

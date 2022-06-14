@@ -38,6 +38,39 @@
                                         @endforeach
                                     </x-input-select>
                                 </div>
+                                <div>
+                                    <x-label for="driver" :value="__('Driver')" />
+                                    <x-input-select id="driver" class="block mt-1 w-full" name="driver_id" required>
+                                        @foreach ($drivers as $driver)
+                                            <option value="{{ $driver->id }}"
+                                                {{ $driver->id == $invoice->driver_id ? 'selected' : '' }}>
+                                                {{ $driver->user->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
+                                <div>
+                                    <x-label for="vehicle" :value="__('Vehicle')" />
+                                    <x-input-select id="vehicle" class="block mt-1 w-full" name="vehicle_id" required>
+                                        @foreach ($vehicles as $vehicle)
+                                            <option value="{{ $vehicle->id }}"
+                                                {{ $vehicle->id == $invoice->vehicle_id ? 'selected' : '' }}>
+                                                {{ $vehicle->registration_number }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
+                                <div>
+                                    <x-label for="transporter" :value="__('Transporter')" />
+                                    <x-input-select id="transporter" class="block mt-1 w-full" name="transporter_id" required>
+                                        @foreach ($transporters as $transporter)
+                                            <option value="{{ $transporter->id }}"
+                                                {{ $transporter->id == $invoice->transporter_id ? 'selected' : '' }}>
+                                                {{ $transporter->user->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
                             </div>
                             <div>
                                 <x-label for="delivery_status" :value="__('Status')" />

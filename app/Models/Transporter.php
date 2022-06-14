@@ -10,7 +10,7 @@ class Transporter extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nuser_id',
+        'user_id',
         'is_active',
         'is_first_party',
     ];

@@ -54,6 +54,9 @@ class InvoiceController extends Controller
         return view('admin.invoices.edit', [
             'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images'),
             'clients' => Client::all(),
+            'drivers' => Driver::all(),
+            'vehicles' => Vehicle::all(),
+            'transporters' => Transporter::all(),
         ]);
     }
 
@@ -71,6 +74,9 @@ class InvoiceController extends Controller
             'delivery_status' => 'required|string|in:delivered,pending,cancelled',
             'remarks' => 'nullable|string|max:255',
             '*.image' => 'nullable|exists:temporary_files,folder',
+            'driver_id' => 'required|exists:drivers,id',
+            'transporter_id' => 'required|exists:transporters,id',
+            'vehicle_id' => 'required|exists:vehicles,id',
         ]);
 
         $invoice->update([
@@ -78,6 +84,9 @@ class InvoiceController extends Controller
             'delivery_status' => $request->delivery_status,
             'delivery_state_id' => DeliveryState::where('name', $request->delivery_status)->first()->id,
             'remarks' => $request->remarks,
+            'driver_id' => $request->driver_id,
+            'transporter_id' => $request->transporter_id,
+            'vehicle_id' => $request->vehicle_id,
             'updated_by' => auth()->user()->id,
         ]);
 
