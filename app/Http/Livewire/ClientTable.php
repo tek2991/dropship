@@ -120,7 +120,7 @@ final class ClientTable extends PowerGridComponent
     {
         return [
             Column::add()
-                ->title('Driver')
+                ->title('Client')
                 ->field('user.name'),
 
             Column::add()
@@ -159,7 +159,7 @@ final class ClientTable extends PowerGridComponent
                 ->target('')
                 ->caption('Show')
                 ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.transporters.show', ['transporter' => 'id']),
+                ->route('admin.clients.show', ['client' => 'id']),
 
             //    Button::add('destroy')
             //        ->caption('Delete')
