@@ -47,18 +47,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', UserController::class)->only('show', 'edit', 'update');
     Route::put('user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
 
-    Route::get('update-1', function () {
-        $invoices = \App\Models\Invoice::with('logSheet')->get();
-        foreach ($invoices as $invoice) {
-            $invoice->update([
-                'transporter_id' => $invoice->logSheet->transporter_id,
-                'vehicle_id' => $invoice->logSheet->vehicle_id,
-                'destination' => $invoice->logSheet->destination,
-                'driver_id' => $invoice->logSheet->driver_id,
-            ]);
-        }
+    Route::get('manual-update-1', function () {
+        // $invoices = \App\Models\Invoice::with('logSheet')->get();
+        // foreach ($invoices as $invoice) {
+        //     $invoice->update([
+        //         'transporter_id' => $invoice->logSheet->transporter_id,
+        //         'vehicle_id' => $invoice->logSheet->vehicle_id,
+        //         'destination' => $invoice->logSheet->destination,
+        //         'driver_id' => $invoice->logSheet->driver_id,
+        //     ]);
+        // }
 
-        return 'Update Successfull';
+        return 'No updates for now!';
     });
 });
 
