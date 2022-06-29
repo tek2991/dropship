@@ -18,10 +18,6 @@ class update_1_seeder extends Seeder
             'name' => 'Guwahati',
         ]);
 
-        \App\Models\User::find(1)->update([
-            'is_admin' => true,
-        ]);
-
         $invoices = \App\Models\Invoice::all();
         foreach ($invoices as $invoice) {
             $invoice->location_id = $location->id;

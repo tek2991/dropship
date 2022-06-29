@@ -38,6 +38,9 @@
                         <x-nav-link :href="route('admin.invoices.index')" :active="request()->routeIs('admin.invoices.index')">
                             {{ __('Invoices') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.locations.index')" :active="request()->routeIs('admin.locations.index')">
+                            {{ __('Locations') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -131,6 +134,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.invoices.index')">
                         {{ __('Invoices') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.locations.index')">
+                        {{ __('Locations') }}
                     </x-responsive-nav-link>
                 @endif
                 <x-responsive-nav-link :href="route('user.show', ['user' => Auth::user()->id])">

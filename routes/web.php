@@ -2,14 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LogSheetController;
 use App\Http\Controllers\Admin\TransporterController;
-use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'vehicles' => VehicleController::class,
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
+        'locations' => LocationController::class,
     ], ['except' => ['destroy']]);
 
     Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit', 'destroy');
