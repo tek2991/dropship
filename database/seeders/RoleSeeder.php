@@ -25,6 +25,10 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'transporter_crud']);
         Permission::create(['name' => 'vehicle_crud']);
         Permission::create(['name' => 'client_crud']);
+        Permission::create(['name' => 'invoice_crud']);
+        Permission::create(['name' => 'logsheet_crud']);
+        Permission::create(['name' => 'location_crud']);
+        Permission::create(['name' => 'manager_crud']);
 
         // create director roles and assign permissions
         $role = Role::create(['name' => 'admin']);
@@ -33,10 +37,15 @@ class RoleSeeder extends Seeder
             'transporter_crud',
             'vehicle_crud',
             'client_crud',
+            'invoice_crud',
+            'logsheet_crud',
+            'location_crud',
+            'manager_crud',
         ]);
 
         $role = Role::create(['name' => 'driver']);
         $role = Role::create(['name' => 'transporter']);
         $role = Role::create(['name' => 'client']);
+        $role = Role::create(['name' => 'manager']);
     }
 }

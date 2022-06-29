@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LogSheetController;
@@ -71,6 +72,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
         'locations' => LocationController::class,
+        'managers' => ManagerController::class,
     ], ['except' => ['destroy']]);
 
     Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit', 'destroy');
@@ -83,6 +85,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
     Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
     Route::put('clients/{client}/update-password', [ClientController::class, 'updatePassword'])->name('clients.update-password');
+    Route::put('managers/{manager}/update-password', [ManagerController::class, 'updatePassword'])->name('managers.update-password');
 
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
     Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');

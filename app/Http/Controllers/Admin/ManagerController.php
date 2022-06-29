@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Manager;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+use App\Http\Requests\cruds\StoreManagerRequest;
+use App\Http\Requests\cruds\UpdateManagerRequest;
 
 class ManagerController extends Controller
 {
@@ -15,7 +20,7 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.managers.index');
     }
 
     /**
@@ -25,7 +30,7 @@ class ManagerController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.managers.create');
     }
 
     /**
@@ -34,9 +39,22 @@ class ManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreManagerRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'alternate_phone' => $request->alternate_phone,
+            'password' => Hash::make($request->password),
+        ]);
+        $user->assignRole('manager');
+        $user->manager()->create();
+
+        return redirect()->route('admin.managers.index')->with('message', 'Manager: ' . $user->name . ' created successfully.');
     }
 
     /**
@@ -47,7 +65,7 @@ class ManagerController extends Controller
      */
     public function show(Manager $manager)
     {
-        //
+        return view('admin.managers.show', compact('manager'));
     }
 
     /**
@@ -58,7 +76,9 @@ class ManagerController extends Controller
      */
     public function edit(Manager $manager)
     {
-        //
+        return view('admin.managers.edit', [
+            'manager' => $manager->load('user'),
+        ]);
     }
 
     /**
@@ -68,9 +88,10 @@ class ManagerController extends Controller
      * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Manager $manager)
+    public function update(UpdateManagerRequest $request, Manager $manager)
     {
-        //
+        $manager->user->update($request->validated());
+        return redirect()->route('admin.managers.index')->with('message', 'Manager: ' . $manager->user->name . ' updated successfully.');
     }
 
     /**
@@ -82,5 +103,16 @@ class ManagerController extends Controller
     public function destroy(Manager $manager)
     {
         //
+    }
+
+    /**
+     * Change the manager password
+     */
+    public function updatePassword(Request $request, Manager $manager){
+        $request->validate([
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+        $manager->user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('admin.managers.index')->with('message', 'manager: ' . $manager->user->name . ' password updated successfully.');
     }
 }

@@ -108,11 +108,11 @@ class DriverController extends Controller
         return back();
     }
 
-    public function updatePassword(Request $request, User $user){
+    public function updatePassword(Request $request, Driver $driver){
         $request->validate([
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-        $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $user->name . ' updated successfully.');
+        $driver->user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
     }
 }

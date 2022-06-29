@@ -123,12 +123,12 @@ class ClientController extends Controller
         //
     }
 
-    public function updatePassword(Request $request, User $user)
+    public function updatePassword(Request $request, Client $client)
     {
         $request->validate([
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-        $user->update(['password' => Hash::make($request->password)]);
-        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $user->name . ' updated successfully.');
+        $client->user->update(['password' => Hash::make($request->password)]);
+        return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 }

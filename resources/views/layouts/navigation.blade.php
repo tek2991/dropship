@@ -41,6 +41,9 @@
                         <x-nav-link :href="route('admin.locations.index')" :active="request()->routeIs('admin.locations.index')">
                             {{ __('Locations') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.managers.index')" :active="request()->routeIs('admin.managers.index')">
+                            {{ __('Managers') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -137,6 +140,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.locations.index')">
                         {{ __('Locations') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.managers.index')">
+                        {{ __('Managers') }}
                     </x-responsive-nav-link>
                 @endif
                 <x-responsive-nav-link :href="route('user.show', ['user' => Auth::user()->id])">

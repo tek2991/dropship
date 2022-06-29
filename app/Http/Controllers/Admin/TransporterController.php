@@ -119,11 +119,11 @@ class TransporterController extends Controller
         //
     }
 
-    public function updatePassword(Request $request, User $user){
+    public function updatePassword(Request $request, Transporter $transporter){
         $request->validate([
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-        $user->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $user->name . ' updated successfully.');
+        $transporter->user->update(['password'=> Hash::make($request->password)]);
+        return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
     }
 }
