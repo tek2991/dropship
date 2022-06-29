@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,7 +15,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        // only admin and user himself can update his profile
+        // $this->user() is the current logged in user object.
+        // $this->user is the user object which is being updated.
+        return $this->user()->hasRole('admin') || $this->user()->id == $this->user->id;
     }
 
     /**

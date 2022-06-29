@@ -92,4 +92,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Image::class, 'created_by');
     }
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasManyThrough(Location::class, Manager::class);
+    }
 }
