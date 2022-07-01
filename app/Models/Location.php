@@ -15,6 +15,6 @@ class Location extends Model
 
     public function managers()
     {
-        return $this->belongsToMany(Manager::class);
+        return $this->morphedByMany(Manager::class, 'locationable');
     }
 }

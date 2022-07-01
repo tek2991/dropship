@@ -13,13 +13,13 @@ class Manager extends Model
         'user_id',
     ];
 
-    public function location()
-    {
-        return $this->belongsTo(Location::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function locations()
+    {
+        return $this->morphToMany(Location::class, 'locationable');
     }
 }
