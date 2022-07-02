@@ -20,6 +20,10 @@ class LogSheet extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function locations(){
+        return $this->morphToMany(Location::class, 'locationable');
+    }
+
     // To be deleted
 
     // public function transporter()

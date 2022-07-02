@@ -25,4 +25,8 @@ class Vehicle extends Model
     public function invoices(){
         return $this->hasMany(Invoice::class);
     }
+
+    public function locations(){
+        return $this->morphToMany(Location::class, 'locationable');
+    }
 }

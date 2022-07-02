@@ -8,5 +8,11 @@ class Import extends Model
 {
     protected $fillable = [
         'file_name',
+        'location_id',
     ];
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

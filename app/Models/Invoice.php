@@ -82,4 +82,8 @@ class Invoice extends Model
     public function transporterUser(){
         return $this->hasOneThrough(User::class, Transporter::class, 'id', 'id', 'transporter_id', 'user_id');
     }
+
+    public function locations(){
+        return $this->morphToMany(Location::class, 'locationable');
+    }
 }

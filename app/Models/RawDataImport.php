@@ -28,5 +28,11 @@ class RawDataImport extends Model
         'no_of_packs',
         'driver_no',
         'is_processed',
+        'location_id',
     ];
+    
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

@@ -12,6 +12,14 @@ class Location extends Model
     protected $fillable = [
         'name',
     ];
+    
+    public function imports(){
+        return $this->hasMany(Import::class);
+    }
+
+    public function rawDataImports(){
+        return $this->hasMany(RawDataImport::class);
+    }
 
     public function managers()
     {

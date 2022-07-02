@@ -31,5 +31,11 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('locationables');
+        Schema::create('location_manager', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('location_id')->constrained();
+            $table->foreignId('manager_id')->constrained();
+            $table->timestamps();
+        });
     }
 };
