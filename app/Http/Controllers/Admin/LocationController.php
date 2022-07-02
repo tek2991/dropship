@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Manager;
+use App\Models\Location;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\cruds\StoreLocationRequest;
 use App\Http\Requests\cruds\UpdateLocationRequest;
-use App\Models\Location;
-use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
@@ -51,7 +52,8 @@ class LocationController extends Controller
     public function show(Location $location)
     {
         return view('admin.locations.show', [
-            'location' => $location,
+            'location' => $location->load('managers'),
+            'managers' => Manager::with('user')->get(),
         ]);
     }
 
@@ -64,7 +66,8 @@ class LocationController extends Controller
     public function edit(Location $location)
     {
         return view('admin.locations.edit', [
-            'location' => $location,
+            'location' => $location->load('managers'),
+            'managers' => Manager::with('user')->get(),
         ]);
     }
 
@@ -90,5 +93,25 @@ class LocationController extends Controller
     public function destroy(Location $location)
     {
         //
+    }
+
+
+    public function addManager(Request $request, Location $location)
+    {
+        $this->validate($request, [
+            'manager_id' => 'required|exists:managers,id',
+        ]);
+        $location->managers()->attach($request->manager_id);
+        return redirect()->route('admin.locations.show', $location)->with('message', 'Manager added successfully.');
+    }
+
+
+    public function removeManager(Request $request, Location $location)
+    {
+        $this->validate($request, [
+            'manager_id' => 'required|exists:managers,id',
+        ]);
+        $location->managers()->detach($request->manager_id);
+        return redirect()->route('admin.locations.show', $location)->with('message', 'Manager removed successfully.');
     }
 }

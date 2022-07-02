@@ -141,7 +141,7 @@ final class LocationTable extends PowerGridComponent
                 ->target('')
                 ->caption('Show')
                 ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.locations.edit', ['location' => 'id']),
+                ->route('admin.locations.show', ['location' => 'id']),
 
             // Button::add('edit')
             //     ->caption('Edit')

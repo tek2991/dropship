@@ -87,6 +87,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::put('clients/{client}/update-password', [ClientController::class, 'updatePassword'])->name('clients.update-password');
     Route::put('managers/{manager}/update-password', [ManagerController::class, 'updatePassword'])->name('managers.update-password');
 
+
+    Route::put('locations/{location}/add-manager', [LocationController::class, 'addManager'])->name('locations.add.manager');
+    Route::delete('locations/{location}/remove-manager', [LocationController::class, 'removeManager'])->name('locations.remove.manager');
+
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
     Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');
 });

@@ -23,7 +23,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <h3><strong>Name: </strong>{{ $location->name }}</h3>
                     </div>
-
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3><strong>Managers: </strong></h3>
+                            <ul class="pl-4 list-disc">
+                                @foreach ($location->managers as $manager)
+                                    <li>{{ $manager->user->name }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
