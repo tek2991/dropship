@@ -13,6 +13,7 @@ class LogSheet extends Model
         'vehicle_id',
         'destination',
         'driver_id',
+        'location_id',
     ];
 
     public function invoices()
@@ -20,8 +21,8 @@ class LogSheet extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function locations(){
-        return $this->morphToMany(Location::class, 'locationable');
+    public function location(){
+        return $this->belongsTo(Location::class);
     }
 
     // To be deleted

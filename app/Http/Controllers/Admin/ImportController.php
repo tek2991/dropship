@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Storage;
 use App\Models\Import;
+use App\Models\Location;
 use App\Imports\DataImport;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -19,19 +20,31 @@ class ImportController extends Controller
     }
 
     public function create(){
-        return view('admin.imports.create');
+        return view('admin.imports.create', [
+            'locations' => Location::all(),
+        ]);
     }
 
     public function store(Request $request){
         $temporaryFile = TemporaryFile::where('folder', $request->file)->first();
+        $location_id = null;
+
+        if(auth()->user()->hasRole('admin')){
+            $location_id = $request->location_id;
+        } else if( auth()->user()->hasRole('manager') ){
+            $location_id = auth()->user()->manager->location_id;
+        }
 
         if($temporaryFile){
             Storage::move('uploads/tmp/' . $request->file . '/' . $temporaryFile->filename , 'imports/' . $request->file . '/' . $temporaryFile->filename);
             $path = 'imports/' . $request->file . '/' . $temporaryFile->filename;
-            $import = new DataImport;
-            $import->import($path);
-            Import::create([
+            $import_file = new DataImport($location_id);
+            $import_file->import($path);
+            $import_model = Import::create([
                 'file_name' => $path,
+            ]);
+            $import_model->update([
+                'location_id' => $location_id,
             ]);
             Storage::deleteDirectory('uploads/tmp/' . $request->file);
             $temporaryFile->delete();

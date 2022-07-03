@@ -24,6 +24,7 @@ class Invoice extends Model
         'vehicle_id',
         'destination',
         'driver_id',
+        'location_id',
     ];
 
     public function logSheet()
@@ -83,7 +84,8 @@ class Invoice extends Model
         return $this->hasOneThrough(User::class, Transporter::class, 'id', 'id', 'transporter_id', 'user_id');
     }
 
-    public function locations(){
-        return $this->morphToMany(Location::class, 'locationable');
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

@@ -24,6 +24,13 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
 {
     use Importable;
 
+    public static $location_id = null;
+
+    public function __construct($location_id)
+    {
+        self::$location_id = $location_id;
+    }
+ 
     public function rules(): array
     {
         return [
@@ -65,6 +72,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 'destination' => $row['destination'],
                 'no_of_packs' => $row['no_of_packs'],
                 'driver_no' => $row['driver_no'],
+                'location_id' => self::$location_id,
             ]);
 
 
@@ -83,11 +91,14 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 $client_user->client()->create([
                     'client_number' => $row['payer'],
                 ]);
+                $client_user->client->locations()->syncWithoutDetaching([self::$location_id]);
             } else {
                 Client::firstWhere('client_number', $row['payer'])->user->update([
                     'name' => $row['payer_name'],
                     'is_active' => true,
                 ]);
+                $client_model = Client::firstWhere('client_number', $row['payer']);
+                $client_model->locations()->syncWithoutDetaching([self::$location_id]);
             }
             $client = $client_exists ? Client::firstWhere('client_number', $row['payer']) : $client_user->client;
 
@@ -107,6 +118,12 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
 
                 $transporter_user->assignRole('transporter');
                 $transporter_user->transporter()->create();
+                $transporter_user->transporter->locations()->syncWithoutDetaching([self::$location_id]);
+            } else {
+                $transporter_model = Transporter::whereHas('user', function ($query) use ($row) {
+                    $query->where('name', $row['tprt_name']);
+                })->first();
+                $transporter_model->locations()->syncWithoutDetaching([self::$location_id]);
             }
             $transporter = $transporter_exists ? Transporter::whereHas('user', function ($query) use ($row) {
                 $query->where('name', $row['tprt_name']);
@@ -130,6 +147,12 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     ])->first();
                     $driver_user->assignRole('driver');
                     $driver_user->driver()->create();
+                    $driver_user->driver->locations()->syncWithoutDetaching([self::$location_id]);
+                } else {
+                    $driver_model = Driver::whereHas('user', function ($query) use ($row) {
+                        $query->where('phone', $row['driver_no']);
+                    })->first();
+                    $driver_model->locations()->syncWithoutDetaching([self::$location_id]);
                 }
                 $driver = $driver_exists ? Driver::whereHas('user', function ($query) use ($row) {
                     $query->where('phone', $row['driver_no']);
@@ -140,6 +163,8 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             $vehicle = Vehicle::firstOrCreate([
                 'registration_number' => $row['container_id'],
             ], ['is_active' => true]);
+
+            $vehicle->locations()->syncWithoutDetaching([self::$location_id]);
 
 
             $log_sheet = LogSheet::updateOrCreate(
@@ -153,11 +178,12 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     'vehicle_id' => $vehicle->id,
                     'destination' => $row['destination'],
                     'driver_id' => $driver ? $driver->id : null,
+                    'location_id' => self::$location_id,
                 ]
-            );
+                );
 
 
-            Invoice::updateOrCreate(
+            $invoice = Invoice::updateOrCreate(
                 [
                     'invoice_no' => $row['invoice_no'],
                 ],
@@ -171,6 +197,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     'vehicle_id' => $vehicle->id,
                     'destination' => $row['destination'],
                     'driver_id' => $driver ? $driver->id : null,
+                    'location_id' => self::$location_id,
                 ]
             );
         }

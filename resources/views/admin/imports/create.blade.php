@@ -15,13 +15,25 @@
 
                     <form method="POST" action="{{ route('admin.imports.store') }}" enctype="multipart/form-data">
                         @csrf
+                        @if (auth()->user()->hasRole('admin'))
+                            <div class="grid grid-cols-1 gap-6 mb-4">
+                                <div>
+                                    <x-label for="location_id" :value="__('Location')" />
+                                    <x-input-select id="location_id" class="block mt-1 w-full" name="location_id" required>
+                                        @foreach ($locations as $location)
+                                            <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
+                            </div>
+                        @endif
                         <div class="grid grid-cols-1 gap-6">
                             <div>
                                 <x-label for="file" :value="__('Select Data File')" />
-                                <x-label for="file" class="text-xs text-red-800"
-                                    :value="__('Accepted formats: xls, xlsx, csv, ods')" />
+                                <x-label for="file" class="text-xs text-red-800" :value="__('Accepted formats: xls, xlsx, csv, ods')" />
                                 <x-label for="file" class="text-xs text-red-800" :value="__('Max size: 2MB')" />
-                                <x-input id="file" class="block mt-1 w-full" type="file" name="file" required />
+                                <x-input id="file" class="block mt-1 w-full" type="file" name="file"
+                                    required />
                                 <a href="{{ url('assets/templates/DATA_IMPORT_TEMPLATE.xls') }}"
                                     class="cursor-pointer text-xs font-bold text-blue-500 no-underline hover:underline">
                                     Download Template
