@@ -15,7 +15,7 @@ class ImportController extends Controller
     public function index(){
 
         return view('admin.imports.index', [
-            'imports' => Import::orderBy('id', 'desc')->paginate(),
+            'imports' => Import::orderBy('id', 'desc')->with('location')->paginate(),
         ]);
     }
 
