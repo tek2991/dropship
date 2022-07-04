@@ -3,16 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\Client;
+use App\Models\Location;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 
 final class ClientTable extends PowerGridComponent
 {
@@ -56,7 +57,16 @@ final class ClientTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return Client::query()->with('user');
+        $isAdmin = auth()->user()->isAdmin();
+        $isManager = auth()->user()->isManager();
+        if ($isAdmin) {
+            return Client::query()->with('user');
+        } else if ($isManager) {
+            $manager = auth()->user()->manager;
+            $location_ids = $manager->locations->pluck('id')->toArray();
+            $client_ids = Location::whereIn('id', $location_ids)->with('clients')->get()->pluck('clients')->flatten()->pluck('id')->toArray();
+            return Client::whereIn('id', $client_ids)->with('user');
+        }
     }
 
     /*

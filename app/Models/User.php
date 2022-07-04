@@ -93,6 +93,10 @@ class User extends Authenticatable
         return $this->hasMany(Image::class, 'created_by');
     }
 
+    public function isManager(){
+        return $this->hasRole('manager') && $this->manager()->exists();
+    }
+
     public function manager()
     {
         return $this->hasOne(Manager::class);

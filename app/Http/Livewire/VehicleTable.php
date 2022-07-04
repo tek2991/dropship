@@ -3,16 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\Vehicle;
+use App\Models\Location;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 
 final class VehicleTable extends PowerGridComponent
 {
@@ -56,7 +57,16 @@ final class VehicleTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return Vehicle::query();
+        $isAdmin = auth()->user()->isAdmin();
+        $isManager = auth()->user()->isManager();
+        if ($isAdmin) {
+            return Vehicle::query();
+        } else if ($isManager) {
+            $manager = auth()->user()->manager;
+            $location_ids = $manager->locations->pluck('id')->toArray();
+            $vehicle_ids = Location::whereIn('id', $location_ids)->with('vehicles')->get()->pluck('vehicles')->flatten()->pluck('id')->toArray();
+            return Vehicle::whereIn('id', $vehicle_ids);
+        }
     }
 
     /*

@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admin|manager']], function () {
     Route::resources([
         'drivers' => DriverController::class,
         'vehicles' => VehicleController::class,

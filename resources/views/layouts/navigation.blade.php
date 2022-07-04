@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if (Auth::user()->isAdmin())
+                    @if (Auth::user()->isAdmin() || Auth::user()->isManager())
                         <x-nav-link :href="route('admin.drivers.index')" :active="request()->routeIs('admin.drivers.index')">
                             {{ __('Drivers') }}
                         </x-nav-link>
@@ -116,7 +116,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                @if (Auth::user()->isAdmin())
+                @if (Auth::user()->isAdmin() || Auth::user()->isManager())
                     <x-responsive-nav-link :href="route('admin.drivers.index')">
                         {{ __('Drivers') }}
                     </x-responsive-nav-link>

@@ -56,7 +56,15 @@ final class LogSheetTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return LogSheet::query()->withCount('invoices')->with('invoices');
+        $isAdmin = auth()->user()->isAdmin();
+        $isManager = auth()->user()->isManager();
+        if ($isAdmin) {
+            return LogSheet::query()->withCount('invoices')->with('invoices');
+        } else if ($isManager) {
+            $manager = auth()->user()->manager;
+            $location_ids = $manager->locations->pluck('id')->toArray();
+            return LogSheet::whereIn('location_id', $location_ids)->withCount('invoices')->with('invoices');
+        }
     }
 
     /*

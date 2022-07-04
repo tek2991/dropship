@@ -2,18 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\DeliveryState;
 use App\Models\Invoice;
+use App\Models\Location;
+use App\Models\DeliveryState;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 
 final class InvoiceTable extends PowerGridComponent
 {
@@ -57,7 +58,15 @@ final class InvoiceTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return Invoice::query()->with('clientUser', 'client', 'logSheet');
+        $isAdmin = auth()->user()->isAdmin();
+        $isManager = auth()->user()->isManager();
+        if ($isAdmin) {
+            return Invoice::query()->with('clientUser', 'client', 'logSheet');
+        } else if ($isManager) {
+            $manager = auth()->user()->manager;
+            $location_ids = $manager->locations->pluck('id')->toArray();
+            return Invoice::whereIn('location_id', $location_ids)->with('clientUser', 'client', 'logSheet');
+        }
     }
 
     /*
