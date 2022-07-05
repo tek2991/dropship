@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Vehicle;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\cruds\StoreVehicleRequest;
 use App\Http\Requests\cruds\UpdateVehicleRequest;
-use App\Models\Vehicle;
+use App\Models\Location;
 
 class VehicleController extends Controller
 {
@@ -51,7 +53,8 @@ class VehicleController extends Controller
     public function show(Vehicle $vehicle)
     {
         return view('admin.vehicles.show', [
-            'vehicle' => $vehicle,
+            'vehicle' => $vehicle->load('locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -64,7 +67,8 @@ class VehicleController extends Controller
     public function edit(Vehicle $vehicle)
     {
         return view('admin.vehicles.edit', [
-            'vehicle' => $vehicle,
+            'vehicle' => $vehicle->load('locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -91,5 +95,21 @@ class VehicleController extends Controller
     public function destroy(Vehicle $vehicle)
     {
         //
+    }
+
+    public function addLocation(Request $request, Vehicle $vehicle){
+        $this->validate($request, [
+            'location_id' => 'required|exists:locations,id',
+        ]);
+        $vehicle->locations()->syncWithoutDetaching($request->location_id);
+        return redirect()->route('admin.vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' updated successfully.');
+    }
+
+    public function removeLocation(Request $request, Vehicle $vehicle){
+        $this->validate($request, [
+            'location_id' => 'required|exists:locations,id',
+        ]);
+        $vehicle->locations()->detach($request->location_id);
+        return redirect()->route('admin.vehicles.index')->with('message', 'Vehicle: ' . $vehicle->registration_number . ' updated successfully.');
     }
 }
