@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Location;
 use App\Models\LogSheet;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
@@ -59,11 +60,11 @@ final class LogSheetTable extends PowerGridComponent
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
-            return LogSheet::query()->withCount('invoices')->with('invoices');
+            return LogSheet::query()->withCount('invoices')->with('invoices', 'location');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return LogSheet::whereIn('location_id', $location_ids)->withCount('invoices')->with('invoices');
+            return LogSheet::whereIn('location_id', $location_ids)->withCount('invoices')->with('invoices', 'location');
         }
     }
 
@@ -101,6 +102,9 @@ final class LogSheetTable extends PowerGridComponent
             ->addColumn('date_formatted', function (LogSheet $model) {
                 return Carbon::parse($model->date)->format('d/m/Y');
             })
+            ->addColumn('location_name', function (LogSheet $model) {
+                return $model->location->name;
+            })
             ->addColumn('invoices_count');
     }
 
@@ -134,6 +138,12 @@ final class LogSheetTable extends PowerGridComponent
                 ->field('date_formatted', 'date')
                 ->sortable()
                 ->makeInputDatePicker('date'),
+
+            Column::add()
+                ->title('LOCATION')
+                ->field('location_name')
+                ->sortable()
+                ->makeInputSelect(Location::all(), 'name', 'location_id'),
 
             Column::add()
                 ->title('Invoices')

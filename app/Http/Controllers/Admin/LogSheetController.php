@@ -31,7 +31,7 @@ class LogSheetController extends Controller
     public function show(LogSheet $logSheet)
     {
         return view('admin.log-sheets.show', [
-            'logSheet' => $logSheet,
+            'logSheet' => $logSheet->load('location'),
             'invoices' => $logSheet->invoices()->with('clientUser', 'client')->paginate(),
         ]);
     }

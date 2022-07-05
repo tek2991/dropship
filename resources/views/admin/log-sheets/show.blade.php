@@ -28,6 +28,9 @@
                         <h3>
                             <strong>Total Packs: </strong> {{ $logSheet->invoices->sum('no_of_packs') }}
                         </h3>
+                        <h3 class="md:text-right">
+                            <strong>Location: </strong> {{ $logSheet->location->name}}
+                        </h3>
                     </div>
 
                     <div class="flex flex-col mt-8">
