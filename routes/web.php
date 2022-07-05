@@ -95,6 +95,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::delete('drivers/{driver}/remove-location', [DriverController::class, 'removelocation'])->name('drivers.remove.location');
     Route::put('vehicles/{vehicle}/add-location', [VehicleController::class, 'addLocation'])->name('vehicles.add.location');
     Route::delete('vehicles/{vehicle}/remove-location', [VehicleController::class, 'removelocation'])->name('vehicles.remove.location');
+    Route::put('transporters/{transporter}/add-location', [TransporterController::class, 'addLocation'])->name('transporters.add.location');
+    Route::delete('transporters/{transporter}/remove-location', [TransporterController::class, 'removelocation'])->name('transporters.remove.location');
+
 
 
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');

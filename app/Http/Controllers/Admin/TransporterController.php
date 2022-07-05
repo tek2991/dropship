@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreTransporterRequest;
 use App\Http\Requests\cruds\UpdateTransporterRequest;
+use App\Models\Location;
 
 class TransporterController extends Controller
 {
@@ -68,7 +69,8 @@ class TransporterController extends Controller
     public function show(Transporter $transporter)
     {
         return view('admin.transporters.show', [
-            'transporter' => $transporter,
+            'transporter' => $transporter->load('user', 'locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -81,7 +83,8 @@ class TransporterController extends Controller
     public function edit(Transporter $transporter)
     {
         return view('admin.transporters.edit', [
-            'transporter' => $transporter,
+            'transporter' => $transporter->load('user', 'locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -119,11 +122,30 @@ class TransporterController extends Controller
         //
     }
 
-    public function updatePassword(Request $request, Transporter $transporter){
+    public function updatePassword(Request $request, Transporter $transporter)
+    {
         $request->validate([
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
-        $transporter->user->update(['password'=> Hash::make($request->password)]);
+        $transporter->user->update(['password' => Hash::make($request->password)]);
         return redirect()->route('admin.transporters.index')->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
+    }
+
+    public function addLocation(Request $request, Transporter $transporter)
+    {
+        $request->validate([
+            'location_id' => ['required', 'exists:locations,id'],
+        ]);
+        $transporter->locations()->syncWithoutDetaching($request->location_id);
+        return redirect()->route('admin.transporters.show', $transporter)->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
+    }
+
+    public function removeLocation(Request $request, Transporter $transporter)
+    {
+        $request->validate([
+            'location_id' => ['required', 'exists:locations,id'],
+        ]);
+        $transporter->locations()->detach($request->location_id);
+        return redirect()->route('admin.transporters.show', $transporter)->with('message', 'Transporter: ' . $transporter->user->name . ' updated successfully.');
     }
 }

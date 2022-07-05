@@ -69,6 +69,16 @@
                                     </svg></span>
                             @endif
                         </h3>
+                        <h3 class="flex md:col-span-2">
+                            <strong>
+                                Locations:
+                            </strong>
+                            <ul class="pl-8 list-disc">
+                                @foreach ($transporter->locations as $location)
+                                    <li>{{ $location->name }}</li>
+                                @endforeach
+                            </ul>
+                        </h3>
                     </div>
 
                 </div>
