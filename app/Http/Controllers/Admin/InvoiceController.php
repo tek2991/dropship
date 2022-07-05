@@ -9,11 +9,12 @@ use App\Models\Client;
 use App\Models\Driver;
 use App\Models\Invoice;
 use App\Models\Vehicle;
+use App\Models\Location;
 use App\Models\Transporter;
 use Illuminate\Http\Request;
+use App\Models\DeliveryState;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
-use App\Models\DeliveryState;
 
 class InvoiceController extends Controller
 {
@@ -39,7 +40,7 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     {
         return view('admin.invoices.show', [
-            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images'),
+            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images', 'location'),
         ]);
     }
 
@@ -52,11 +53,12 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         return view('admin.invoices.edit', [
-            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images'),
+            'invoice' => $invoice->load('clientUser', 'client', 'driverUser', 'transporterUser', 'vehicle', 'images', 'location'),
             'clients' => Client::all(),
             'drivers' => Driver::all(),
             'vehicles' => Vehicle::all(),
             'transporters' => Transporter::all(),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -77,6 +79,7 @@ class InvoiceController extends Controller
             'driver_id' => 'required|exists:drivers,id',
             'transporter_id' => 'required|exists:transporters,id',
             'vehicle_id' => 'required|exists:vehicles,id',
+            'location_id' => 'required|exists:locations,id',
         ]);
 
         $invoice->update([
@@ -88,6 +91,7 @@ class InvoiceController extends Controller
             'transporter_id' => $request->transporter_id,
             'vehicle_id' => $request->vehicle_id,
             'updated_by' => auth()->user()->id,
+            'location_id' => $request->location_id,
         ]);
 
         $images = $request->image;

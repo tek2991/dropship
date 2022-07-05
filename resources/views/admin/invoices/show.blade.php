@@ -95,6 +95,9 @@
                             @endif
                         </h3>
                         <h3 class="md:col-span-2">
+                            <strong>Location: </strong>{{ $invoice->location->name }}
+                        </h3>
+                        <h3 class="md:col-span-2">
                             <strong>Remarks: </strong><i>{{ $invoice->remarks }}</i>
                         </h3>
                         <button type="button"

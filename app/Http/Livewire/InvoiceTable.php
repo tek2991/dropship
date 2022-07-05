@@ -61,11 +61,11 @@ final class InvoiceTable extends PowerGridComponent
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
-            return Invoice::query()->with('clientUser', 'client', 'logSheet');
+            return Invoice::query()->with('clientUser', 'client', 'logSheet', 'location');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return Invoice::whereIn('location_id', $location_ids)->with('clientUser', 'client', 'logSheet');
+            return Invoice::whereIn('location_id', $location_ids)->with('clientUser', 'client', 'logSheet', 'location');
         }
     }
 
@@ -111,6 +111,9 @@ final class InvoiceTable extends PowerGridComponent
             ->addColumn('date_formatted', function (Invoice $model) {
                 return Carbon::parse($model->date)->format('d/m/Y');
             })
+            ->addColumn('location_name', function (Invoice $model) {
+                return $model->location->name;
+            })
             ->addColumn('clientUser.name')
             ->addColumn('gross_weight', function (Invoice $model) {
                 return $model->gross_weight . ' Kg';
@@ -152,6 +155,12 @@ final class InvoiceTable extends PowerGridComponent
                 ->field('date_formatted', 'date')
                 ->sortable()
                 ->makeInputDatePicker('date'),
+
+            Column::add()
+                ->title('LOCATION')
+                ->field('location_name')
+                ->sortable()
+                ->makeInputSelect(Location::all(), 'name', 'location_id'),
 
             Column::add()
                 ->title('CLIENT')

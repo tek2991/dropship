@@ -71,23 +71,34 @@
                                         @endforeach
                                     </x-input-select>
                                 </div>
-                            </div>
-                            <div>
-                                <x-label for="delivery_status" :value="__('Status')" />
-                                <x-input-select id="delivery_status" class="block mt-1 w-full" name="delivery_status"
-                                    required>
-                                    <option value="delivered"
-                                        {{ $invoice->delivery_status == 'delivered' ? 'selected' : '' }}>Delivered
-                                    </option>
-                                    <option value="pending"
-                                        {{ $invoice->delivery_status == 'pending' ? 'selected' : '' }}>
-                                        Pending
-                                    </option>
-                                    <option value="cancelled"
-                                        {{ $invoice->delivery_status == 'cancelled' ? 'selected' : '' }}>
-                                        Cancelled
-                                    </option>
-                                </x-input-select>
+                                <div>
+                                    <x-label for="delivery_status" :value="__('Status')" />
+                                    <x-input-select id="delivery_status" class="block mt-1 w-full" name="delivery_status"
+                                        required>
+                                        <option value="delivered"
+                                            {{ $invoice->delivery_status == 'delivered' ? 'selected' : '' }}>Delivered
+                                        </option>
+                                        <option value="pending"
+                                            {{ $invoice->delivery_status == 'pending' ? 'selected' : '' }}>
+                                            Pending
+                                        </option>
+                                        <option value="cancelled"
+                                            {{ $invoice->delivery_status == 'cancelled' ? 'selected' : '' }}>
+                                            Cancelled
+                                        </option>
+                                    </x-input-select>
+                                </div>
+                                <div>
+                                    <x-label for="location" :value="__('Location')" />
+                                    <x-input-select id="location" class="block mt-1 w-full" name="location_id" required>
+                                        @foreach ($locations as $location)
+                                            <option value="{{ $location->id }}"
+                                                {{ $location->id == $invoice->location_id ? 'selected' : '' }}>
+                                                {{ $location->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
                             </div>
                             <div>
                                 <x-label for="remarks" :value="__('Remarks')" />
