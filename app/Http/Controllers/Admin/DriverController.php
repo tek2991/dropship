@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreDriverRequest;
 use App\Http\Requests\cruds\UpdateDriverRequest;
+use App\Models\Location;
 
 class DriverController extends Controller
 {
@@ -66,7 +67,7 @@ class DriverController extends Controller
     public function show(Driver $driver)
     {
         return view('admin.drivers.show', [
-            'driver' => $driver->load('user'),
+            'driver' => $driver->load('user', 'locations'),
         ]);
     }
 
@@ -79,7 +80,8 @@ class DriverController extends Controller
     public function edit(Driver $driver)
     {
         return view('admin.drivers.edit', [
-            'driver' => $driver->load('user'),
+            'driver' => $driver->load('user', 'locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -114,5 +116,21 @@ class DriverController extends Controller
         ]);
         $driver->user->update(['password'=> Hash::make($request->password)]);
         return redirect()->route('admin.drivers.index')->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
+    }
+
+    public function addLocation(Request $request, Driver $driver){
+        $this->validate($request, [
+            'location_id' => 'required|exists:locations,id',
+        ]);
+        $driver->locations()->syncWithoutDetaching($request->location_id);
+        return redirect()->route('admin.drivers.show', $driver)->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
+    }
+
+    public function removeLocation(Request $request, Driver $driver){
+        $this->validate($request, [
+            'location_id' => 'required|exists:locations,id',
+        ]);
+        $driver->locations()->detach($request->location_id);
+        return redirect()->route('admin.drivers.show', $driver)->with('message', 'Driver: ' . $driver->user->name . ' updated successfully.');
     }
 }

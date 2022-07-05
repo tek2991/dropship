@@ -101,7 +101,7 @@ class LocationController extends Controller
         $this->validate($request, [
             'manager_id' => 'required|exists:managers,id',
         ]);
-        $location->managers()->attach($request->manager_id);
+        $location->managers()->syncWithoutDetaching($request->manager_id);
         return redirect()->route('admin.locations.show', $location)->with('message', 'Manager added successfully.');
     }
 
