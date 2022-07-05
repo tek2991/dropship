@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\cruds\StoreClientRequest;
 use App\Http\Requests\cruds\UpdateClientRequest;
+use App\Models\Location;
 
 class ClientController extends Controller
 {
@@ -70,7 +71,8 @@ class ClientController extends Controller
     public function show(Client $client)
     {
         return view('admin.clients.show', [
-            'client' => $client,
+            'client' => $client->load('user', 'locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -83,7 +85,8 @@ class ClientController extends Controller
     public function edit(Client $client)
     {
         return view('admin.clients.edit', [
-            'client' => $client,
+            'client' => $client->load('user', 'locations'),
+            'locations' => Location::all(),
         ]);
     }
 
@@ -130,5 +133,23 @@ class ClientController extends Controller
         ]);
         $client->user->update(['password' => Hash::make($request->password)]);
         return redirect()->route('admin.clients.index')->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
+    }
+    
+    public function addLocation(Request $request, Client $client)
+    {
+        $request->validate([
+            'location_id' => ['required', 'exists:locations,id'],
+        ]);
+        $client->locations()->syncWithoutDetaching($request->location_id);
+        return redirect()->route('admin.clients.show', $client)->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
+    }
+
+    public function removeLocation(Request $request, Client $client)
+    {
+        $request->validate([
+            'location_id' => ['required', 'exists:locations,id'],
+        ]);
+        $client->locations()->detach($request->location_id);
+        return redirect()->route('admin.clients.show', $client)->with('message', 'Client: ' . $client->user->name . ' updated successfully.');
     }
 }

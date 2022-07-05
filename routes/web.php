@@ -97,6 +97,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::delete('vehicles/{vehicle}/remove-location', [VehicleController::class, 'removelocation'])->name('vehicles.remove.location');
     Route::put('transporters/{transporter}/add-location', [TransporterController::class, 'addLocation'])->name('transporters.add.location');
     Route::delete('transporters/{transporter}/remove-location', [TransporterController::class, 'removelocation'])->name('transporters.remove.location');
+    Route::put('clients/{client}/add-location', [ClientController::class, 'addLocation'])->name('clients.add.location');
+    Route::delete('clients/{client}/remove-location', [ClientController::class, 'removelocation'])->name('clients.remove.location');
 
 
 

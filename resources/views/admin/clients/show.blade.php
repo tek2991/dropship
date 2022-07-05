@@ -64,6 +64,16 @@
                                 Client Number:
                             </strong>{{ $client->client_number }}
                         </h3>
+                        <h3 class="flex md:col-span-2">
+                            <strong>
+                                Locations:
+                            </strong>
+                            <ul class="pl-8 list-disc">
+                                @foreach ($client->locations as $location)
+                                    <li>{{ $location->name }}</li>
+                                @endforeach
+                            </ul>
+                        </h3>
                     </div>
 
                 </div>
@@ -79,7 +89,6 @@
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight mb-4">
                         Client Invoices
                     </h3>
-                    <x-success-message />
                     <livewire:client-invoice-table :client_id="$client->id"/>
                 </div>
             </div>
