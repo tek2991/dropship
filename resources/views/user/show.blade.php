@@ -59,6 +59,18 @@
                                 Gender:
                             </strong>{{ $user->gender ? $user->gender : 'NA' }}
                         </h3>
+                        <h3 class="flex">
+                            <strong>
+                               Roles:
+                            </strong>
+                            <ul class="pl-8 list-disc">
+                                @forelse ($user->roles as $role)
+                                    <li>{{ $role->name }}</li>
+                                @empty
+                                    <li class="text-orange-400">No roles</li>
+                                @endforelse
+                            </ul>
+                        </h3>
                     </div>
 
                 </div>

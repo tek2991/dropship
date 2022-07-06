@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
         return view('user.show', [
-            'user' => $user,
+            'user' => $user->load('roles'),
         ]);
     }
 
