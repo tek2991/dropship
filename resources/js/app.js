@@ -7,6 +7,8 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 
+import "flowbite";
+
 window.FilePond = FilePond;
 FilePond.registerPlugin(
     FilePondPluginFileValidateType,
