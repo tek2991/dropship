@@ -65,7 +65,9 @@ class ManagerController extends Controller
      */
     public function show(Manager $manager)
     {
-        return view('admin.managers.show', compact('manager'));
+        return view('admin.managers.show', [
+            'manager' => $manager->load('user', 'locations'),
+        ]);
     }
 
     /**

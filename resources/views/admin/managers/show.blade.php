@@ -59,6 +59,16 @@
                                 Gender:
                             </strong>{{ $manager->user->gender ? $manager->user->gender : 'NA' }}
                         </h3>
+                        <h3 class="flex">
+                            <strong>
+                                Locations:
+                            </strong>
+                            <ul class="pl-8 list-disc">
+                                @foreach ($manager->locations as $location)
+                                    <li>{{ $location->name }}</li>
+                                @endforeach
+                            </ul>
+                        </h3>
                     </div>
 
                 </div>
