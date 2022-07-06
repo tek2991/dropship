@@ -14,7 +14,18 @@ class UpdateDriverRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->hasRole('admin');
+        if ($this->user()->hasRole('admin')) {
+            return true;
+        }
+
+        if ($this->user()->hasRole('manager')) {
+            // check if manager is assigned to this drivers locations
+            $driver_location_ids = $this->driver->locations->pluck('id')->toArray();
+            $manager_location_ids = $this->user()->manager->locations->pluck('id')->toArray();
+            return count(array_intersect($driver_location_ids, $manager_location_ids)) > 0;
+        }
+
+        return false;
     }
 
     /**
