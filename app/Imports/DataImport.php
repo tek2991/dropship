@@ -9,15 +9,16 @@ use App\Models\Invoice;
 use App\Models\Vehicle;
 use App\Models\LogSheet;
 use App\Models\Transporter;
+use App\Models\DeliveryState;
+
 use Illuminate\Support\Carbon;
 
 use Illuminate\Support\Collection;
-
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
 
 class DataImport implements ToCollection, WithHeadingRow, WithValidation
@@ -183,6 +184,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                 );
 
 
+            $pending_delivery_state_id = DeliveryState::where('name', 'pending')->first()->id;
             $invoice = Invoice::updateOrCreate(
                 [
                     'invoice_no' => $row['invoice_no'],
@@ -198,6 +200,7 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
                     'destination' => $row['destination'],
                     'driver_id' => $driver ? $driver->id : null,
                     'location_id' => self::$location_id,
+                    'delivery_state_id' => $pending_delivery_state_id,
                 ]
             );
         }

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Invoice;
 use App\Models\Location;
+use Illuminate\Support\Str;
 use App\Models\DeliveryState;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
@@ -61,11 +62,19 @@ final class InvoiceTable extends PowerGridComponent
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
-            return Invoice::query()->with('clientUser', 'client', 'logSheet', 'location');
+            return Invoice::query()
+            ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
+            ->join('users', 'users.id', '=', 'transporters.user_id')
+            ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
+            ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
+            ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return Invoice::whereIn('location_id', $location_ids)->with('clientUser', 'client', 'logSheet', 'location');
+            return Invoice::whereIn('location_id', $location_ids)
+            ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
+            ->join('users', 'users.id', '=', 'transporters.user_id')
+            ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser');
         }
     }
 
@@ -111,14 +120,17 @@ final class InvoiceTable extends PowerGridComponent
             ->addColumn('date_formatted', function (Invoice $model) {
                 return Carbon::parse($model->date)->format('d/m/Y');
             })
+            ->addColumn('transporter_name')
+            ->addColumn('vehicle_registration_number')
             ->addColumn('location_name', function (Invoice $model) {
                 return $model->location->name;
             })
-            ->addColumn('clientUser.name')
-            ->addColumn('gross_weight', function (Invoice $model) {
-                return $model->gross_weight . ' Kg';
+            ->addColumn('clientUser.name', function (Invoice $model) {
+                return Str::limit($model->clientUser->name, 12);
             })
-            ->addColumn('no_of_packs')
+            ->addColumn('gross_weight_packs', function (Invoice $model) {
+                return $model->gross_weight . ' <strong>/</strong> ' . $model->no_of_packs;
+            })
             ->addColumn('logSheet.log_sheet_no')
             ->addColumn('delivery_status', function (Invoice $model) {
                 return ucfirst($model->delivery_status);
@@ -155,6 +167,20 @@ final class InvoiceTable extends PowerGridComponent
                 ->field('date_formatted', 'date')
                 ->sortable()
                 ->makeInputDatePicker('date'),
+            
+            Column::add()
+                ->title('TRANSPORTER')
+                ->field('transporter_name')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
+
+            Column::add()
+                ->title('VEHICLE')
+                ->field('vehicle_registration_number')
+                ->sortable()
+                ->searchable()
+                ->makeInputText(),
 
             Column::add()
                 ->title('LOCATION')
@@ -168,13 +194,8 @@ final class InvoiceTable extends PowerGridComponent
                 ->searchable(),
 
             Column::add()
-                ->title('GROSS WEIGHT')
-                ->field('gross_weight')
-                ->sortable(),
-
-            Column::add()
-                ->title('PACKS')
-                ->field('no_of_packs')
+                ->title('W(Kg)/PKS')
+                ->field('gross_weight_packs')
                 ->sortable(),
 
             Column::add()
