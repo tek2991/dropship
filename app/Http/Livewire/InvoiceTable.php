@@ -74,6 +74,8 @@ final class InvoiceTable extends PowerGridComponent
             return Invoice::whereIn('location_id', $location_ids)
                 ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
                 ->join('users', 'users.id', '=', 'transporters.user_id')
+                ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
+                ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
                 ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser');
         }
     }
@@ -227,7 +229,7 @@ final class InvoiceTable extends PowerGridComponent
                 ->field('clientUser.name_full')
                 ->hidden()
                 ->visibleInExport(true),
-            
+
             Column::add()
                 ->title('CLIENT PHONE')
                 ->field('clientUser.phone')
@@ -259,7 +261,7 @@ final class InvoiceTable extends PowerGridComponent
                 ->field('driver_name')
                 ->hidden()
                 ->visibleInExport(true),
-            
+
             Column::add()
                 ->title('DRIVER PHONE')
                 ->field('driver_phone')
