@@ -12,31 +12,38 @@ use App\Http\Controllers\Controller;
 
 class ImportController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         return view('admin.imports.index', [
             'imports' => Import::orderBy('id', 'desc')->with('location')->paginate(),
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
+        if (!auth()->user()->hasRole('manager')) {
+            return redirect()->route('admin.imports.index');
+        }
+        $manager = auth()->user()->manager;
         return view('admin.imports.create', [
-            'locations' => Location::all(),
+            'locations' => $manager->locations,
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $temporaryFile = TemporaryFile::where('folder', $request->file)->first();
         $location_id = null;
 
-        if(auth()->user()->hasRole('admin')){
+        if (auth()->user()->hasRole('manager')) {
             $location_id = $request->location_id;
-        } else if( auth()->user()->hasRole('manager') ){
-            $location_id = auth()->user()->manager->location_id;
+        } else {
+            return redirect()->back()->with('error', 'You are not authorized to perform this action.');
         }
 
-        if($temporaryFile){
-            Storage::move('uploads/tmp/' . $request->file . '/' . $temporaryFile->filename , 'imports/' . $request->file . '/' . $temporaryFile->filename);
+        if ($temporaryFile) {
+            Storage::move('uploads/tmp/' . $request->file . '/' . $temporaryFile->filename, 'imports/' . $request->file . '/' . $temporaryFile->filename);
             $path = 'imports/' . $request->file . '/' . $temporaryFile->filename;
             $import_file = new DataImport($location_id);
             $import_file->import($path);
@@ -49,21 +56,21 @@ class ImportController extends Controller
             Storage::deleteDirectory('uploads/tmp/' . $request->file);
             $temporaryFile->delete();
             return redirect()->route('admin.imports.index')->with('message', 'File Imported Successfully.');
-        }else{
+        } else {
             return redirect()->route('admin.imports.create')->withErrors('Temporary File not found.');
         }
-
     }
 
-    public function download(Request $request){
-        if(!$import = Import::find($request->import_id)){
+    public function download(Request $request)
+    {
+        if (!$import = Import::find($request->import_id)) {
             return redirect()->route('admin.imports.index')->withErrors('Import not found.');
         }
 
-        if(Storage::exists($import->file_name)){
+        if (Storage::exists($import->file_name)) {
             $uploaded_file_name = basename($import->file_name);
-            return Storage::download($import->file_name, 'imported_'. $import->created_at . '_' . $uploaded_file_name);
-        }else{
+            return Storage::download($import->file_name, 'imported_' . $import->created_at . '_' . $uploaded_file_name);
+        } else {
             return redirect()->route('admin.imports.index')->withErrors('File not found.');
         }
     }

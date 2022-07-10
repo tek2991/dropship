@@ -15,7 +15,7 @@
 
                     <form method="POST" action="{{ route('admin.imports.store') }}" enctype="multipart/form-data">
                         @csrf
-                        @if (auth()->user()->hasRole('admin'))
+                        @if (auth()->user()->hasRole('manager'))
                             <div class="grid grid-cols-1 gap-6 mb-4">
                                 <div>
                                     <x-label for="location_id" :value="__('Location')" />
