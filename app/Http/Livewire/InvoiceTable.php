@@ -63,18 +63,18 @@ final class InvoiceTable extends PowerGridComponent
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
             return Invoice::query()
-            ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
-            ->join('users', 'users.id', '=', 'transporters.user_id')
-            ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
-            ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
-            ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser');
+                ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
+                ->join('users', 'users.id', '=', 'transporters.user_id')
+                ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
+                ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
+                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
             return Invoice::whereIn('location_id', $location_ids)
-            ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
-            ->join('users', 'users.id', '=', 'transporters.user_id')
-            ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser');
+                ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
+                ->join('users', 'users.id', '=', 'transporters.user_id')
+                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser');
         }
     }
 
@@ -120,20 +120,35 @@ final class InvoiceTable extends PowerGridComponent
             ->addColumn('date_formatted', function (Invoice $model) {
                 return Carbon::parse($model->date)->format('d/m/Y');
             })
-            ->addColumn('transporter_name')
+            ->addColumn('transporter_name', function (Invoice $model) {
+                return Str::limit($model->transporterUser->name, 12);
+            })
+            ->addColumn('transporter_name_full', function (Invoice $model) {
+                return $model->transporterUser->name;
+            })
+            ->addColumn('transporterUser.phone')
             ->addColumn('vehicle_registration_number')
             ->addColumn('location_name', function (Invoice $model) {
                 return $model->location->name;
             })
             ->addColumn('clientUser.name', function (Invoice $model) {
-                return Str::limit($model->clientUser->name, 12);
+                return Str::limit($model->clientUser->name, 9);
             })
-            ->addColumn('gross_weight_packs', function (Invoice $model) {
-                return $model->gross_weight . ' <strong>/</strong> ' . $model->no_of_packs;
+            ->addColumn('clientUser.name_full', function (Invoice $model) {
+                return $model->clientUser->name;
             })
+            ->addColumn('clientUser.phone')
+            ->addColumn('gross_weight')
+            ->addColumn('no_of_packs')
             ->addColumn('logSheet.log_sheet_no')
             ->addColumn('delivery_status', function (Invoice $model) {
                 return ucfirst($model->delivery_status);
+            })
+            ->addColumn('driver_name', function (Invoice $model) {
+                return $model->driverUser->name;
+            })
+            ->addColumn('driver_phone', function (Invoice $model) {
+                return $model->driverUser->phone;
             });
     }
 
@@ -167,13 +182,26 @@ final class InvoiceTable extends PowerGridComponent
                 ->field('date_formatted', 'date')
                 ->sortable()
                 ->makeInputDatePicker('date'),
-            
+
             Column::add()
                 ->title('TRANSPORTER')
                 ->field('transporter_name')
                 ->sortable()
                 ->searchable()
-                ->makeInputText(),
+                ->makeInputText()
+                ->visibleInExport(false),
+
+            Column::add()
+                ->title('TRANSPORTER')
+                ->field('transporter_name_full')
+                ->hidden()
+                ->visibleInExport(true),
+
+            Column::add()
+                ->title('TRANSPORTER PHONE')
+                ->field('transporterUser.phone')
+                ->hidden()
+                ->visibleInExport(true),
 
             Column::add()
                 ->title('VEHICLE')
@@ -191,21 +219,52 @@ final class InvoiceTable extends PowerGridComponent
             Column::add()
                 ->title('CLIENT')
                 ->field('clientUser.name')
-                ->searchable(),
+                ->searchable()
+                ->visibleInExport(false),
 
             Column::add()
-                ->title('W(Kg)/PKS')
-                ->field('gross_weight_packs')
+                ->title('CLIENT')
+                ->field('clientUser.name_full')
+                ->hidden()
+                ->visibleInExport(true),
+            
+            Column::add()
+                ->title('CLIENT PHONE')
+                ->field('clientUser.phone')
+                ->hidden()
+                ->visibleInExport(true),
+
+            Column::add()
+                ->title('Wt(Kg)')
+                ->field('gross_weight')
+                ->sortable(),
+
+            Column::add()
+                ->title('PKS')
+                ->field('no_of_packs')
                 ->sortable(),
 
             Column::add()
                 ->title('LOG SHEET NO')
                 ->field('logSheet.log_sheet_no'),
+
             Column::add()
                 ->title('STATUS')
                 ->field('delivery_status')
                 ->makeInputSelect(DeliveryState::all(), 'name', 'delivery_state_id')
                 ->sortable(),
+
+            Column::add()
+                ->title('DRIVER')
+                ->field('driver_name')
+                ->hidden()
+                ->visibleInExport(true),
+            
+            Column::add()
+                ->title('DRIVER PHONE')
+                ->field('driver_phone')
+                ->hidden()
+                ->visibleInExport(true),
         ];
     }
 
