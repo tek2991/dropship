@@ -14,9 +14,15 @@ class ImportController extends Controller
 {
     public function index()
     {
-
+        $imports = null;
+        if (auth()->user()->hasRole('admin')) {
+            $imports = Import::orderBy('id', 'desc')->with('location')->paginate();
+        } else if(auth()->user()->hasRole('manager')) {
+            $location_ids = auth()->user()->manager->locations->pluck('id')->toArray();
+            $imports = Import::whereIn('location_id', $location_ids)->orderBy('id', 'desc')->with('location')->paginate();
+        }
         return view('admin.imports.index', [
-            'imports' => Import::orderBy('id', 'desc')->with('location')->paginate(),
+            'imports' => $imports,
         ]);
     }
 
