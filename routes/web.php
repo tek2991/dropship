@@ -79,7 +79,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
     
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
-    Route::resource('imports', ImportController::class)->only('index', 'create', 'store');
+    Route::resource('imports', ImportController::class)->only('index', 'create', 'store', 'destroy');
     Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');
 
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
