@@ -158,7 +158,7 @@ final class ImportTable extends PowerGridComponent
                ->caption('Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
             //    ->route('admin.imports.destroy', ['import' => 'id'])
-               ->openModal('confirm-modal', ['model_id' => 'id', 'model_name' => 'Import', 'model_action' => 'destroy'])
+               ->openModal('confirm-modal', ['route' => 'admin.imports.destroy', 'model_id' => 'id', 'model_name' => 'Import', 'model_action' => 'destroy'])
                ->method('delete')
         ];
     }

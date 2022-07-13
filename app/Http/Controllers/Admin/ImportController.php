@@ -67,6 +67,23 @@ class ImportController extends Controller
         }
     }
 
+    public function destroy(Import $import)
+    {
+        if (auth()->user()->hasRole('manager')) {
+            $location_id = auth()->user()->manager->locations->pluck('id')->toArray();
+            if (in_array($import->location_id, $location_id)) {
+                // Delete the import file
+
+
+                return redirect()->route('admin.imports.index')->with('message', 'File Deleted Successfully.');
+            } else {
+                return redirect()->route('admin.imports.index')->withErrors('You are not authorized to perform this action.');
+            }
+        } else {
+            return redirect()->route('admin.imports.index')->withErrors('You are not authorized to perform this action.');
+        }
+    }
+
     public function download(Request $request)
     {
         if (!$import = Import::find($request->import_id)) {
