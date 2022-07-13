@@ -155,16 +155,16 @@ final class ImportTable extends PowerGridComponent
     public function actions(): array
     {
        return [
-        //    Button::add('edit')
-        //        ->caption('Edit')
-        //        ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-        //        ->route('import.edit', ['import' => 'id']),
+           Button::add('download')
+               ->caption('Download')
+               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+               ->route('admin.imports.download', ['import_id' => 'id']),
 
            Button::add('destroy')
                ->caption('Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('admin.imports.destroy', ['import' => 'id'])
-               ->openModal('confirm-modal', ['dish' => 'id'])
+            //    ->route('admin.imports.destroy', ['import' => 'id'])
+               ->openModal('confirm-modal', ['model_id' => 'id', 'model_name' => 'Import', 'model_action' => 'destroy'])
                ->method('delete')
         ];
     }
