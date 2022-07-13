@@ -116,12 +116,6 @@ final class ImportTable extends PowerGridComponent
     {
         return [
             Column::add()
-                ->title('Import ID')
-                ->field('id')
-                ->searchable()
-                ->sortable(),
-
-            Column::add()
                 ->title('File Name')
                 ->field('file_name'),
 
