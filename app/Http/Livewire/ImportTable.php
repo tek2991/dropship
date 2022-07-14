@@ -121,8 +121,7 @@ final class ImportTable extends PowerGridComponent
 
             Column::add()
                 ->title('Location')
-                ->field('location.name')
-                ->hidden(),
+                ->field('location.name'),
 
             Column::add()
                 ->title('Created at')
