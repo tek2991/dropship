@@ -9,6 +9,7 @@ use App\Imports\DataImport;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
+use App\Imports\DeleteImportedData;
 
 class ImportController extends Controller
 {
@@ -72,8 +73,18 @@ class ImportController extends Controller
         if (auth()->user()->hasRole('manager')) {
             $location_id = auth()->user()->manager->locations->pluck('id')->toArray();
             if (in_array($import->location_id, $location_id)) {
-                // Delete the import file
+                // get the file path
+                $file_path = $import->file_name;
 
+                // Call DeleteImportedData class to delete the imported data
+                $delete_data_class = new DeleteImportedData();
+                $delete_data_class = $delete_data_class->import($file_path);
+
+                // Delete the imported file from storage
+                Storage::delete($file_path);
+
+                // Delete the imported file from the database
+                $import->delete();
 
                 return redirect()->route('admin.imports.index')->with('message', 'File Deleted Successfully.');
             } else {

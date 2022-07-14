@@ -4,11 +4,17 @@ namespace App\Imports;
 
 use App\Models\Invoice;
 use App\Models\LogSheet;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 
-class DeleteImportedData implements ToCollection
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+class DeleteImportedData implements ToCollection, WithHeadingRow
 {
+    use Importable;
+
     /**
     * @param Collection $collection
     */
@@ -30,16 +36,18 @@ class DeleteImportedData implements ToCollection
             array_push($invoice_ids, $invoice_id);
         }
 
+        
         // Delete duplicates from the log_sheet_ids array
         $log_sheet_ids = array_unique($log_sheet_ids);
-
+        
         // Delete duplicates from the invoice_ids array
         $invoice_ids = array_unique($invoice_ids);
 
-        // Delete log_sheets
-        LogSheet::whereIn('id', $log_sheet_ids)->delete();
+        // Permanently Delete invoices
+        Invoice::destroy($invoice_ids);
 
-        // Delete invoices
-        Invoice::whereIn('id', $invoice_ids)->delete();
+        // Delete log_sheets
+        LogSheet::destroy($log_sheet_ids);
+
     }
 }
