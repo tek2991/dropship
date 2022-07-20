@@ -27,13 +27,19 @@ class DeleteImportedData implements ToCollection, WithHeadingRow
         // Loop through the collection and get the log_sheet_id and invoice_id
         foreach ($collection as $row) {
             // Get the log_sheet_id
-            $log_sheet_id = LogSheet::where('log_sheet_no', $row['log_sheet'])->first()->id;
+            $log_sheet = LogSheet::where('log_sheet_number', $row['log_sheet_number'])->first();
+            $log_sheet_id = $log_sheet ? $log_sheet->id : null;
             // Get the invoice_id
-            $invoice_id = Invoice::where('invoice_no', $row['invoice_no'])->first()->id;
-            // Add the log_sheet_id to the log_sheet_ids array
-            array_push($log_sheet_ids, $log_sheet_id);
-            // Add the invoice_id to the invoice_ids array
-            array_push($invoice_ids, $invoice_id);
+            $invoice = Invoice::where('invoice_number', $row['invoice_number'])->first();
+            $invoice_id = $invoice ? $invoice->id : null;
+            // Add the log_sheet_id to the log_sheet_ids array if it exists
+            if ($log_sheet_id) {
+                array_push($log_sheet_ids, $log_sheet_id);
+            }
+            // Add the invoice_id to the invoice_ids array if it exists
+            if ($invoice_id) {
+                array_push($invoice_ids, $invoice_id);
+            }
         }
 
         
