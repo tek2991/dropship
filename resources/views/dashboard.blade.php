@@ -9,54 +9,111 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager'))
+                    @if (auth()->user()->hasRole('admin') ||
+                        auth()->user()->hasRole('manager'))
                         @php
+                            $is_admin = auth()
+                                ->user()
+                                ->hasRole('admin');
+                            $is_manager = auth()
+                                ->user()
+                                ->hasRole('manager');
+                            $location_ids_if_manager = auth()
+                                ->user()
+                                ->manager->locations->pluck('id')
+                                ->toArray();
+                            
+                            if ($is_manager) {
+                                $driver_ids = array_unique(
+                                    \App\Models\Location::whereIn('id', $location_ids_if_manager)
+                                        ->with('drivers')
+                                        ->get()
+                                        ->pluck('drivers')
+                                        ->flatten()
+                                        ->pluck('id')
+                                        ->toArray(),
+                                );
+                                $client_ids = array_unique(
+                                    \App\Models\Location::whereIn('id', $location_ids_if_manager)
+                                        ->with('clients')
+                                        ->get()
+                                        ->pluck('clients')
+                                        ->flatten()
+                                        ->pluck('id')
+                                        ->toArray(),
+                                );
+                                $vehicle_ids = array_unique(
+                                    \App\Models\Location::whereIn('id', $location_ids_if_manager)
+                                        ->with('vehicles')
+                                        ->get()
+                                        ->pluck('vehicles')
+                                        ->flatten()
+                                        ->pluck('id')
+                                        ->toArray(),
+                                );
+                                $transporter_ids = array_unique(
+                                    \App\Models\Location::whereIn('id', $location_ids_if_manager)
+                                        ->with('transporters')
+                                        ->get()
+                                        ->pluck('transporters')
+                                        ->flatten()
+                                        ->pluck('id')
+                                        ->toArray(),
+                                );
+                            
+                                $import_ids = \App\Models\Import::whereIn('location_id', $location_ids_if_manager)
+                                    ->pluck('id')
+                                    ->toArray();
+                                $log_sheet_ids = \App\Models\LogSheet::whereIn('location_id', $location_ids_if_manager)
+                                    ->pluck('id')
+                                    ->toArray();
+                                $invoice_ids = \App\Models\Invoice::whereIn('location_id', $location_ids_if_manager)
+                                    ->pluck('id')
+                                    ->toArray();
+                            }
+                            
                             $counts = [
                                 'drivers' => [
                                     'title' => 'Drivers',
-                                    'count' => \App\Models\Driver::count(),
+                                    'count' => $is_manager ? count($driver_ids) : \App\Models\Driver::count(),
                                     'url' => route('admin.drivers.index'),
                                     'data' => null,
                                 ],
                                 'clients' => [
                                     'title' => 'Clients',
-                                    'count' => \App\Models\Client::count(),
+                                    'count' => $is_manager ? count($client_ids) : \App\Models\Client::count(),
                                     'url' => route('admin.clients.index'),
                                     'data' => null,
                                 ],
                                 'vehicles' => [
                                     'title' => 'Vehicles',
-                                    'count' => \App\Models\Vehicle::count(),
+                                    'count' => $is_manager ? count($vehicle_ids) : \App\Models\Vehicle::count(),
                                     'url' => route('admin.vehicles.index'),
                                     'data' => null,
                                 ],
                                 'transporters' => [
                                     'title' => 'Transporters',
-                                    'count' => \App\Models\Transporter::count(),
+                                    'count' => $is_manager ? count($transporter_ids) : \App\Models\Transporter::count(),
                                     'url' => route('admin.transporters.index'),
                                     'data' => null,
                                 ],
                                 'imports' => [
                                     'title' => 'Imports',
-                                    'count' => \App\Models\Import::count(),
+                                    'count' => $is_manager ? count($import_ids) : \App\Models\Import::count(),
                                     'url' => route('admin.imports.index'),
                                     'data' => null,
                                 ],
                                 'log_sheets' => [
                                     'title' => 'Log Sheets',
-                                    'count' => \App\Models\LogSheet::count(),
+                                    'count' => $is_manager ? count($log_sheet_ids) : \App\Models\LogSheet::count(),
                                     'url' => route('admin.log-sheets.index'),
                                     'data' => null,
                                 ],
-                                'invoices' => [
-                                    'title' => 'Invoices',
-                                    'count' => \App\Models\Invoice::count(),
+                                'total_invoices' => [
+                                    'title' => 'Total Invoices',
+                                    'count' => $is_manager ? count($invoice_ids) : \App\Models\Invoice::count(),
                                     'url' => route('admin.invoices.index'),
-                                    'data' => [
-                                        'pending' =>  \App\Models\Invoice::where('delivery_status', 'pending')->count(),
-                                        'delivered' => \App\Models\Invoice::where('delivery_status', 'delivered')->count(),
-                                        'cancelled' => \App\Models\Invoice::where('delivery_status', 'cancelled')->count(),
-                                    ],
+                                    'data' => null,
                                 ],
                             ];
                         @endphp
@@ -72,55 +129,14 @@
                                                     d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
                                             </svg>
                                         </div>
-                                        @if ($data['data'])
-                                            <div class="w-full flex justify-around">
-                                                <div>
-                                                    <p
-                                                        class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                        {{ $data['title'] }}
-                                                    </p>
-                                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                        {{ $data['count'] }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p
-                                                        class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                        Pending
-                                                    </p>
-                                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                        {{ $data['data']['pending'] }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p
-                                                        class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                        Delivered
-                                                    </p>
-                                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                        {{ $data['data']['delivered'] }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p
-                                                        class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                        Cancelled
-                                                    </p>
-                                                    <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                        {{ $data['data']['cancelled'] }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            @else
-                                            <div>
-                                                <p class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
-                                                    {{ $data['title'] }}
-                                                </p>
-                                                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                    {{ $data['count'] }}
-                                                </p>
-                                            </div>
-                                        @endif
+                                        <div>
+                                            <p class="mb-1 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                                {{ $data['title'] }}
+                                            </p>
+                                            <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                                {{ $data['count'] }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </a>
                             @endforeach
