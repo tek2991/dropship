@@ -25,10 +25,19 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::with('clientUser', 'client', 'logSheet')->paginate();
-        return view('admin.invoices.index', [
-            'invoices' => $invoices,
-        ]);
+        return view('admin.invoices.index');
+    }
+
+    public function pending(){
+        return view('admin.invoices.pending');
+    }
+
+    public function delivered(){
+        return view('admin.invoices.delivered');
+    }
+
+    public function cancelled(){
+        return view('admin.invoices.cancelled');
     }
 
     /**

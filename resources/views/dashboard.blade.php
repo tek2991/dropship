@@ -18,12 +18,13 @@
                             $is_manager = auth()
                                 ->user()
                                 ->hasRole('manager');
-                            $location_ids_if_manager = auth()
-                                ->user()
-                                ->manager->locations->pluck('id')
-                                ->toArray();
                             
                             if ($is_manager) {
+                                $location_ids_if_manager = auth()
+                                    ->user()
+                                    ->manager->locations->pluck('id')
+                                    ->toArray();
+                            
                                 $driver_ids = array_unique(
                                     \App\Models\Location::whereIn('id', $location_ids_if_manager)
                                         ->with('drivers')
@@ -70,6 +71,10 @@
                                 $invoice_ids = \App\Models\Invoice::whereIn('location_id', $location_ids_if_manager)
                                     ->pluck('id')
                                     ->toArray();
+
+                                $delivered_invoice_ids = \App\Models\Invoice::whereIn('location_id', $location_ids_if_manager)->where('delivery_status', 'delivered')->pluck('id')->toArray();
+                                $pending_invoice_ids = \App\Models\Invoice::whereIn('location_id', $location_ids_if_manager)->where('delivery_status', 'pending')->pluck('id')->toArray();
+                                $cancelled_invoice_ids = \App\Models\Invoice::whereIn('location_id', $location_ids_if_manager)->where('delivery_status', 'cancelled')->pluck('id')->toArray();
                             }
                             
                             $counts = [
@@ -113,6 +118,24 @@
                                     'title' => 'Total Invoices',
                                     'count' => $is_manager ? count($invoice_ids) : \App\Models\Invoice::count(),
                                     'url' => route('admin.invoices.index'),
+                                    'data' => null,
+                                ],
+                                'delivered_invoices' => [
+                                    'title' => 'Delivered Invoices',
+                                    'count' => $is_manager ? count($delivered_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'delivered')->count(),
+                                    'url' => route('admin.invoices.delivered'),
+                                    'data' => null,
+                                ],
+                                'pending_invoices' => [
+                                    'title' => 'Pending Invoices',
+                                    'count' => $is_manager ? count($pending_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'pending')->count(),
+                                    'url' => route('admin.invoices.pending'),
+                                    'data' => null,
+                                ],
+                                'cancelled_invoices' => [
+                                    'title' => 'Cancelled Invoices',
+                                    'count' => $is_manager ? count($cancelled_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'cancelled')->count(),
+                                    'url' => route('admin.invoices.cancelled'),
                                     'data' => null,
                                 ],
                             ];

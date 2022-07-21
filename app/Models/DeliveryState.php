@@ -9,6 +9,10 @@ class DeliveryState extends Model
 {
     use HasFactory;
 
+    const STATE_PENDING = '1';
+    const STATE_DELIVERED = '2';
+    const STATE_CANCELED = '3';
+
     protected $fillable = [
         'name',
     ];

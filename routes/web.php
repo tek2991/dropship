@@ -76,6 +76,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     ], ['except' => ['destroy']]);
 
     Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit', 'destroy');
+    Route::get('invoices-pending', [InvoiceController::class, 'pending'])->name('invoices.pending');
+    Route::get('invoices-delivered', [InvoiceController::class, 'delivered'])->name('invoices.delivered');
+    Route::get('invoices-cancelled', [InvoiceController::class, 'cancelled'])->name('invoices.cancelled');
     Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
     
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
