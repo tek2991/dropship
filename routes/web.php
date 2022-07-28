@@ -49,18 +49,37 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', UserController::class)->only('show', 'edit', 'update');
     Route::put('user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
 
-    Route::get('manual-update-1', function () {
-        // $invoices = \App\Models\Invoice::with('logSheet')->get();
-        // foreach ($invoices as $invoice) {
-        //     $invoice->update([
-        //         'transporter_id' => $invoice->logSheet->transporter_id,
-        //         'vehicle_id' => $invoice->logSheet->vehicle_id,
-        //         'destination' => $invoice->logSheet->destination,
-        //         'driver_id' => $invoice->logSheet->driver_id,
-        //     ]);
-        // }
+    Route::get('manual-update', function () {
+        // Start timer
+        $start = microtime(true);
+        $invoices = \App\Models\Invoice::with('logSheet')->get();
+        foreach ($invoices as $invoice) {
+            // check if invoice has blank transporter_id, vehicle_id, destination, driver_id, and location_id. If yes set it same as logsheet's data.
+            if ($invoice->transporter_id == null) {
+                $invoice->transporter_id = $invoice->logSheet->transporter_id;
+                $invoice->save();
+            }
+            if ($invoice->vehicle_id == null) {
+                $invoice->vehicle_id = $invoice->logSheet->vehicle_id;
+                $invoice->save();
+            }
+            if ($invoice->destination == null) {
+                $invoice->destination = $invoice->logSheet->destination;
+                $invoice->save();
+            }
+            if ($invoice->driver_id == null) {
+                $invoice->driver_id = $invoice->logSheet->driver_id;
+                $invoice->save();
+            }
+            if ($invoice->location_id == null) {
+                $invoice->location_id = $invoice->logSheet->location_id;
+                $invoice->save();
+            }
+        }
+        // End timer
+        $end = microtime(true);
 
-        return 'No updates for now!';
+        return 'All done, time taken: ' . ($end - $start);
     });
 });
 
