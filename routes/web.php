@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\User;
+use App\Models\Driver;
+use App\Models\LogSheet;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UploadController;
@@ -26,7 +29,7 @@ use App\Http\Controllers\Admin\TransporterController;
 
 Route::get('/link-storage', function () {
     Artisan::call('storage:link'); // this will do the command line job
-    return('Storage Link Successfull');
+    return ('Storage Link Successfull');
 });
 
 
@@ -34,11 +37,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('docs/postman' , function () {
+Route::get('docs/postman', function () {
     return Storage::download('scribe/collection.json');
 })->name('scribe.postman');
 
-Route::get('docs/openapi' , function () {
+Route::get('docs/openapi', function () {
     return Storage::download('scribe/openapi.yaml');
 })->name('scribe.openapi');
 
@@ -52,27 +55,61 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('manual-update', function () {
         // Start timer
         $start = microtime(true);
+
+        $default_driver_no = '6001098942';
+        // Check if default driver exists
+        $driver = Driver::whereHas('user', function ($query) use ($default_driver_no) {
+            $query->where('phone', $default_driver_no);
+        })->first();
+
+        if (!$driver) {
+            // create user and driver
+            $user = User::factory(1)->create([
+                'name' => 'Driver_' . $default_driver_no,
+                'email' => 'driver_' . $default_driver_no . '@dropship.test',
+                'gender' => null,
+                'dob' => null,
+                'phone' => $default_driver_no,
+                'address' => 'NA',
+                'is_active' => true,
+            ])->first();
+
+            $user->assignRole('driver');
+            $user->driver()->create();
+            $user->driver->locations()->syncWithoutDetaching([]);
+
+            $driver = $user->driver;
+        }
+
+        // Find logsheets with null driver_id
+        $logsheets = LogSheet::whereNull('driver_id')->get();
+        foreach ($logsheets as $logsheet) {
+            $logsheet->driver_id = $driver->id;
+            $logsheet->save();
+        }
+
         $invoices = \App\Models\Invoice::with('logSheet')->get();
         foreach ($invoices as $invoice) {
             // check if invoice has blank transporter_id, vehicle_id, destination, driver_id, and location_id. If yes set it same as logsheet's data.
+            $log_sheet = $invoice->logSheet;
             if ($invoice->transporter_id == null) {
-                $invoice->transporter_id = $invoice->logSheet->transporter_id;
+                $invoice->transporter_id = $log_sheet->transporter_id;
                 $invoice->save();
             }
             if ($invoice->vehicle_id == null) {
-                $invoice->vehicle_id = $invoice->logSheet->vehicle_id;
+                $invoice->vehicle_id = $log_sheet->vehicle_id;
                 $invoice->save();
             }
             if ($invoice->destination == null) {
-                $invoice->destination = $invoice->logSheet->destination;
+                $invoice->destination = $log_sheet->destination;
                 $invoice->save();
             }
             if ($invoice->driver_id == null) {
-                $invoice->driver_id = $invoice->logSheet->driver_id;
+                $invoice->driver_id = $log_sheet->driver_id;
                 $invoice->save();
             }
             if ($invoice->location_id == null) {
-                $invoice->location_id = $invoice->logSheet->location_id;
+                $invoice->location_id = $log_sheet->location_id;
                 $invoice->save();
             }
         }
@@ -99,7 +136,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::get('invoices-delivered', [InvoiceController::class, 'delivered'])->name('invoices.delivered');
     Route::get('invoices-cancelled', [InvoiceController::class, 'cancelled'])->name('invoices.cancelled');
     Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
-    
+
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store', 'destroy');
     Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');

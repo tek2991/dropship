@@ -39,14 +39,14 @@ class DataImport implements ToCollection, WithHeadingRow, WithValidation
             '*.date' => 'required|date',
             '*.invoice_no' => 'required|alpha_num',
             '*.inv_date' => 'required|date',
-            '*.payer' => 'nullable|alpha_num',
-            '*.payer_name' => 'nullable|string',
-            '*.gross_wt.' => 'nullable|numeric',
-            '*.tprt_name' => 'nullable|string',
-            '*.container_id' => 'nullable|string',
-            '*.destination' => 'nullable|string',
-            '*.no_of_packs' => 'nullable|numeric',
-            '*.driver_no' => 'nullable|numeric',
+            '*.payer' => 'required|alpha_num',
+            '*.payer_name' => 'required|string',
+            '*.gross_wt' => 'required|numeric',
+            '*.tprt_name' => 'required|string',
+            '*.container_id' => 'required|string',
+            '*.destination' => 'required|string',
+            '*.no_of_packs' => 'required|numeric',
+            '*.driver_no' => 'required|numeric',
         ];
     }
 
