@@ -83,67 +83,77 @@
                                     'count' => $is_manager ? count($driver_ids) : \App\Models\Driver::count(),
                                     'url' => route('admin.drivers.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'clients' => [
                                     'title' => 'Clients',
                                     'count' => $is_manager ? count($client_ids) : \App\Models\Client::count(),
                                     'url' => route('admin.clients.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'vehicles' => [
                                     'title' => 'Vehicles',
                                     'count' => $is_manager ? count($vehicle_ids) : \App\Models\Vehicle::count(),
                                     'url' => route('admin.vehicles.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'transporters' => [
                                     'title' => 'Transporters',
                                     'count' => $is_manager ? count($transporter_ids) : \App\Models\Transporter::count(),
                                     'url' => route('admin.transporters.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'imports' => [
                                     'title' => 'Imports',
                                     'count' => $is_manager ? count($import_ids) : \App\Models\Import::count(),
                                     'url' => route('admin.imports.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'log_sheets' => [
                                     'title' => 'Log Sheets',
                                     'count' => $is_manager ? count($log_sheet_ids) : \App\Models\LogSheet::count(),
                                     'url' => route('admin.log-sheets.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'total_invoices' => [
                                     'title' => 'Total Invoices',
                                     'count' => $is_manager ? count($invoice_ids) : \App\Models\Invoice::count(),
                                     'url' => route('admin.invoices.index'),
                                     'data' => null,
+                                    'color' => 'bg-gray-100',
                                 ],
                                 'delivered_invoices' => [
                                     'title' => 'Delivered Invoices',
                                     'count' => $is_manager ? count($delivered_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'delivered')->count(),
                                     'url' => route('admin.invoices.delivered'),
                                     'data' => null,
+                                    'color' => 'bg-green-100 ',
                                 ],
                                 'pending_invoices' => [
                                     'title' => 'Pending Invoices',
                                     'count' => $is_manager ? count($pending_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'pending')->count(),
                                     'url' => route('admin.invoices.pending'),
                                     'data' => null,
+                                    'color' => 'bg-yellow-100 ',
                                 ],
                                 'cancelled_invoices' => [
                                     'title' => 'Cancelled Invoices',
                                     'count' => $is_manager ? count($cancelled_invoice_ids) : \App\Models\Invoice::where('delivery_status', 'cancelled')->count(),
                                     'url' => route('admin.invoices.cancelled'),
                                     'data' => null,
+                                    'color' => 'bg-orange-100 ',
                                 ],
                             ];
                         @endphp
                         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             @foreach ($counts as $item => $data)
                                 <a href="{{ $data['url'] }}" class="{{ $data['data'] ? 'col-span-2' : '' }}">
-                                    <div class="flex items-center p-4 bg-gray-100 rounded-lg shadow-xs dark:bg-gray-800">
+                                    <div class="flex items-center p-4 {{ $data['color'] }} rounded-lg shadow-xs dark:bg-gray-800">
                                         <div
                                             class="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
