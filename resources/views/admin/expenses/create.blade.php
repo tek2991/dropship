@@ -19,6 +19,7 @@
                             <div>
                                 <x-label for="vehicle_id" :value="__('Vehicle')" />
                                 <x-input-select id="vehicle_id" class="block mt-1 w-full" name="vehicle_id" required>
+                                        <option value="" disabled>Select</option>
                                     @foreach ($vehicles as $vehicle)
                                         <option value="{{ $vehicle->id }}"
                                             {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>
