@@ -49,6 +49,20 @@
                                 @endforeach
                             </ul>
                         </h3>
+                        <h3 class="md:text-right">
+                            <strong>
+                                Total Expenses:
+                                @php
+                                    $fmt = new NumberFormatter('pt_PT', NumberFormatter::CURRENCY);
+                                    $amt = $fmt->formatCurrency($vehicle->totalExpenses(), 'INR');
+                                @endphp
+                                {{ $amt }}
+                            </strong>
+                        </h3>
+                    </div>
+                    <div class="mt-10">
+                        <h3 class="my-4"><strong>Expenses</strong></h3>
+                        <livewire:expense-table vehicle_id="{{ $vehicle->id }}"/>
                     </div>
                 </div>
             </div>

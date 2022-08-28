@@ -9,6 +9,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ImportController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\ManagerController;
 use App\Http\Controllers\Admin\VehicleController;
@@ -104,7 +105,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::put('clients/{client}/add-location', [ClientController::class, 'addLocation'])->name('clients.add.location');
     Route::delete('clients/{client}/remove-location', [ClientController::class, 'removelocation'])->name('clients.remove.location');
 
-
+    Route::resource('expenses', ExpenseController::class)->only('index', 'create', 'store', 'edit', 'update');
 
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
     Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');

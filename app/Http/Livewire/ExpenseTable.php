@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Vehicle;
-use App\Models\Location;
+use NumberFormatter;
+use App\Models\Expense;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,13 +15,12 @@ use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 
-final class VehicleTable extends PowerGridComponent
+final class ExpenseTable extends PowerGridComponent
 {
     use ActionButton;
 
-    public string $sortField = 'id';
-    
-    public string $sortDirection = 'asc';
+    public $vehicle_id = null;
+
 
     //Messages informing success/error data is updated.
     public bool $showUpdateMessages = true;
@@ -38,7 +37,6 @@ final class VehicleTable extends PowerGridComponent
         $this->showCheckBox()
             ->showPerPage()
             ->showSearchInput()
-            ->showToggleColumns()
             ->showExportOption('download', ['excel', 'csv']);
     }
 
@@ -53,20 +51,27 @@ final class VehicleTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Vehicle>|null
+     * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Expense>|null
      */
     public function datasource(): ?Builder
     {
-        $isAdmin = auth()->user()->isAdmin();
-        $isManager = auth()->user()->isManager();
-        if ($isAdmin) {
-            return Vehicle::query();
-        } else if ($isManager) {
-            $manager = auth()->user()->manager;
-            $location_ids = $manager->locations->pluck('id')->toArray();
-            $vehicle_ids = Location::whereIn('id', $location_ids)->with('vehicles')->get()->pluck('vehicles')->flatten()->pluck('id')->toArray();
-            return Vehicle::whereIn('id', $vehicle_ids);
+        // Check if vehicle_id is set.
+
+        if ($this->vehicle_id != null) {
+            return Expense::query()
+                ->where('vehicle_id', $this->vehicle_id)
+                ->join('vehicles', 'vehicles.id', '=', 'expenses.vehicle_id')
+                ->select([
+                    'expenses.*',
+                    'vehicles.registration_number',
+                ]);
         }
+        return Expense::query()
+            ->join('vehicles', 'vehicles.id', '=', 'expenses.vehicle_id')
+            ->select([
+                'expenses.*',
+                'vehicles.registration_number',
+            ]);
     }
 
     /*
@@ -84,7 +89,9 @@ final class VehicleTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return [
+            'vehicle' => ['registration_number'],
+        ];
     }
 
     /*
@@ -97,10 +104,22 @@ final class VehicleTable extends PowerGridComponent
     */
     public function addColumns(): ?PowerGridEloquent
     {
+        $fmt = new NumberFormatter('pt_PT', NumberFormatter::CURRENCY);
+
         return PowerGrid::eloquent()
+            ->addColumn('id')
             ->addColumn('registration_number')
-            ->addColumn('is_active', function ($model) {
-                return $model->is_active ? 'Active' : 'Inactive';
+            ->addColumn('vehicle_link', function ($row) {
+                return '<a href="' . route('admin.vehicles.show', $row->vehicle_id) . '" class="text-indigo-600 hover:text-indigo-900 hover:underline">' . $row->registration_number . '</a>';
+            })
+            ->addColumn('amount')
+            ->addColumn('amount_formated', function (Expense $model) use ($fmt) {
+                return $fmt->formatCurrency($model->amount, "INR");
+            })
+            ->addColumn('remark')
+            ->addColumn('created_at')
+            ->addColumn('created_at_formatted', function (Expense $model) {
+                return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
             });
     }
 
@@ -122,15 +141,45 @@ final class VehicleTable extends PowerGridComponent
     {
         return [
             Column::add()
-                ->title('REGISTRATION NUMBER')
-                ->field('registration_number')
+                ->title('Vehicle')
+                ->field('vehicle_link')
                 ->sortable()
-                ->searchable(),
+                ->visibleInExport(False),
+            
+            Column::add()
+                ->title('Vehicle')
+                ->field('registration_number')
+                ->hidden()
+                ->visibleInExport(True),
 
             Column::add()
-                ->title('IS ACTIVE')
-                ->field('is_active'),
+                ->title('Amount')
+                ->field('amount_formated')
+                ->sortable()
+                ->visibleInExport(False),
 
+            Column::add()
+                ->title('Amount')
+                ->field('amount')
+                ->hidden()
+                ->visibleInExport(True),
+
+            Column::add()
+                ->title('Remark')
+                ->field('remark'),
+
+            Column::add()
+                ->title('Added')
+                ->field('created_at')
+                ->hidden()
+                ->visibleInExport(True),
+
+            Column::add()
+                ->title('Added')
+                ->field('created_at_formatted')
+                ->makeInputDatePicker('created_at')
+                ->searchable()
+                ->visibleInExport(False)
         ];
     }
 
@@ -143,36 +192,28 @@ final class VehicleTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Vehicle Action Buttons.
+     * PowerGrid Expense Action Buttons.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Button>
      */
 
-
     public function actions(): array
     {
         return [
-
-            Button::add('show')
-                ->target('')
-                ->caption('Show')
-                ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.vehicles.show', ['vehicle' => 'id']),
-
             Button::add('edit')
-                ->target('')
                 ->caption('Edit')
                 ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.vehicles.edit', ['vehicle' => 'id']),
+                ->route('admin.expenses.edit', ['expense' => 'id']),
 
-            //    Button::add('destroy')
-            //        ->caption('Delete')
-            //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-            //        ->route('vehicle.destroy', ['vehicle' => 'id'])
-            //        ->method('delete')
+            /*
+           Button::add('destroy')
+               ->caption('Delete')
+               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+               ->route('expense.destroy', ['expense' => 'id'])
+               ->method('delete')
+               */
         ];
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +224,7 @@ final class VehicleTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Vehicle Action Rules.
+     * PowerGrid Expense Action Rules.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Rules\RuleActions>
      */
@@ -195,7 +236,7 @@ final class VehicleTable extends PowerGridComponent
            
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($vehicle) => $vehicle->id === 1)
+                ->when(fn($expense) => $expense->id === 1)
                 ->hide(),
         ];
     }
@@ -211,7 +252,7 @@ final class VehicleTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Vehicle Update.
+     * PowerGrid Expense Update.
      *
      * @param array<string,string> $data
      */
@@ -220,7 +261,7 @@ final class VehicleTable extends PowerGridComponent
     public function update(array $data ): bool
     {
        try {
-           $updated = Vehicle::query()->findOrFail($data['id'])
+           $updated = Expense::query()
                 ->update([
                     $data['field'] => $data['value'],
                 ]);

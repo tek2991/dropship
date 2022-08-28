@@ -29,4 +29,12 @@ class Vehicle extends Model
     public function locations(){
         return $this->morphToMany(Location::class, 'locationable');
     }
+
+    public function expenses(){
+        return $this->hasMany(Expense::class);
+    }
+
+    public function totalExpenses(){
+        return $this->expenses()->sum('amount_in_cents') / 100;
+    }
 }

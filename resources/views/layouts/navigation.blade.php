@@ -49,6 +49,9 @@
                         </x-nav-dropdown-wrapper>
                         
 
+                        <x-nav-link :href="route('admin.expenses.index')" :active="request()->routeIs('admin.expenses.index')">
+                            {{ __('Expenses') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.imports.index')" :active="request()->routeIs('admin.imports.index')">
                             {{ __('Imports') }}
                         </x-nav-link>
@@ -143,6 +146,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.clients.index')">
                         {{ __('Clients') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.expenses.index')">
+                        {{ __('Expenses') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.imports.index')">
                         {{ __('Imports') }}
