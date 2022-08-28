@@ -203,7 +203,8 @@ final class ExpenseTable extends PowerGridComponent
             Button::add('edit')
                 ->caption('Edit')
                 ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.expenses.edit', ['expense' => 'id']),
+                ->route('admin.expenses.edit', ['expense' => 'id'])
+                ->target('_self'),
 
             /*
            Button::add('destroy')

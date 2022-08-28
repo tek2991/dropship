@@ -26,7 +26,7 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::orderBy('registration_number')->get();
         return view('admin.expenses.create', [
             'vehicles' => $vehicles,
         ]);
@@ -72,7 +72,7 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::orderBy('registration_number')->get();
         return view('admin.expenses.edit', [
             'expense' => $expense,
             'vehicles' => $vehicles,

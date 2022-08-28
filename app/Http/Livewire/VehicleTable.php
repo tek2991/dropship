@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use NumberFormatter;
 use App\Models\Vehicle;
 use App\Models\Location;
 use Illuminate\Support\Carbon;
@@ -20,7 +21,7 @@ final class VehicleTable extends PowerGridComponent
     use ActionButton;
 
     public string $sortField = 'id';
-    
+
     public string $sortDirection = 'asc';
 
     //Messages informing success/error data is updated.
@@ -60,12 +61,18 @@ final class VehicleTable extends PowerGridComponent
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
-            return Vehicle::query();
+            return Vehicle::query()
+                ->leftjoin('expenses', 'expenses.vehicle_id', '=', 'vehicles.id')
+                ->select('vehicles.*', \DB::raw('SUM(expenses.amount_in_cents) as total_expenses'))
+                ->groupBy('vehicles.id');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
             $vehicle_ids = Location::whereIn('id', $location_ids)->with('vehicles')->get()->pluck('vehicles')->flatten()->pluck('id')->toArray();
-            return Vehicle::whereIn('id', $vehicle_ids);
+            return Vehicle::whereIn('id', $vehicle_ids)
+                ->leftjoin('expenses', 'expenses.vehicle_id', '=', 'vehicles.id')
+                ->select('vehicles.*', \DB::raw('SUM(expenses.amount_in_cents) as total_expenses'))
+                ->groupBy('vehicles.id');
         }
     }
 
@@ -97,8 +104,15 @@ final class VehicleTable extends PowerGridComponent
     */
     public function addColumns(): ?PowerGridEloquent
     {
+        $fmt = new NumberFormatter('pt_PT', NumberFormatter::CURRENCY);
+
         return PowerGrid::eloquent()
             ->addColumn('registration_number')
+            ->addColumn('total_expenses')
+            ->addColumn('total_expenses_formated', function ($model) use ($fmt) {
+                $total =  intval($model->total_expenses) / 100;
+                return $fmt->formatCurrency($total, 'INR');
+            })
             ->addColumn('is_active', function ($model) {
                 return $model->is_active ? 'Active' : 'Inactive';
             });
@@ -130,6 +144,17 @@ final class VehicleTable extends PowerGridComponent
             Column::add()
                 ->title('IS ACTIVE')
                 ->field('is_active'),
+
+            Column::add()
+                ->title('Total Expenses')
+                ->field('total_expenses_formated', 'total_expenses')
+                ->sortable(),
+
+            Column::add()
+                ->title('Total Expenses')
+                ->field('total_expenses')
+                ->hidden()
+                ->visibleInExport(True)
 
         ];
     }
