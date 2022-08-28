@@ -56,63 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Start timer
         $start = microtime(true);
 
-        $default_driver_no = '6001098942';
-        // Check if default driver exists
-        $driver = Driver::whereHas('user', function ($query) use ($default_driver_no) {
-            $query->where('phone', $default_driver_no);
-        })->first();
-
-        if (!$driver) {
-            // create user and driver
-            $user = User::factory(1)->create([
-                'name' => 'Driver_' . $default_driver_no,
-                'email' => 'driver_' . $default_driver_no . '@dropship.test',
-                'gender' => null,
-                'dob' => null,
-                'phone' => $default_driver_no,
-                'address' => 'NA',
-                'is_active' => true,
-            ])->first();
-
-            $user->assignRole('driver');
-            $user->driver()->create();
-            $user->driver->locations()->syncWithoutDetaching([]);
-
-            $driver = $user->driver;
-        }
-
-        // Find logsheets with null driver_id
-        $logsheets = LogSheet::whereNull('driver_id')->get();
-        foreach ($logsheets as $logsheet) {
-            $logsheet->driver_id = $driver->id;
-            $logsheet->save();
-        }
-
-        $invoices = \App\Models\Invoice::with('logSheet')->get();
-        foreach ($invoices as $invoice) {
-            // check if invoice has blank transporter_id, vehicle_id, destination, driver_id, and location_id. If yes set it same as logsheet's data.
-            $log_sheet = $invoice->logSheet;
-            if ($invoice->transporter_id == null) {
-                $invoice->transporter_id = $log_sheet->transporter_id;
-                $invoice->save();
-            }
-            if ($invoice->vehicle_id == null) {
-                $invoice->vehicle_id = $log_sheet->vehicle_id;
-                $invoice->save();
-            }
-            if ($invoice->destination == null) {
-                $invoice->destination = $log_sheet->destination;
-                $invoice->save();
-            }
-            if ($invoice->driver_id == null) {
-                $invoice->driver_id = $log_sheet->driver_id;
-                $invoice->save();
-            }
-            if ($invoice->location_id == null) {
-                $invoice->location_id = $log_sheet->location_id;
-                $invoice->save();
-            }
-        }
+        // Nothing to do
+        
         // End timer
         $end = microtime(true);
 

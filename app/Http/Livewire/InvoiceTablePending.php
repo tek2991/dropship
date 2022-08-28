@@ -146,7 +146,7 @@ final class InvoiceTablePending extends PowerGridComponent
             ->addColumn('no_of_packs')
             ->addColumn('logSheet.log_sheet_no')
             ->addColumn('delivery_status', function (Invoice $model) {
-                return ucfirst($model->delivery_status);
+                return ucfirst($model->deliveryState->name);
             })
             ->addColumn('driver_name', function (Invoice $model) {
                 return $model->driverUser->name;
