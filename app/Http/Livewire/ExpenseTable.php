@@ -176,8 +176,8 @@ final class ExpenseTable extends PowerGridComponent
 
             Column::add()
                 ->title('Added')
-                ->field('created_at_formatted')
-                ->makeInputDatePicker('created_at')
+                ->field('created_at_formatted', 'expenses.created_at')
+                ->makeInputDatePicker()
                 ->searchable()
                 ->visibleInExport(False)
         ];
