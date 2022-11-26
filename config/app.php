@@ -192,7 +192,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // ...
+        'Carbon' => 'Carbon\Carbon',
     ])->toArray(),
 
 ];
