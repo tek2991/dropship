@@ -25,6 +25,9 @@ final class InvoiceTablePending extends PowerGridComponent
 
     public string $sortDirection = 'asc';
 
+    public string $days;
+    public string $days2;
+
     //Messages informing success/error data is updated.
     public bool $showUpdateMessages = true;
 
@@ -61,9 +64,23 @@ final class InvoiceTablePending extends PowerGridComponent
     {
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
+        // parse days as integer
+        $days = (int) $this->days;
+        $days2 = (int) $this->days2;
+
+        $query = Invoice::query();
+
+        if ($days == 14) {
+            $query->where('invoices.date', '<=', Carbon::now()->subDays($days)->toDateString());
+        } else if ($days2 > 0) {
+            $query->whereBetween('invoices.date', [Carbon::now()->subDays($days2)->toDateString(), Carbon::now()->subDays($days)->toDateString()]);
+        } else {
+            $query->where('invoices.date', Carbon::now()->subDays($days)->toDateString());
+        }
+
+
         if ($isAdmin) {
-            return Invoice::query()
-                ->where('delivery_state_id', DeliveryState::STATE_PENDING)
+            return $query->where('delivery_state_id', DeliveryState::STATE_PENDING)
                 ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
                 ->join('users', 'users.id', '=', 'transporters.user_id')
                 ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
@@ -72,7 +89,7 @@ final class InvoiceTablePending extends PowerGridComponent
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return Invoice::whereIn('location_id', $location_ids)
+            return $query->whereIn('location_id', $location_ids)
                 ->where('delivery_state_id', DeliveryState::STATE_PENDING)
                 ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
                 ->join('users', 'users.id', '=', 'transporters.user_id')

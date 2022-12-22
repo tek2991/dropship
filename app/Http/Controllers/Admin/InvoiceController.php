@@ -28,8 +28,11 @@ class InvoiceController extends Controller
         return view('admin.invoices.index');
     }
 
-    public function pending(){
-        return view('admin.invoices.pending');
+    public function pending(Request $request){
+        $days = $request->days ?? 0;
+        $days2 = $request->days2 ?? null;
+        $title = $request->title ?? '';
+        return view('admin.invoices.pending', compact('days', 'days2', 'title'));
     }
 
     public function delivered(){
