@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'driver', 'as' => 'driver.', 'middleware' => ['role:driver']], function () {
         Route::get('driver-invoice-stat', [DriverInvoiceStatController::class, 'index']);
         Route::get('pending-invoices', [PendingInvoiceController::class, 'index']);
+        Route::get('pending-invoices-all', [PendingInvoiceController::class, 'all']);
         Route::get('updated-invoices', [UpdatedInvoiceController::class, 'index']);
         Route::put('update-invoice/{invoice}', [UpdateInvoiceController::class, 'update']);
         Route::post('upload-invoice-photo/{invoice}', [UploadInvoicePhotoController::class, 'store']);
