@@ -25,6 +25,7 @@ class Invoice extends Model
         'destination',
         'driver_id',
         'location_id',
+        'delivery_remark_id',
     ];
 
     public function logSheet()
@@ -87,5 +88,10 @@ class Invoice extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function deliveryRemark()
+    {
+        return $this->belongsTo(DeliveryRemark::class);
     }
 }

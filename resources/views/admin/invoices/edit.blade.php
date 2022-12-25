@@ -62,7 +62,8 @@
                                 </div>
                                 <div>
                                     <x-label for="transporter" :value="__('Transporter')" />
-                                    <x-input-select id="transporter" class="block mt-1 w-full" name="transporter_id" required>
+                                    <x-input-select id="transporter" class="block mt-1 w-full" name="transporter_id"
+                                        required>
                                         @foreach ($transporters as $transporter)
                                             <option value="{{ $transporter->id }}"
                                                 {{ $transporter->id == $invoice->transporter_id ? 'selected' : '' }}>
@@ -73,8 +74,8 @@
                                 </div>
                                 <div>
                                     <x-label for="delivery_status" :value="__('Status')" />
-                                    <x-input-select id="delivery_status" class="block mt-1 w-full" name="delivery_status"
-                                        required>
+                                    <x-input-select id="delivery_status" class="block mt-1 w-full"
+                                        name="delivery_status" required>
                                         <option value="delivered"
                                             {{ $invoice->delivery_status == 'delivered' ? 'selected' : '' }}>Delivered
                                         </option>
@@ -89,8 +90,21 @@
                                     </x-input-select>
                                 </div>
                                 <div>
+                                    <x-label for="delivery_remark" :value="__('Remark')" />
+                                    <x-input-select id="delivery_remark" class="block mt-1 w-full"
+                                        name="delivery_remark_id" required>
+                                        @foreach ($deliveryRemarks as $delivery_remark)
+                                            <option value="{{ $delivery_remark->id }}"
+                                                {{ $delivery_remark->id == $invoice->delivery_remark_id ? 'selected' : '' }}>
+                                                {{ $delivery_remark->remark }}
+                                            </option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
+                                <div>
                                     <x-label for="location" :value="__('Location')" />
-                                    <x-input-select id="location" class="block mt-1 w-full" name="location_id" required>
+                                    <x-input-select id="location" class="block mt-1 w-full" name="location_id"
+                                        required>
                                         @foreach ($locations as $location)
                                             <option value="{{ $location->id }}"
                                                 {{ $location->id == $invoice->location_id ? 'selected' : '' }}>
@@ -101,8 +115,8 @@
                                 </div>
                             </div>
                             <div>
-                                <x-label for="remarks" :value="__('Remarks')" />
-                                <x-textarea id="remarks" class="block mt-1 w-full" name="remarks" required>
+                                <x-label for="remarks" :value="__('Remarks (OLD)')" />
+                                <x-textarea id="remarks" class="block mt-1 w-full bg-red-200" name="remarks" required readonly>
                                     {{ $invoice->remarks }}
                                 </x-textarea>
                             </div>
@@ -110,7 +124,8 @@
                                 <x-label for="image" :value="__('Add Images')" />
                                 <x-label for="image" class="text-xs text-red-800" :value="__('Accepted formats: jpeg,png,jpg,gif,svg')" />
                                 <x-label for="image" class="text-xs text-red-800" :value="__('Max size: 5MB')" />
-                                <x-input id="image" class="block mt-1 w-full" type="file" name="image[]" multiple />
+                                <x-input id="image" class="block mt-1 w-full" type="file" name="image[]"
+                                    multiple />
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-4 ">

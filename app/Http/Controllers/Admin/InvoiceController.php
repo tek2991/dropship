@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\DeliveryState;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryRemark;
 
 class InvoiceController extends Controller
 {
@@ -71,6 +72,7 @@ class InvoiceController extends Controller
             'vehicles' => Vehicle::all(),
             'transporters' => Transporter::all(),
             'locations' => Location::all(),
+            'deliveryRemarks' => DeliveryRemark::all(),
         ]);
     }
 
@@ -92,6 +94,7 @@ class InvoiceController extends Controller
             'transporter_id' => 'required|exists:transporters,id',
             'vehicle_id' => 'required|exists:vehicles,id',
             'location_id' => 'required|exists:locations,id',
+            'delivery_remark_id' => 'required|exists:delivery_remarks,id',
         ]);
 
         $invoice->update([
@@ -104,6 +107,7 @@ class InvoiceController extends Controller
             'vehicle_id' => $request->vehicle_id,
             'updated_by' => auth()->user()->id,
             'location_id' => $request->location_id,
+            'delivery_remark_id' => $request->delivery_remark_id,
         ]);
 
         $images = $request->image;

@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use App\Models\DeliveryState;
+use App\Models\DeliveryRemark;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
@@ -85,7 +86,7 @@ final class InvoiceTablePending extends PowerGridComponent
                 ->join('users', 'users.id', '=', 'transporters.user_id')
                 ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
                 ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
-                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser');
+                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser', 'deliveryRemark');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
@@ -95,7 +96,7 @@ final class InvoiceTablePending extends PowerGridComponent
                 ->join('users', 'users.id', '=', 'transporters.user_id')
                 ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
                 ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
-                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser');
+                ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser', 'deliveryRemark');
         }
     }
 
@@ -170,6 +171,10 @@ final class InvoiceTablePending extends PowerGridComponent
             })
             ->addColumn('driver_phone', function (Invoice $model) {
                 return $model->driverUser->phone;
+            })
+            ->addColumn('delivery_remark_id')
+            ->addColumn('delivery_remark', function (Invoice $model) {
+                return $model->deliveryRemark->remark;
             });
     }
 
@@ -272,6 +277,12 @@ final class InvoiceTablePending extends PowerGridComponent
             Column::add()
                 ->title('STATUS')
                 ->field('delivery_status'),
+
+            Column::add()
+                ->title('REMARK')
+                ->field('delivery_remark')
+                ->makeInputSelect(DeliveryRemark::all(), 'remark', 'delivery_remark_id')
+                ->sortable(),
 
             Column::add()
                 ->title('DRIVER')

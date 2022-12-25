@@ -2,18 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\DeliveryState;
 use App\Models\Invoice;
+use App\Models\DeliveryState;
+use App\Models\DeliveryRemark;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\Rules\Rule;
 use PowerComponents\LivewirePowerGrid\PowerGridEloquent;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\Rules\Rule;
 
 final class ClientInvoiceTable extends PowerGridComponent
 {
@@ -64,7 +65,7 @@ final class ClientInvoiceTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        return Invoice::query()->where('client_id', $this->client_id)->with('clientUser', 'client', 'logSheet');
+        return Invoice::query()->where('client_id', $this->client_id)->with('clientUser', 'client', 'logSheet', 'deliveryRemark');
     }
 
     /*
@@ -117,6 +118,10 @@ final class ClientInvoiceTable extends PowerGridComponent
             ->addColumn('logSheet.log_sheet_no')
             ->addColumn('delivery_status', function (Invoice $model) {
                 return ucfirst($model->delivery_status);
+            })
+            ->addColumn('delivery_remark_id')
+            ->addColumn('delivery_remark', function (Invoice $model) {
+                return $model->deliveryRemark->remark;
             });
     }
 
@@ -169,11 +174,19 @@ final class ClientInvoiceTable extends PowerGridComponent
             Column::add()
                 ->title('LOG SHEET NO')
                 ->field('logSheet.log_sheet_no'),
+                
             Column::add()
                 ->title('STATUS')
                 ->field('delivery_status')
                 ->makeInputSelect(DeliveryState::all(), 'name', 'delivery_state_id')
                 ->sortable(),
+
+            Column::add()
+                ->title('REMARK')
+                ->field('delivery_remark')
+                ->makeInputSelect(DeliveryRemark::all(), 'remark', 'delivery_remark_id')
+                ->sortable(),
+
         ];
     }
 
