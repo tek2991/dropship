@@ -93,6 +93,7 @@
                                     <x-label for="delivery_remark" :value="__('Remark')" />
                                     <x-input-select id="delivery_remark" class="block mt-1 w-full"
                                         name="delivery_remark_id" required>
+                                        <option value="">Select Remark</option>
                                         @foreach ($deliveryRemarks as $delivery_remark)
                                             <option value="{{ $delivery_remark->id }}"
                                                 {{ $delivery_remark->id == $invoice->delivery_remark_id ? 'selected' : '' }}>

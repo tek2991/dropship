@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             // VehicleSeeder::class,
             // TransporterSeeder::class,
             // ClientSeeder::class,
+            // DeliveryRemarkSeeder::class,
         ]);
     }
 }

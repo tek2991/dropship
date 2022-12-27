@@ -155,7 +155,7 @@ final class InvoiceTable extends PowerGridComponent
             })
             ->addColumn('delivery_remark_id')
             ->addColumn('delivery_remark', function (Invoice $model) {
-                return $model->deliveryRemark->remark;
+                return $model->deliveryRemark ? $model->deliveryRemark->remark : '';
             });
     }
 
