@@ -120,6 +120,10 @@ final class ExpenseTable extends PowerGridComponent
             ->addColumn('created_at')
             ->addColumn('created_at_formatted', function (Expense $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y H:i:s');
+            })
+            ->addColumn('date')
+            ->addColumn('date_formatted', function (Expense $model) {
+                return $model->date ? Carbon::parse($model->date)->format('d/m/Y') : 'N/A';
             });
     }
 
@@ -140,6 +144,12 @@ final class ExpenseTable extends PowerGridComponent
     public function columns(): array
     {
         return [
+            Column::add()
+                ->title('Date')
+                ->field('date_formatted', 'date')
+                ->makeInputDatePicker()
+                ->searchable(),
+
             Column::add()
                 ->title('Vehicle')
                 ->field('vehicle_link')

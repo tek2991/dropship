@@ -16,6 +16,7 @@ class Expense extends Model
         'vehicle_id',
         'amount',
         'remark',
+        'date',
     ];
 
     /**

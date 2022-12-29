@@ -26,10 +26,7 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        $vehicles = Vehicle::orderBy('registration_number')->get();
-        return view('admin.expenses.create', [
-            'vehicles' => $vehicles,
-        ]);
+        return view('admin.expenses.create');
     }
 
     /**
@@ -40,17 +37,17 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
-            'amount' => 'required|integer',
-            'remark' => 'required|string',
-        ]);
+        // $validated = $request->validate([
+        //     'vehicle_id' => 'required|exists:vehicles,id',
+        //     'amount' => 'required|integer',
+        //     'remark' => 'required|string',
+        // ]);
 
         // dd($validated);
 
-        Expense::create($validated);
+        // Expense::create($validated);
 
-        return redirect()->route('admin.expenses.index')->with('message', 'Expense created successfully');
+        // return redirect()->route('admin.expenses.index')->with('message', 'Expense created successfully');
     }
 
     /**
@@ -72,11 +69,7 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        $vehicles = Vehicle::orderBy('registration_number')->get();
-        return view('admin.expenses.edit', [
-            'expense' => $expense,
-            'vehicles' => $vehicles,
-        ]);
+        return view('admin.expenses.edit', compact('expense'));
     }
 
     /**

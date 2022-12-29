@@ -105,7 +105,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
     Route::put('clients/{client}/add-location', [ClientController::class, 'addLocation'])->name('clients.add.location');
     Route::delete('clients/{client}/remove-location', [ClientController::class, 'removelocation'])->name('clients.remove.location');
 
-    Route::resource('expenses', ExpenseController::class)->only('index', 'create', 'store', 'edit', 'update');
+    Route::resource('expenses', ExpenseController::class)->only('index', 'create', 'edit', 'update');
 
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
     Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');
