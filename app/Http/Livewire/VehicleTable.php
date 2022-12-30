@@ -61,18 +61,13 @@ final class VehicleTable extends PowerGridComponent
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
         if ($isAdmin) {
-            return Vehicle::query()
-                ->leftjoin('expenses', 'expenses.vehicle_id', '=', 'vehicles.id')
-                ->select('vehicles.*', \DB::raw('SUM(expenses.amount_in_cents) as total_expenses'))
-                ->groupBy('vehicles.id');
+            return Vehicle::query()->with('expenses');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
             $vehicle_ids = Location::whereIn('id', $location_ids)->with('vehicles')->get()->pluck('vehicles')->flatten()->pluck('id')->toArray();
             return Vehicle::whereIn('id', $vehicle_ids)
-                ->leftjoin('expenses', 'expenses.vehicle_id', '=', 'vehicles.id')
-                ->select('vehicles.*', \DB::raw('SUM(expenses.amount_in_cents) as total_expenses'))
-                ->groupBy('vehicles.id');
+                ->with('expenses');
         }
     }
 
@@ -108,10 +103,8 @@ final class VehicleTable extends PowerGridComponent
 
         return PowerGrid::eloquent()
             ->addColumn('registration_number')
-            ->addColumn('total_expenses')
-            ->addColumn('total_expenses_formated', function ($model) use ($fmt) {
-                $total =  intval($model->total_expenses) / 100;
-                return $fmt->formatCurrency($total, 'INR');
+            ->addColumn('total_expenses', function ($model) {
+                return $model->totalExpenses();
             })
             ->addColumn('is_active', function ($model) {
                 return $model->is_active ? 'Active' : 'Inactive';
@@ -147,15 +140,7 @@ final class VehicleTable extends PowerGridComponent
 
             Column::add()
                 ->title('Total Expenses')
-                ->field('total_expenses_formated', 'total_expenses')
-                ->sortable(),
-
-            Column::add()
-                ->title('Total Expenses')
-                ->field('total_expenses')
-                ->hidden()
-                ->visibleInExport(True)
-
+                ->field('total_expenses'),
         ];
     }
 
@@ -177,24 +162,23 @@ final class VehicleTable extends PowerGridComponent
     public function actions(): array
     {
         return [
-
             Button::add('show')
                 ->target('')
                 ->caption('Show')
                 ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
                 ->route('admin.vehicles.show', ['vehicle' => 'id']),
 
-            Button::add('edit')
-                ->target('')
-                ->caption('Edit')
-                ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
-                ->route('admin.vehicles.edit', ['vehicle' => 'id']),
+            // Button::add('edit')
+            //     ->target('')
+            //     ->caption('Edit')
+            //     ->class('text-indigo-600 hover:text-indigo-900 hover:underline')
+            //     ->route('admin.vehicles.edit', ['vehicle' => 'id']),
 
-            //    Button::add('destroy')
-            //        ->caption('Delete')
-            //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-            //        ->route('vehicle.destroy', ['vehicle' => 'id'])
-            //        ->method('delete')
+            // Button::add('destroy')
+            //     ->caption('Delete')
+            //     ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+            //     ->route('vehicle.destroy', ['vehicle' => 'id'])
+            //     ->method('delete')
         ];
     }
 
