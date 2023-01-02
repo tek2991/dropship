@@ -5,6 +5,7 @@ use App\Models\Driver;
 use App\Models\LogSheet;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
@@ -109,6 +110,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
 
     Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
     Route::delete('uploads', [UploadController::class, 'destroy'])->name('uploads.destroy');
+
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 require __DIR__ . '/auth.php';

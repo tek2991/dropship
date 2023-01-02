@@ -16,6 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if (Auth::user()->isAdmin() || Auth::user()->isManager())
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('reports.*')">
+                            {{ __('Reports') }}
+                        </x-nav-link>
                         <x-nav-dropdown-button data-dropdown-toggle="user_dropdownNavbar">
                             {{ __('Users') }}
                         </x-nav-dropdown-button>
@@ -47,7 +50,7 @@
                                 {{ __('Managers') }}
                             </x-nav-dropdown-item>
                         </x-nav-dropdown-wrapper>
-                        
+
 
                         <x-nav-link :href="route('admin.expenses.index')" :active="request()->routeIs('admin.expenses.index')">
                             {{ __('Expenses') }}
