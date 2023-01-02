@@ -160,9 +160,19 @@
                     'title' => 'One Day',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(1)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(1)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(1)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(1)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '1', 'title' => 'One Day']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -171,9 +181,19 @@
                     'title' => 'Two Days',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(2)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(2)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(2)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(2)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '2', 'title' => 'Two Days']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -182,9 +202,19 @@
                     'title' => 'Three Days',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(3)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(3)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(3)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(3)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '3', 'title' => 'Three Days']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -193,9 +223,19 @@
                     'title' => 'Four Days',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(4)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(4)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(4)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(4)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '4', 'title' => 'Four Days']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -204,9 +244,19 @@
                     'title' => 'Five Days',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(5)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(5)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(5)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(5)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '5', 'title' => 'Five Days']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -215,9 +265,19 @@
                     'title' => 'Six Days',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', Carbon::now()->subDays(6)->toDateString())
+                            ->where(
+                                'date',
+                                Carbon::now()
+                                    ->subDays(6)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(6)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(6)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '6', 'title' => 'Six Days']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -226,9 +286,21 @@
                     'title' => 'One week',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->whereBetween('date', [Carbon::now()->subDays(13)->toDateString(), Carbon::now()->subDays(7)->toDateString()])
+                            ->whereBetween('date', [
+                                Carbon::now()
+                                    ->subDays(13)
+                                    ->toDateString(),
+                                Carbon::now()
+                                    ->subDays(7)
+                                    ->toDateString(),
+                            ])
                             ->count()
-                        : \App\Models\Invoice::where('date', Carbon::now()->subDays(7)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            Carbon::now()
+                                ->subDays(7)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '7', 'days2' => '13', 'title' => 'One Week']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -237,9 +309,21 @@
                     'title' => 'Two Weeks & More',
                     'count' => $is_manager
                         ? \App\Models\Invoice::whereIn('id', $pending_invoice_ids)
-                            ->where('date', '<=', Carbon::now()->subDays(14)->toDateString())
+                            ->where(
+                                'date',
+                                '<=',
+                                Carbon::now()
+                                    ->subDays(14)
+                                    ->toDateString(),
+                            )
                             ->count()
-                        : \App\Models\Invoice::where('date', '<', Carbon::now()->subDays(14)->toDateString())->count(),
+                        : \App\Models\Invoice::where(
+                            'date',
+                            '<',
+                            Carbon::now()
+                                ->subDays(14)
+                                ->toDateString(),
+                        )->count(),
                     'url' => route('admin.invoices.pending', ['days' => '14', 'title' => 'Two Weeks & More']),
                     'data' => null,
                     'color' => 'bg-yellow-100 ',
@@ -320,15 +404,17 @@
                 </div>
             </div>
         </div>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        @livewire('pending-invoice-table')
+        @if (Auth::user()->hasRole('admin'))
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 bg-white border-b border-gray-200">
+                            @livewire('vehicle-selector')
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     @else
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

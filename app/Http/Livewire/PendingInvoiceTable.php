@@ -14,6 +14,11 @@ final class PendingInvoiceTable extends PowerGridComponent
 {
     use ActionButton;
 
+    public string $sortDirection = 'desc';
+    public string $sortField = 'id';
+
+    public string $vehicle_id;
+
     /*
     |--------------------------------------------------------------------------
     |  Datasource
@@ -30,6 +35,17 @@ final class PendingInvoiceTable extends PowerGridComponent
             count(id) as Total 
             from invoices
             group by date';
+
+        if ($this->vehicle_id) {
+            $query = 'select date as id,
+                count(case when delivery_state_id = 1 then id end) as Pending,
+                count(case when delivery_state_id = 2 then id end) as Delivered,
+                count(case when delivery_state_id = 3 then id end) as Cancelled,
+                count(id) as Total 
+                from invoices
+                where vehicle_id = ' . $this->vehicle_id . '
+                group by date';
+        }
 
         $data = collect(\DB::select($query));
 
@@ -78,7 +94,7 @@ final class PendingInvoiceTable extends PowerGridComponent
     |
 
     */
-     /**
+    /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -89,7 +105,8 @@ final class PendingInvoiceTable extends PowerGridComponent
             Column::add()
                 ->title('DATE')
                 ->field('id')
-                ->makeInputDatePicker(),
+                ->makeInputDatePicker()
+                ->sortable(),
             Column::add()
                 ->title('PENDING')
                 ->field('Pending')
