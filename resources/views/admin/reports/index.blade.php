@@ -34,9 +34,24 @@
                                         @endforeach
                                     </x-input-select>
                                 </div>
+                                <div>
+                                    <x-label for="location_id" :value="__('Location')" />
+                                    @error('location_id')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                                    <x-input-select id="location_id" class="block mt-1 w-full" name="location_id" onchange="submit()"
+                                        required>
+                                        <option value="">Select</option>
+                                        @foreach ($locations as $location)
+                                            <option value="{{ $location->id }}"
+                                                {{ old('location_id') == $location->id || $location_id == $location->id ? 'selected' : '' }}>
+                                                {{ $location->name }}</option>
+                                        @endforeach
+                                    </x-input-select>
+                                </div>
                             </div>
                         </form>
-                        @livewire('pending-invoice-table', ['vehicle_id' => $vehicle_id])
+                        @livewire('pending-invoice-table', ['vehicle_id' => $vehicle_id, 'location_id' => $location_id])
                     </div>
                 </div>
             </div>

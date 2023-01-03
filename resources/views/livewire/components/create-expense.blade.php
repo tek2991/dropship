@@ -6,7 +6,15 @@
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <x-label for="vehicle_id" :value="__('Vehicle')" />
+                            <x-label for="date" :value="__('Date')" />
+                            @error('date')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                            <x-input id="date" class="block mt-1 w-full" type="date" name="date" required
+                                wire:model="date" />
+                        </div>
+                        <div>
+                            <x-label for="vehicle_id" :value="__('Vehicle (Total: ' . count($vehicles).')')" />
                             @error('vehicle_id')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -18,14 +26,6 @@
                                         {{ $vehicle->registration_number }}</option>
                                 @endforeach
                             </x-input-select>
-                        </div>
-                        <div>
-                            <x-label for="date" :value="__('Date')" />
-                            @error('date')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                            <x-input id="date" class="block mt-1 w-full" type="date" name="date" required
-                                wire:model="date" />
                         </div>
 
                         @if ($invoices != null)

@@ -18,6 +18,7 @@ final class PendingInvoiceTable extends PowerGridComponent
     public string $sortField = 'id';
 
     public string $vehicle_id;
+    public string $location_id;
 
     /*
     |--------------------------------------------------------------------------
@@ -33,19 +34,23 @@ final class PendingInvoiceTable extends PowerGridComponent
             count(case when delivery_state_id = 2 then id end) as Delivered,
             count(case when delivery_state_id = 3 then id end) as Cancelled,
             count(id) as Total 
-            from invoices
-            group by date';
+            from invoices';
 
         if ($this->vehicle_id) {
-            $query = 'select date as id,
-                count(case when delivery_state_id = 1 then id end) as Pending,
-                count(case when delivery_state_id = 2 then id end) as Delivered,
-                count(case when delivery_state_id = 3 then id end) as Cancelled,
-                count(id) as Total 
-                from invoices
-                where vehicle_id = ' . $this->vehicle_id . '
-                group by date';
+            $query .= ' where vehicle_id = ' . $this->vehicle_id;
+
+            if ($this->location_id) {
+                $query .= ' and location_id = ' . $this->location_id;
+            }
         }
+
+        if ($this->location_id && !$this->vehicle_id) {
+            $query .= ' where location_id = ' . $this->location_id;
+        }
+
+
+        $query .= ' group by date';
+
 
         $data = collect(\DB::select($query));
 
