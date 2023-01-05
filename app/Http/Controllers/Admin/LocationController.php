@@ -90,9 +90,24 @@ class LocationController extends Controller
      * @param  \App\Models\Location  $location
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Location $location)
-    {
-        //
+    public function destroy(Location $location, Request $request)
+    {   
+        // Check confirm
+        if (!$request->confirm && $request->confirm != '1') {
+            return redirect()->route('admin.locations.edit', $location)->with('error', 'Please confirm deletion of location ' . $location->name . '.');
+        }
+
+        // Check if location has any imports
+        if ($location->imports()->count() > 0) {
+            return redirect()->route('admin.locations.edit', $location)->with('error', 'Location ' . $location->name . ' cannot be deleted because it has imports.');
+        }
+
+        try {
+            $location->delete();
+            return redirect()->route('admin.locations.index')->with('message', 'Location ' . $location->name . ' deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.locations.edit', $location)->with('error', 'Location ' . $location->name . ' cannot be deleted because it has imports.');
+        }
     }
 
 
