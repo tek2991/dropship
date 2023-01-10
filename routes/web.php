@@ -74,26 +74,27 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:admi
         'vehicles' => VehicleController::class,
         'transporters' => TransporterController::class,
         'clients' => ClientController::class,
-        'locations' => LocationController::class,
         'managers' => ManagerController::class,
     ], ['except' => ['destroy']]);
 
+    
     Route::resource('invoices', InvoiceController::class)->only('index', 'show', 'update', 'edit', 'destroy');
     Route::get('invoices-pending', [InvoiceController::class, 'pending'])->name('invoices.pending');
     Route::get('invoices-delivered', [InvoiceController::class, 'delivered'])->name('invoices.delivered');
     Route::get('invoices-cancelled', [InvoiceController::class, 'cancelled'])->name('invoices.cancelled');
     Route::delete('invoices/{invoice}/delete-image/', [InvoiceController::class, 'destroyImage'])->name('invoices.image.destroy');
-
+    
     Route::resource('log-sheets', LogSheetController::class)->only('index', 'show');
     Route::resource('imports', ImportController::class)->only('index', 'create', 'store', 'destroy');
     Route::get('imports/download', [ImportController::class, 'download'])->name('imports.download');
-
+    
     Route::put('drivers/{driver}/update-password', [DriverController::class, 'updatePassword'])->name('drivers.update-password');
     Route::put('transporters/{transporter}/update-password', [TransporterController::class, 'updatePassword'])->name('transporters.update-password');
     Route::put('clients/{client}/update-password', [ClientController::class, 'updatePassword'])->name('clients.update-password');
     Route::put('managers/{manager}/update-password', [ManagerController::class, 'updatePassword'])->name('managers.update-password');
-
-
+    
+    
+    Route::resource('locations', LocationController::class);
     Route::put('locations/{location}/add-manager', [LocationController::class, 'addManager'])->name('locations.add.manager');
     Route::delete('locations/{location}/remove-manager', [LocationController::class, 'removeManager'])->name('locations.remove.manager');
 
