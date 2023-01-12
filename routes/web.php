@@ -39,6 +39,10 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
+
 Route::get('docs/postman', function () {
     return Storage::download('scribe/collection.json');
 })->name('scribe.postman');

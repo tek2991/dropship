@@ -52,5 +52,6 @@
                 </x-button>
             </div>
         </form>
+        <a href="{{ route('privacy-policy') }}" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
     </x-auth-card>
 </x-guest-layout>
