@@ -1,6 +1,6 @@
 <x-guest-layout>
-    {{-- back link --}}
-    <div class="min-h-screen my-14 max-w-6xl mx-auto">
+    <div class="min-h-screen my-14 max-w-6xl mx-auto px-4">
+        {{-- back link --}}
         <div class="flex items-center justify-end mt-4">
             <a href="{{ route('login') }}" class="underline text-md text-gray-600 hover:text-gray-900">Back</a>
         </div>
