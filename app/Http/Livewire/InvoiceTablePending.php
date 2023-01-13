@@ -75,10 +75,9 @@ final class InvoiceTablePending extends PowerGridComponent
             $query->where('invoices.date', '<=', Carbon::now()->subDays($days)->toDateString());
         } else if ($days2 > 0) {
             $query->whereBetween('invoices.date', [Carbon::now()->subDays($days2)->toDateString(), Carbon::now()->subDays($days)->toDateString()]);
-        } else {
+        } else if ($days > 0) {
             $query->where('invoices.date', Carbon::now()->subDays($days)->toDateString());
         }
-
 
         if ($isAdmin) {
             return $query->where('delivery_state_id', DeliveryState::STATE_PENDING)
