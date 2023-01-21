@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1\Driver;
 
+use Auth;
+use App\Models\DeliveryState;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\InvoiceResource;
-use Auth;
 
 class PendingInvoiceController extends Controller
 {
@@ -25,13 +26,14 @@ class PendingInvoiceController extends Controller
      */
     public function index()
     {
+        $pending_delivery_state_id = DeliveryState::STATE_PENDING;
         try {
             $user = Auth::user();
             $invoices = InvoiceResource::collection(
                 $user->driver->invoices()
-                    ->whereIn('delivery_status', ['pending'])
+                    ->whereIn('delivery_state_id', [$pending_delivery_state_id])
                     ->with('clientUser', 'images', 'updatedByUser')
-                    ->simplePaginate(15)
+                    ->paginate(15)
             );
 
             $invoices = $invoices->response()->getData(); // Get the response data. Otherwise, json response does not include pagination data. 😓 
@@ -67,11 +69,12 @@ class PendingInvoiceController extends Controller
      */
     public function all()
     {
+        $pending_delivery_state_id = DeliveryState::STATE_PENDING;
         try {
             $user = Auth::user();
             $invoices = InvoiceResource::collection(
                 $user->driver->invoices()
-                    ->whereIn('delivery_status', ['pending'])
+                    ->whereIn('delivery_state_id', [$pending_delivery_state_id])
                     ->with('clientUser', 'images', 'updatedByUser')
                     ->get()
             );

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1\Driver;
 
 use Illuminate\Http\Request;
+use App\Models\DeliveryState;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\v1\InvoiceResource;
@@ -26,11 +27,12 @@ class UpdatedInvoiceController extends Controller
      */
     public function index()
     {
+        $delivered_delivery_state_id = DeliveryState::STATE_DELIVERED;
         try {
             $user = Auth::user();
             $invoices = InvoiceResource::collection(
                 $user->driver->invoices()
-                    ->where('delivery_status', 'delivered')
+                    ->whereIn('delivery_state_id', [$delivered_delivery_state_id])
                     ->with('clientUser', 'images', 'updatedByUser')
                     ->simplePaginate()
             );

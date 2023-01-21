@@ -25,7 +25,7 @@ class InvoiceResource extends JsonResource
             'delivery_status' => ucfirst($this->delivery_status),
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by ?  new UserResource($this->updatedByUser) : null,
-            'remarks' => $this->deliveryRemark->remark,
+            'remarks' => $this->deliveryRemark ? $this->deliveryRemark->remarks : null,
             'client' => $this->clientUser ? new UserResource($this->clientUser) : null,
             'images' => $this->images ? ImageResource::collection($this->images) : null,
             'transporter' => $this->transporterUser->name,
