@@ -22,8 +22,9 @@ final class InvoiceTableDelivered extends PowerGridComponent
 {
     use ActionButton;
 
-    public string $sortField = 'id';
+    public string $primaryKey = 'invoices.id';
 
+    public string $sortField = 'id';
     public string $sortDirection = 'asc';
 
     //Messages informing success/error data is updated.
@@ -156,7 +157,7 @@ final class InvoiceTableDelivered extends PowerGridComponent
                 return $model->driverUser->phone;
             })
             ->addColumn('delivery_remark_id')
-            ->addColumn('delivery_remark', function (Invoice $model) {
+            ->addColumn('delivery_remark_text', function (Invoice $model) {
                 return $model->deliveryRemark ? $model->deliveryRemark->remark : '';
             });
     }
@@ -263,7 +264,7 @@ final class InvoiceTableDelivered extends PowerGridComponent
 
             Column::add()
                 ->title('REMARK')
-                ->field('delivery_remark')
+                ->field('delivery_remark_text')
                 ->makeInputSelect(DeliveryRemark::all(), 'remark', 'delivery_remark_id')
                 ->sortable(),
 
