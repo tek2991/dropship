@@ -6135,6 +6135,10 @@ body:not(.is-using-mouse) .fancybox__container :focus{box-shadow:0 0 0 1px #fff,
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+.disabled\:bg-gray-100:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
 .disabled\:opacity-25:disabled {
   opacity: 0.25;
 }

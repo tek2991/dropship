@@ -17,6 +17,8 @@ class CreateExpense extends Component
     public $remark;
     public $date;
 
+    public $error = null;
+
     public function mount()
     {
         // $this->vehicles = Vehicle::orderBy('registration_number')->get();
@@ -52,14 +54,30 @@ class CreateExpense extends Component
             if ($propertyName == 'vehicle_id' || $propertyName == 'date') {
                 // Get invoices for the vehicle and date
                 $this->invoices = Vehicle::find($this->vehicle_id)->invoices()->whereDate('date', $this->date)->get();
+                // Check if expense already exists for the vehicle and date
+                $this->checkDateVehicleAlreadyExists();
             }
         }
     }
+    public function checkDateVehicleAlreadyExists()
+    {
+        $expense = Expense::where('vehicle_id', $this->vehicle_id)->whereDate('date', $this->date)->first();
+        if ($expense) {
+            $this->error = 'Expense already exists for this vehicle and date';
+        } else {
+            $this->error = null;
+        }
+    }
 
-    public function store(){
+    public function store()
+    {
         $validated = $this->validate();
 
-        // dd($validated);
+        $this->checkDateVehicleAlreadyExists();
+
+        if ($this->error) {
+            return;
+        }
 
         Expense::create($validated);
 
