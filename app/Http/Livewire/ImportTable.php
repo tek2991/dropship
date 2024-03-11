@@ -41,22 +41,31 @@ final class ImportTable extends PowerGridComponent
     | Provides data to your Table using a Model or Collection
     |
     */
-    
+
     /**
-    * PowerGrid datasource.
-    *
-    * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Import>|null
-    */
+     * PowerGrid datasource.
+     *
+     * @return  \Illuminate\Database\Eloquent\Builder<\App\Models\Import>|null
+     */
     public function datasource(): ?Builder
     {
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
+
+        $query = Import::query();
+
+        // If not super user, limit data
+        $is_super_user = auth()->user()->email === config('services.dropship.super_user');
+        if (!$is_super_user) {
+            $query->where('created_at', '>=', Carbon::now()->subDays(config('services.dropship.data_limit'))->toDateString());
+        }
+
         if ($isAdmin) {
-            return Import::with('location');
+            return $query->with('location');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return Import::whereIn('location_id', $location_ids)->with('location');
+            return $query->whereIn('location_id', $location_ids)->with('location');
         }
     }
 
@@ -93,7 +102,7 @@ final class ImportTable extends PowerGridComponent
             ->addColumn('file_name')
             ->addColumn('location.name')
             ->addColumn('created_at')
-            ->addColumn('created_at_formatted', function(Import $model) {
+            ->addColumn('created_at_formatted', function (Import $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y');
             });
     }
@@ -107,7 +116,7 @@ final class ImportTable extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Columns.
      *
      * @return array<int, Column>
@@ -139,7 +148,7 @@ final class ImportTable extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Import Action Buttons.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Button>
@@ -147,18 +156,18 @@ final class ImportTable extends PowerGridComponent
 
     public function actions(): array
     {
-       return [
-           Button::add('download')
-               ->caption('Download')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('admin.imports.download', ['import_id' => 'id']),
+        return [
+            Button::add('download')
+                ->caption('Download')
+                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
+                ->route('admin.imports.download', ['import_id' => 'id']),
 
-           Button::add('destroy')
-               ->caption('Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-            //    ->route('admin.imports.destroy', ['import' => 'id'])
-               ->openModal('confirm-modal', ['route' => 'admin.imports.destroy', 'model_id' => 'id', 'model_name' => 'Import', 'model_action' => 'destroy'])
-               ->method('delete')
+            Button::add('destroy')
+                ->caption('Delete')
+                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+                //    ->route('admin.imports.destroy', ['import' => 'id'])
+                ->openModal('confirm-modal', ['route' => 'admin.imports.destroy', 'model_id' => 'id', 'model_name' => 'Import', 'model_action' => 'destroy'])
+                ->method('delete')
         ];
     }
 
@@ -170,7 +179,7 @@ final class ImportTable extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Import Action Rules.
      *
      * @return array<int, \PowerComponents\LivewirePowerGrid\Rules\RuleActions>
@@ -198,7 +207,7 @@ final class ImportTable extends PowerGridComponent
     |
     */
 
-     /**
+    /**
      * PowerGrid Import Update.
      *
      * @param array<string,string> $data

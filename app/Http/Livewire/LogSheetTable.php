@@ -59,13 +59,24 @@ final class LogSheetTable extends PowerGridComponent
     {
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
+
+        $query = null;
+
         if ($isAdmin) {
-            return LogSheet::query()->withCount('invoices')->with('invoices', 'location');
+            $query = LogSheet::query()->withCount('invoices')->with('invoices', 'location');
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return LogSheet::whereIn('location_id', $location_ids)->withCount('invoices')->with('invoices', 'location');
+            $query =  LogSheet::whereIn('location_id', $location_ids)->withCount('invoices')->with('invoices', 'location');
         }
+
+        // If not super user, limit data
+        $is_super_user = auth()->user()->email === config('services.dropship.super_user');
+        if (!$is_super_user) {
+            $query->where('date', '>=', Carbon::now()->subDays(config('services.dropship.data_limit'))->toDateString());
+        }
+
+        return $query;
     }
 
     /*
@@ -83,8 +94,7 @@ final class LogSheetTable extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [
-        ];
+        return [];
     }
 
     /*

@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'dropship' => [
+        'super_user' => env('SUPER_USER', 'admin@dropship.com'),
+        'data_limit' => env('DATA_LIMIT', 365),
+    ]
 ];

@@ -55,10 +55,17 @@ final class ExpenseTable extends PowerGridComponent
      */
     public function datasource(): ?Builder
     {
-        // Check if vehicle_id is set.
+        $query = Expense::query();
 
+        // If not super user, limit data
+        $is_super_user = auth()->user()->email === config('services.dropship.super_user');
+        if (!$is_super_user) {
+            $query->where('date', '>=', Carbon::now()->subDays(config('services.dropship.data_limit'))->toDateString());
+        }
+
+        // Check if vehicle_id is set.
         if ($this->vehicle_id != null) {
-            return Expense::query()
+            return $query
                 ->where('vehicle_id', $this->vehicle_id)
                 ->join('vehicles', 'vehicles.id', '=', 'expenses.vehicle_id')
                 ->select([
@@ -66,7 +73,7 @@ final class ExpenseTable extends PowerGridComponent
                     'vehicles.registration_number',
                 ]);
         }
-        return Expense::query()
+        return $query
             ->join('vehicles', 'vehicles.id', '=', 'expenses.vehicle_id')
             ->select([
                 'expenses.*',
@@ -155,7 +162,7 @@ final class ExpenseTable extends PowerGridComponent
                 ->field('vehicle_link')
                 ->sortable()
                 ->visibleInExport(False),
-            
+
             Column::add()
                 ->title('Vehicle')
                 ->field('registration_number')

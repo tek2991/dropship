@@ -49,6 +49,12 @@ final class PendingInvoiceTable extends PowerGridComponent
         }
 
 
+        // If not super user, limit data
+        $is_super_user = auth()->user()->email === config('services.dropship.super_user');
+        if (!$is_super_user) {
+            $query .= ' where date >= \'' . Carbon::now()->subDays(config('services.dropship.data_limit'))->toDateString() . '\'';
+        }
+
         $query .= ' group by date';
 
 

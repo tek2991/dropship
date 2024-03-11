@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ImportController;
@@ -55,6 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    // Route::get('/dashboard-new', [DashboardController::class, 'index'])->name('dashboard-new');
+
     Route::resource('user', UserController::class)->only('show', 'edit', 'update');
     Route::put('user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
 

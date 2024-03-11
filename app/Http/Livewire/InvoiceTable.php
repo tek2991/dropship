@@ -63,8 +63,9 @@ final class InvoiceTable extends PowerGridComponent
     {
         $isAdmin = auth()->user()->isAdmin();
         $isManager = auth()->user()->isManager();
+        $query = null;
         if ($isAdmin) {
-            return Invoice::query()
+            $query = Invoice::query()
                 ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
                 ->join('users', 'users.id', '=', 'transporters.user_id')
                 ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
@@ -73,13 +74,21 @@ final class InvoiceTable extends PowerGridComponent
         } else if ($isManager) {
             $manager = auth()->user()->manager;
             $location_ids = $manager->locations->pluck('id')->toArray();
-            return Invoice::whereIn('location_id', $location_ids)
+            $query = Invoice::whereIn('location_id', $location_ids)
                 ->join('transporters', 'transporters.id', '=', 'invoices.transporter_id')
                 ->join('users', 'users.id', '=', 'transporters.user_id')
                 ->join('vehicles', 'vehicles.id', '=', 'invoices.vehicle_id')
                 ->select('invoices.*', 'vehicles.registration_number as vehicle_registration_number', 'users.name as transporter_name')
                 ->with('clientUser', 'client', 'logSheet', 'location', 'transporterUser', 'driverUser', 'deliveryRemark');
         }
+
+        // If not super user, limit data
+        $is_super_user = auth()->user()->email === config('services.dropship.super_user');
+        if (!$is_super_user) {
+            $query->where('invoices.date', '>=', Carbon::now()->subDays(config('services.dropship.data_limit'))->toDateString());
+        }
+
+        return $query;
     }
 
     /*
