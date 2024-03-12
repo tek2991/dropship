@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
     public function run()
     {
         $admin = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'tek2991@gmail.com',
+            'name' => 'Super Admin',
+            'email' => 'superadmin@dropship.com',
             'is_active' => true,
             'password' => Hash::make('password'),
         ]);
