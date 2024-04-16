@@ -45,6 +45,15 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        $is_super_user = $this->email === config('services.dropship.super_user');
+
+        // Deny if user super user
+        if ($is_super_user) {
+            throw ValidationException::withMessages([
+                'email' => 'You are not allowed to login.',
+            ]);
+        }
+
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
@@ -55,6 +64,32 @@ class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
     }
+
+
+    public function authenticateSuperUser()
+    {
+        $this->ensureIsNotRateLimited();
+
+        $is_super_user = $this->email === config('services.dropship.super_user');
+
+        // Deny if user not super user
+        if (! $is_super_user) {
+            throw ValidationException::withMessages([
+                'email' => 'You are not allowed to login.',
+            ]);
+        }
+
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+    }
+
 
     /**
      * Ensure the login request is not rate limited.

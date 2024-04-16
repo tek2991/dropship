@@ -21,6 +21,16 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Display the super user login view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createSuperUser()
+    {
+        return view('auth.login-super-user');
+    }
+
+    /**
      * Handle an incoming authentication request.
      *
      * @param  \App\Http\Requests\Auth\LoginRequest  $request
@@ -29,6 +39,21 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    /**
+     * Handle an incoming super user authentication request.
+     *
+     * @param  \App\Http\Requests\Auth\LoginRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeSuperUser(LoginRequest $request)
+    {
+        $request->authenticateSuperUser();
 
         $request->session()->regenerate();
 

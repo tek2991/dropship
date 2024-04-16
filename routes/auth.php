@@ -21,6 +21,13 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
+    // Super user login
+    Route::get('login-super', [AuthenticatedSessionController::class, 'createSuperUser'])
+                ->name('login.super-user');
+
+    Route::post('login-as-super-user', [AuthenticatedSessionController::class, 'storeSuperUser'])
+                ->name('login.super-user');
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
 
