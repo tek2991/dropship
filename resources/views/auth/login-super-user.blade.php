@@ -3,6 +3,10 @@
         <x-slot name="logo">
             <a href="/">
                 <x-application-logo class="h-20 w-auto fill-current text-gray-500" />
+
+                <h3 class="text-center pt-4 text-xl font-bold text-gray-900">
+                    Super User Login
+                </h3>
             </a>
         </x-slot>
 
