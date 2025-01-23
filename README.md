@@ -56,7 +56,14 @@ This will setup a LEMP stack with PostgreSQL as the DBMS, MySql is also fully co
 ## Laravel Folder Permissions
  ### Setup with user as owner: 
  - Nagivate to root directory: `cd /var/www/site_name`
-- Set User as owner & web-server as group: `sudo chown -R $USER:www-data .`
-- Set file permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type f -exec chmod 664 {} \;`
-- Set directory permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type d -exec chmod 775 {} \;`
-- give the webserver the rights to read and write to storage and cache: `sudo chgrp -R www-data storage bootstrap/cache` and `sudo chmod -R ug+rwx storage bootstrap/cache`
+ - Set User as owner & web-server as group: `sudo chown -R $USER:www-data .`
+ - Set file permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type f -exec chmod 664 {} \;`
+ - Set directory permissions: `sudo find . -not -path "./vendor/*" -not -path "./node_modules/*" -type d -exec chmod 775 {} \;`
+ - give the webserver the rights to read and write to storage and cache: `sudo chgrp -R www-data storage bootstrap/cache` and `sudo chmod -R ug+rwx storage bootstrap/cache`
+## Migrate to S3 (Note to Self)
+ - `php artisan down`
+ - Update the env file with Linode S3 details
+ - Rsync storage and public folders
+ - Copy DB
+ - Run `php artisan photos:migrate-to-ls3`
+ - `php artisan up`

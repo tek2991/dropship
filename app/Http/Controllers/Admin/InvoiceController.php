@@ -29,18 +29,21 @@ class InvoiceController extends Controller
         return view('admin.invoices.index');
     }
 
-    public function pending(Request $request){
+    public function pending(Request $request)
+    {
         $days = $request->days ?? 0;
         $days2 = $request->days2 ?? null;
         $title = $request->title ?? '';
         return view('admin.invoices.pending', compact('days', 'days2', 'title'));
     }
 
-    public function delivered(){
+    public function delivered()
+    {
         return view('admin.invoices.delivered');
     }
 
-    public function cancelled(){
+    public function cancelled()
+    {
         return view('admin.invoices.cancelled');
     }
 
@@ -113,10 +116,36 @@ class InvoiceController extends Controller
         $images = $request->image;
 
         foreach ($images as $image) {
+            // if ($image) {
+            //     $temporaryFile = TemporaryFile::firstWhere('folder', $image);
+            //     Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'public/invoices/' . $invoice->invoice_no . '/' . $image . '/' . $temporaryFile->filename);
+
+            //     $imageModel = Image::create([
+            //         'folder' => 'invoices/' . $invoice->invoice_no . '/' . $image,
+            //         'filename' => $temporaryFile->filename,
+            //         'created_by' => auth()->user()->id,
+            //     ]);
+
+            //     $invoice->images()->save($imageModel);
+            //     Storage::deleteDirectory('uploads/tmp/' . $image);
+            //     $temporaryFile->delete();
+            // }
+
             if ($image) {
                 $temporaryFile = TemporaryFile::firstWhere('folder', $image);
-                Storage::move('uploads/tmp/' . $image . '/' . $temporaryFile->filename, 'public/invoices/' . $invoice->invoice_no . '/' . $image . '/' . $temporaryFile->filename);
 
+                // Define source and destination paths
+                $sourcePath = 'uploads/tmp/' . $image . '/' . $temporaryFile->filename;
+                $destinationPath = 'invoices/' . $invoice->invoice_no . '/' . $image . '/' . $temporaryFile->filename;
+
+                // Move file from temporary storage to S3
+                if (Storage::disk('public')->exists($sourcePath)) {
+                    $fileContent = Storage::disk('public')->get($sourcePath); // Get file content from local storage
+                    Storage::disk('linode-s3')->put($destinationPath, $fileContent); // Store in Linode S3
+                    Storage::disk('public')->delete($sourcePath); // Delete the local copy
+                }
+
+                // Create image record in the database
                 $imageModel = Image::create([
                     'folder' => 'invoices/' . $invoice->invoice_no . '/' . $image,
                     'filename' => $temporaryFile->filename,
@@ -124,7 +153,11 @@ class InvoiceController extends Controller
                 ]);
 
                 $invoice->images()->save($imageModel);
-                Storage::deleteDirectory('uploads/tmp/' . $image);
+
+                // Delete the temporary folder and file from local storage
+                Storage::disk('public')->deleteDirectory('uploads/tmp/' . $image);
+
+                // Delete the temporary file record from the database
                 $temporaryFile->delete();
             }
         }
@@ -139,8 +172,11 @@ class InvoiceController extends Controller
      * @throws \Exception
      *
      */
-    public function destroy(Invoice $invoice){
+    public function destroy(Invoice $invoice)
+    {
+        // Delete the invoice itself - Soft Delete only
         $invoice->delete();
+
         return redirect()->route('admin.invoices.index')->with('message', 'Invoice Deleted Successfully.');
     }
 
@@ -159,7 +195,8 @@ class InvoiceController extends Controller
 
         $image = Image::find($request->image_to_delete);
         $folder = $image->folder;
-        Storage::deleteDirectory('public/' . $folder);
+        // Storage::deleteDirectory('public/' . $folder);
+        Storage::disk('linode-s3')->deleteDirectory($folder);
         $image->delete();
 
         return redirect()->route('admin.invoices.edit', $invoice)->with('message', 'Image Deleted Successfully.');

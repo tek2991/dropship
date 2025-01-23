@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             DeliveryStateSeeder::class,
-            // DriverSeeder::class,
-            // VehicleSeeder::class,
-            // TransporterSeeder::class,
-            // ClientSeeder::class,
-            // DeliveryRemarkSeeder::class,
+            DriverSeeder::class,
+            VehicleSeeder::class,
+            TransporterSeeder::class,
+            ClientSeeder::class,
+            DeliveryRemarkSeeder::class,
         ]);
     }
 }

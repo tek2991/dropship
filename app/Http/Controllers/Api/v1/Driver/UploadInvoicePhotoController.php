@@ -24,24 +24,48 @@ class UploadInvoicePhotoController extends Controller
      */
     public function store(UploadInvoicePhotoRequest $request, Invoice $invoice)
     {
+        // try {
+        //     $file = $request->file('image');
+        //     $filename = $file->getClientOriginalName();
+        //     $folder = uniqid() . '_' . now()->timestamp;
+        //     $file->storeAs('invoices/' . $invoice->invoice_no . '/' . $folder,  $filename, 'public');
+
+        //     $imageModel = Image::create([
+        //         'folder' => 'invoices/' . $invoice->invoice_no . '/' . $folder,
+        //         'filename' => $filename,
+        //         'created_by' => auth()->user()->id,
+        //     ]);
+        //     $invoice->images()->save($imageModel);
+        //     return response()->json([
+        //         'status' => true,
+        //         'message' => 'Image uploaded successfully',
+        //         'data' => (object)[],
+        //     ]);
+        // }
+        
         try {
             $file = $request->file('image');
             $filename = $file->getClientOriginalName();
             $folder = uniqid() . '_' . now()->timestamp;
-            $file->storeAs('invoices/' . $invoice->invoice_no . '/' . $folder,  $filename, 'public');
-
+            $path = 'invoices/' . $invoice->invoice_no . '/' . $folder;
+    
+            // Store the file on the linode-s3 disk
+            $file->storeAs($path, $filename, 'linode-s3');
+    
+            // Save file details in the database
             $imageModel = Image::create([
-                'folder' => 'invoices/' . $invoice->invoice_no . '/' . $folder,
+                'folder' => $path,
                 'filename' => $filename,
                 'created_by' => auth()->user()->id,
             ]);
             $invoice->images()->save($imageModel);
+    
             return response()->json([
                 'status' => true,
                 'message' => 'Image uploaded successfully',
                 'data' => (object)[],
             ]);
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             // 🧐 
             return response()->json([
                 'status' => false,
