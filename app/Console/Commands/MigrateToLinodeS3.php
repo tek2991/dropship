@@ -42,9 +42,9 @@ class MigrateToLinodeS3 extends Command
         $this->info('Starting the migration of photos to Linode...');
 
         // Fetch all images from the database
-        // $images = Image::all();
+        $images = Image::all();
         // $images = Image::take(3)->get();
-        $images = Image::whereIn('id', [4, 31, 32])->get();
+        // $images = Image::whereIn('id', [4, 31, 32])->get();
 
         $bar = $this->output->createProgressBar($images->count());
         $bar->start();
@@ -67,13 +67,23 @@ class MigrateToLinodeS3 extends Command
                     $this->info("Migrated: {$localPath}");
                 } else {
                     $this->warn("File not found: {$localPath}");
+
+                    // Log to the migration file
+                    \Log::channel('migration')->warning("File not found during migration: {$localPath}");
                 }
             } catch (\Exception $e) {
+                // Log the error to the migration file
+                \Log::channel('migration')->error("Error migrating {$localPath}: " . $e->getMessage());
+
+                // Optionally log the full stack trace
+                \Log::channel('migration')->error($e);
+
                 $this->error("Error migrating {$localPath}: " . $e->getMessage());
             }
 
             $bar->advance();
         }
+
 
         $bar->finish();
         $this->info("\nMigration completed successfully!");

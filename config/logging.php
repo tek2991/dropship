@@ -114,6 +114,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'migration' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/migration.log'),
+            'level' => 'debug', // You can set levels like 'debug', 'info', 'warning', 'error', etc.
+        ],    
     ],
 
 ];
