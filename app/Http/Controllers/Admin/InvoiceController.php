@@ -139,10 +139,10 @@ class InvoiceController extends Controller
                 $destinationPath = 'invoices/' . $invoice->invoice_no . '/' . $image . '/' . $temporaryFile->filename;
 
                 // Move file from temporary storage to S3
-                if (Storage::disk('public')->exists($sourcePath)) {
-                    $fileContent = Storage::disk('public')->get($sourcePath); // Get file content from local storage
+                if (Storage::disk('local')->exists($sourcePath)) {
+                    $fileContent = Storage::disk('local')->get($sourcePath); // Get file content from local storage
                     Storage::disk('linode-s3')->put($destinationPath, $fileContent); // Store in Linode S3
-                    Storage::disk('public')->delete($sourcePath); // Delete the local copy
+                    Storage::disk('local')->delete($sourcePath); // Delete the local copy
                 }
 
                 // Create image record in the database
@@ -155,7 +155,7 @@ class InvoiceController extends Controller
                 $invoice->images()->save($imageModel);
 
                 // Delete the temporary folder and file from local storage
-                Storage::disk('public')->deleteDirectory('uploads/tmp/' . $image);
+                Storage::disk('local')->deleteDirectory('uploads/tmp/' . $image);
 
                 // Delete the temporary file record from the database
                 $temporaryFile->delete();
